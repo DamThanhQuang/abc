@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <g opacity="0.08"><circle cx="680" cy="80" r="230" fill="white"/><circle cx="100" cy="420" r="180" fill="white"/></g>
+  <!-- Exhibition hall outline -->
+  <g fill="none" stroke="white" stroke-width="2" opacity="0.2">
+    <rect x="440" y="140" width="280" height="200" rx="4"/>
+    <line x1="520" y1="140" x2="520" y2="340"/>
+    <line x1="600" y1="140" x2="600" y2="340"/>
+    <line x1="680" y1="140" x2="680" y2="340"/>
+    <rect x="455" y="160" width="50" height="70" rx="3"/>
+    <rect x="535" y="160" width="50" height="70" rx="3"/>
+    <rect x="615" y="160" width="50" height="70" rx="3"/>
+    <rect x="695" y="160" width="10" height="70" rx="2"/>
+  </g>
+  <!-- Star/spotlight decorations -->
+  <g fill="white" opacity="0.25">
+    <polygon points="520,60 525,74 540,74 528,82 533,96 520,88 507,96 512,82 500,74 515,74"/>
+    <polygon points="600,80 603,90 614,90 605,96 608,106 600,100 592,106 595,96 586,90 597,90"/>
+  </g>
+  <!-- Confetti dots -->
+  <g opacity="0.3">
+    <circle cx="460" cy="120" r="5" fill="#fbbf24"/>
+    <circle cx="490" cy="100" r="4" fill="#34d399"/>
+    <circle cx="530" cy="110" r="3" fill="#f87171"/>
+    <circle cx="570" cy="90" r="5" fill="#60a5fa"/>
+    <circle cx="610" cy="115" r="4" fill="#fbbf24"/>
+  </g>
+  <!-- Tag -->
+  <rect x="50" y="50" width="130" height="32" rx="16" fill="white" opacity="0.2"/>
+  <text x="115" y="71" text-anchor="middle" fill="white" font-family="sans-serif" font-size="13" font-weight="bold">SỰ KIỆN</text>
+  <!-- Main text -->
+  <text x="80" y="185" fill="white" font-family="sans-serif" font-size="26" font-weight="bold" opacity="0.95">Vietnam Oil &amp; Gas</text>
+  <text x="80" y="230" fill="white" font-family="sans-serif" font-size="42" font-weight="bold" opacity="0.95">EXPO 2024</text>
+  <text x="80" y="278" fill="white" font-family="sans-serif" font-size="16" opacity="0.7">200+ đối tác · Hà Nội, 08/2024</text>
+  <text x="80" y="400" fill="white" font-family="sans-serif" font-size="13" opacity="0.5" font-weight="bold" letter-spacing="2">FUELPRECISION INDUSTRIAL</text>
+</svg>

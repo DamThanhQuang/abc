@@ -1,0 +1,49 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { db } from "@/lib/db";
+import { newsSchema, type NewsInput } from "@/lib/validations";
+
+type ActionResult = { success: boolean; error?: string; id?: string };
+
+export async function createArticle(data: NewsInput): Promise<ActionResult> {
+  const parsed = newsSchema.safeParse(data);
+  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+
+  try {
+    const article = await db.newsArticle.create({ data: parsed.data });
+    revalidatePath("/tin-tuc");
+    revalidatePath("/admin/tin-tuc");
+    return { success: true, id: article.id };
+  } catch (err) {
+    console.error("createArticle:", err);
+    return { success: false, error: "Không thể tạo bài viết." };
+  }
+}
+
+export async function updateArticle(id: string, data: Partial<NewsInput>): Promise<ActionResult> {
+  const parsed = newsSchema.partial().safeParse(data);
+  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+
+  try {
+    await db.newsArticle.update({ where: { id }, data: parsed.data });
+    revalidatePath("/tin-tuc");
+    revalidatePath("/admin/tin-tuc");
+    return { success: true };
+  } catch (err) {
+    console.error("updateArticle:", err);
+    return { success: false, error: "Không thể cập nhật bài viết." };
+  }
+}
+
+export async function deleteArticle(id: string): Promise<ActionResult> {
+  try {
+    await db.newsArticle.delete({ where: { id } });
+    revalidatePath("/tin-tuc");
+    revalidatePath("/admin/tin-tuc");
+    return { success: true };
+  } catch (err) {
+    console.error("deleteArticle:", err);
+    return { success: false, error: "Không thể xóa bài viết." };
+  }
+}

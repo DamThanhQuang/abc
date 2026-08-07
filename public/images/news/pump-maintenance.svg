@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <g opacity="0.06"><circle cx="680" cy="80" r="230" fill="white"/><circle cx="120" cy="400" r="170" fill="white"/></g>
+  <!-- Wrench icon -->
+  <g transform="translate(520,130)" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
+    <path d="M 20 0 C 30 -10 50 -8 55 8 C 60 22 50 34 38 34 L 10 62 C 4 68 4 78 10 84 C 16 90 26 90 32 84 L 60 56 C 76 56 88 44 88 28 C 88 12 76 0 60 0 C 52 0 45 3 40 8"/>
+  </g>
+  <!-- Gear -->
+  <g transform="translate(580, 230)" opacity="0.2">
+    <circle cx="0" cy="0" r="60" fill="none" stroke="white" stroke-width="12"/>
+    <circle cx="0" cy="0" r="30" fill="#475569"/>
+    <circle cx="0" cy="0" r="15" fill="none" stroke="white" stroke-width="6"/>
+    <g stroke="white" stroke-width="12">
+      <line x1="0" y1="-62" x2="0" y2="-50"/>
+      <line x1="0" y1="50" x2="0" y2="62"/>
+      <line x1="-62" y1="0" x2="-50" y2="0"/>
+      <line x1="50" y1="0" x2="62" y2="0"/>
+      <line x1="-44" y1="-44" x2="-36" y2="-36"/>
+      <line x1="36" y1="36" x2="44" y2="44"/>
+      <line x1="44" y1="-44" x2="36" y2="-36"/>
+      <line x1="-36" y1="36" x2="-44" y2="44"/>
+    </g>
+  </g>
+  <!-- Checklist lines -->
+  <g fill="white" opacity="0.2">
+    <rect x="460" y="310" width="200" height="8" rx="4"/>
+    <rect x="460" y="330" width="160" height="8" rx="4"/>
+    <rect x="460" y="350" width="180" height="8" rx="4"/>
+  </g>
+  <!-- Tag -->
+  <rect x="50" y="50" width="190" height="32" rx="16" fill="white" opacity="0.2"/>
+  <text x="145" y="71" text-anchor="middle" fill="white" font-family="sans-serif" font-size="13" font-weight="bold">KIẾN THỨC NGÀNH</text>
+  <!-- Main text -->
+  <text x="80" y="180" fill="white" font-family="sans-serif" font-size="30" font-weight="bold" opacity="0.95">Bảo trì định kỳ</text>
+  <text x="80" y="224" fill="white" font-family="sans-serif" font-size="24" opacity="0.8">Máy bơm công nghiệp</text>
+  <text x="80" y="272" fill="white" font-family="sans-serif" font-size="16" opacity="0.7">Tăng tuổi thọ thiết bị lên đến 30%</text>
+  <text x="80" y="400" fill="white" font-family="sans-serif" font-size="13" opacity="0.5" font-weight="bold" letter-spacing="2">FUELPRECISION INDUSTRIAL</text>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c1f3a"/>
+      <stop offset="100%" stop-color="#1a4270"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e4d8c"/>
+      <stop offset="100%" stop-color="#0d2b5c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#sky)"/>
+  <!-- Water -->
+  <rect y="310" width="800" height="140" fill="url(#water)"/>
+  <g opacity="0.15" stroke="white" stroke-width="1">
+    <line x1="0" y1="330" x2="800" y2="330"/>
+    <line x1="0" y1="355" x2="800" y2="355"/>
+    <line x1="0" y1="380" x2="800" y2="380"/>
+  </g>
+  <!-- Ship silhouette -->
+  <path d="M 200 310 L 180 290 L 620 290 L 640 310 Z" fill="#1e293b"/>
+  <rect x="240" y="240" width="160" height="54" rx="3" fill="#0f172a"/>
+  <rect x="250" y="200" width="140" height="44" rx="3" fill="#1e293b"/>
+  <rect x="290" y="170" width="60" height="34" rx="3" fill="#0f172a"/>
+  <!-- Crane silhouette -->
+  <rect x="500" y="100" width="14" height="210" fill="#334155"/>
+  <rect x="430" y="104" width="84" height="10" fill="#334155"/>
+  <line x1="440" y1="114" x2="510" y2="210" stroke="#64748b" stroke-width="2"/>
+  <!-- Stars/sky dots -->
+  <g fill="white" opacity="0.5">
+    <circle cx="100" cy="60" r="1.5"/>
+    <circle cx="160" cy="40" r="1"/>
+    <circle cx="220" cy="70" r="1.5"/>
+    <circle cx="350" cy="30" r="1"/>
+    <circle cx="680" cy="55" r="1.5"/>
+    <circle cx="740" cy="30" r="1"/>
+  </g>
+  <!-- Overlay for text readability -->
+  <rect width="400" height="450" fill="#0c1f3a" opacity="0.4"/>
+  <!-- Tag -->
+  <rect x="50" y="50" width="200" height="32" rx="16" fill="white" opacity="0.15"/>
+  <text x="150" y="71" text-anchor="middle" fill="white" font-family="sans-serif" font-size="13" font-weight="bold">DỰ ÁN NỔI BẬT</text>
+  <!-- Main text -->
+  <text x="80" y="180" fill="white" font-family="sans-serif" font-size="30" font-weight="bold" opacity="0.95">Cảng Hải Phòng</text>
+  <text x="80" y="222" fill="white" font-family="sans-serif" font-size="22" opacity="0.8">Hệ thống phân phối</text>
+  <text x="80" y="256" fill="white" font-family="sans-serif" font-size="22" opacity="0.8">nhiên liệu tự động</text>
+  <text x="80" y="400" fill="white" font-family="sans-serif" font-size="13" opacity="0.5" font-weight="bold" letter-spacing="2">FUELPRECISION INDUSTRIAL</text>
+</svg>

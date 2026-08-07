@@ -1,26 +1,149 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────
+   Design Tokens — FuelPrecision Industrial
+   Maps Figma design system to CSS variables
+───────────────────────────────────────────── */
+@theme inline {
+  /* Override default fonts with project fonts */
+  --font-sans:    var(--font-inter);
+  --font-heading: var(--font-manrope);
+
+  /* ── Brand ── */
+  --color-brand-dark: #00355f;
+  --color-brand:      #0f4c81;
+
+  /* ── Surfaces ── */
+  --color-surface-page: #f7f9ff;
+  --color-surface-card: #f1f4f9;
+  --color-surface-hero: #e0e3e8;
+  --color-surface-tag:  rgba(210, 228, 255, 0.30);
+
+  /* ── Text ── */
+  --color-content-heading: #181c20;
+  --color-content-body:    #42474f;
+  --color-content-muted:   #5d5f5f;
+
+  /* ── Borders ── */
+  --color-border-ui:  #c2c7d1;
+  --color-border-tag: #d2e4ff;
+
+  /* ── Shadows ── */
+  --shadow-card: 0px 4px 6px rgba(15, 76, 129, 0.05);
+  --shadow-btn:  0px 1px 1px rgba(0, 0, 0, 0.05);
+
+  /* ── Layout ── */
+  --width-content: 80rem;
+
+  /* ── shadcn semantic tokens — mapped to FuelPrecision palette ── */
+  --color-background: var(--color-surface-page);
+  --color-foreground: var(--color-content-body);
+  --color-primary:    var(--color-brand);
+  --color-border:     var(--color-border-ui);
+
+  /* shadcn internals (keep wired) */
+  --color-sidebar-ring:               var(--sidebar-ring);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar:                    var(--sidebar);
+  --color-chart-5:             var(--chart-5);
+  --color-chart-4:             var(--chart-4);
+  --color-chart-3:             var(--chart-3);
+  --color-chart-2:             var(--chart-2);
+  --color-chart-1:             var(--chart-1);
+  --color-ring:                var(--ring);
+  --color-input:               var(--input);
+  --color-destructive:         var(--destructive);
+  --color-accent-foreground:   var(--accent-foreground);
+  --color-accent:              var(--accent);
+  --color-muted-foreground:    var(--muted-foreground);
+  --color-muted:               var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary:           var(--secondary);
+  --color-primary-foreground:  var(--primary-foreground);
+  --color-popover-foreground:  var(--popover-foreground);
+  --color-popover:             var(--popover);
+  --color-card-foreground:     var(--card-foreground);
+  --color-card:                var(--card);
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-btn:  0.5rem;
+  --radius-card: 0.75rem;
+  --radius-pill: 9999px;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background:              #f7f9ff;
+  --foreground:              #42474f;
+  --card:                    #f1f4f9;
+  --card-foreground:         #181c20;
+  --popover:                 #ffffff;
+  --popover-foreground:      #181c20;
+  --primary:                 #0f4c81;
+  --primary-foreground:      #ffffff;
+  --secondary:               #f1f4f9;
+  --secondary-foreground:    #00355f;
+  --muted:                   #f1f4f9;
+  --muted-foreground:        #5d5f5f;
+  --accent:                  #f1f4f9;
+  --accent-foreground:       #181c20;
+  --destructive:             oklch(0.577 0.245 27.325);
+  --border:                  #c2c7d1;
+  --input:                   #c2c7d1;
+  --ring:                    #0f4c81;
+  --radius:                  0.5rem;
+  --chart-1:                 #0f4c81;
+  --chart-2:                 #00355f;
+  --chart-3:                 #42474f;
+  --chart-4:                 #5d5f5f;
+  --chart-5:                 #c2c7d1;
+  --sidebar:                 #ffffff;
+  --sidebar-foreground:      #181c20;
+  --sidebar-primary:         #0f4c81;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent:          #f1f4f9;
+  --sidebar-accent-foreground: #181c20;
+  --sidebar-border:          #c2c7d1;
+  --sidebar-ring:            #0f4c81;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── Base ─── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    color: var(--color-content-heading);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Gradient utilities (used on inner pages instead of inline styles) ─── */
+@layer utilities {
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #00355f 0%, #0f4c81 100%);
+  }
+  .bg-hero-dark-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
+  }
+  .bg-page-hero-tint {
+    background: linear-gradient(to right, rgba(0,29,54,0.80) 0%, rgba(0,29,54,0.45) 55%, rgba(0,29,54,0) 100%);
+  }
 }
