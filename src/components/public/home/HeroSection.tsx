@@ -85,9 +85,9 @@ export function HeroSection({ imageSrc }: HeroSectionProps) {
               text-content-body max-w-[672px]
             "
           >
-            Kỹ thuật hệ thống nhiên liệu hiệu suất cao, đáng tin cậy. From
-            robust commercial pumps to intelligent monitoring technology, we
-            build the backbone of fluid management.
+            Kỹ thuật hệ thống nhiên liệu hiệu suất cao, đáng tin cậy. Từ
+            máy bơm thương mại mạnh mẽ đến công nghệ giám sát thông minh,
+            chúng tôi xây dựng nền tảng quản lý chất lỏng công nghiệp.
           </p>
 
           {/* CTAs */}

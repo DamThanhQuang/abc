@@ -10,7 +10,7 @@ type ActionResult = { success: boolean; error?: string };
 // ─── Public: submit contact form ──────────────────────────────────────────────
 export async function submitContact(data: ContactInput): Promise<ActionResult> {
   const parsed = contactSchema.safeParse(data);
-  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
     await db.contactRequest.create({ data: parsed.data });

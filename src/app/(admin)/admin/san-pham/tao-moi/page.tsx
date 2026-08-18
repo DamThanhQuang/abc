@@ -1,49 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
-import { updateProduct } from "@/lib/actions/products";
+import { createProduct } from "@/lib/actions/products";
 import { getCategories } from "@/lib/api/categories";
-import { db } from "@/lib/db";
 
-type Props = { params: Promise<{ id: string }> };
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const product = await db.product.findUnique({ where: { id }, select: { name: true } });
-  return { title: product ? `Sua: ${product.name} | Admin` : "Khong tim thay" };
-}
+export const metadata: Metadata = { title: "Them san pham | Admin" };
 
 const inputClass = "h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
 const textareaClass = "w-full resize-none rounded-btn border border-border-ui bg-white px-3 py-2 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
 const labelClass = "font-sans text-[12px] font-semibold text-content-heading";
 
-export default async function AdminEditProductPage({ params }: Props) {
-  const { id } = await params;
-  const product = await db.product.findUnique({
-    where: { id },
-    include: { technicalSpecs: { orderBy: { order: "asc" } } },
-  });
-  if (!product) notFound();
-
+export default async function AdminCreateProductPage() {
   const categories = await getCategories();
 
-  async function handleSave(formData: FormData) {
+  async function handleCreate(formData: FormData) {
     "use server";
-    const result = await updateProduct(id, {
-      name: formData.get("name") as string,
-      slug: formData.get("slug") as string,
-      category: formData.get("category") as string,
-      categorySlug: formData.get("categorySlug") as string,
+    const name = formData.get("name") as string;
+    const slug = name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    const categorySlug = formData.get("categorySlug") as string;
+    const category = formData.get("category") as string;
+
+    const result = await createProduct({
+      slug,
+      name,
+      category,
+      categorySlug,
       model: (formData.get("model") as string) || undefined,
       spec: (formData.get("spec") as string) || undefined,
       description: (formData.get("description") as string) || undefined,
-      image: formData.get("image") as string,
+      image: (formData.get("image") as string) || "/images/products/placeholder.svg",
+      published: true,
       features: (formData.get("features") as string)
         .split("\n")
         .map((f) => f.trim())
         .filter(Boolean),
-      technicalSpecs: JSON.parse((formData.get("technicalSpecs") as string) || "[]"),
+      technicalSpecs: [],
     });
     if (result.success) redirect("/admin/san-pham");
   }
@@ -54,30 +52,22 @@ export default async function AdminEditProductPage({ params }: Props) {
         breadcrumb={[
           { label: "Tong quan", href: "/admin" },
           { label: "San pham", href: "/admin/san-pham" },
-          { label: "Chinh sua" },
+          { label: "Them moi" },
         ]}
       />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Chinh sua san pham</h1>
-            <p className="font-sans text-[13px] text-content-muted">{product.name}</p>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Them san pham moi</h1>
+            <p className="font-sans text-[13px] text-content-muted">Dien thong tin san pham ben duoi</p>
           </div>
           <Link href="/admin/san-pham" className="font-sans text-[13px] text-brand hover:underline">
             &larr; Quay lai
           </Link>
         </div>
 
-        <form action={handleSave}>
-          <input type="hidden" name="slug" value={product.slug} />
-          <input type="hidden" name="image" value={product.image} />
-          <input
-            type="hidden"
-            name="technicalSpecs"
-            value={JSON.stringify(product.technicalSpecs.map((s) => ({ label: s.label, value: s.value, order: s.order })))}
-          />
-
+        <form action={handleCreate}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Main form */}
             <div className="lg:col-span-8 flex flex-col gap-5">
@@ -87,22 +77,22 @@ export default async function AdminEditProductPage({ params }: Props) {
                 </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className={labelClass}>Ten san pham</label>
-                    <input type="text" name="name" defaultValue={product.name} className={inputClass} required />
+                    <label className={labelClass}>Ten san pham *</label>
+                    <input type="text" name="name" className={inputClass} required placeholder="VD: May Bom Chuyen Nhien Lieu" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className={labelClass}>Ma san pham</label>
-                      <input type="text" name="model" defaultValue={product.model ?? ""} className={inputClass} />
+                      <input type="text" name="model" className={inputClass} placeholder="VD: FP-500X" />
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className={labelClass}>Thong so noi bat</label>
-                      <input type="text" name="spec" defaultValue={product.spec ?? ""} className={inputClass} />
+                      <input type="text" name="spec" className={inputClass} placeholder="VD: 500 L/min" />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className={labelClass}>Mo ta</label>
-                    <textarea rows={4} name="description" defaultValue={product.description ?? ""} className={textareaClass} />
+                    <textarea rows={4} name="description" className={textareaClass} placeholder="Mo ta chi tiet ve san pham..." />
                   </div>
                 </div>
               </div>
@@ -113,12 +103,7 @@ export default async function AdminEditProductPage({ params }: Props) {
                 </h2>
                 <div className="flex flex-col gap-1.5">
                   <label className={labelClass}>Moi dong mot tinh nang</label>
-                  <textarea
-                    rows={6}
-                    name="features"
-                    defaultValue={(product.features ?? []).join("\n")}
-                    className={textareaClass}
-                  />
+                  <textarea rows={6} name="features" className={textareaClass} placeholder={"Tinh nang 1\nTinh nang 2\nTinh nang 3"} />
                 </div>
               </div>
             </div>
@@ -129,28 +114,29 @@ export default async function AdminEditProductPage({ params }: Props) {
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh muc</h2>
                 <select
                   name="categorySlug"
-                  defaultValue={product.categorySlug ?? ""}
+                  required
+                  defaultValue=""
                   className="h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 appearance-none"
                 >
+                  <option value="" disabled>Chon danh muc...</option>
                   {categories.map((cat) => (
                     <option key={cat.slug} value={cat.slug}>{cat.name}</option>
                   ))}
                 </select>
-                <input type="hidden" name="category" value={categories.find((c) => c.slug === product.categorySlug)?.name ?? product.category} />
+                <input type="hidden" name="category" value="" />
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh san pham</h2>
-                <div className="aspect-square overflow-hidden rounded-[8px] bg-surface-hero mb-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                <div className="flex flex-col gap-1.5">
+                  <label className={labelClass}>URL anh</label>
+                  <input type="text" name="image" className={inputClass} placeholder="/images/products/my-product.svg" defaultValue="/images/products/placeholder.svg" />
                 </div>
               </div>
 
-              {/* Save button */}
               <div className="flex flex-col gap-2">
                 <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
-                  Luu thay doi
+                  Tao san pham
                 </button>
                 <Link href="/admin/san-pham" className="w-full rounded-btn border border-border-ui py-2.5 text-center font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors">
                   Huy

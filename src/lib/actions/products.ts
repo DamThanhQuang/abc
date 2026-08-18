@@ -8,7 +8,7 @@ type ActionResult = { success: boolean; error?: string; id?: string };
 
 export async function createProduct(data: ProductInput): Promise<ActionResult> {
   const parsed = productSchema.safeParse(data);
-  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
     const { technicalSpecs, ...productData } = parsed.data;
@@ -33,7 +33,7 @@ export async function createProduct(data: ProductInput): Promise<ActionResult> {
 
 export async function updateProduct(id: string, data: Partial<ProductInput>): Promise<ActionResult> {
   const parsed = productSchema.partial().safeParse(data);
-  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
     const { technicalSpecs, ...productData } = parsed.data;

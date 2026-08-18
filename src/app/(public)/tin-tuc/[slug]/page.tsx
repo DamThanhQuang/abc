@@ -4,18 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/shared/PageHero";
 import { NewsCard } from "@/components/public/news/NewsCard";
-import { getNewsArticleBySlug, NEWS_ARTICLES } from "@/lib/api/news";
+import { getNewsArticleBySlug, getNewsArticles } from "@/lib/api/news";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  return NEWS_ARTICLES.map((a) => ({ slug: a.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = getNewsArticleBySlug(slug);
-  if (!article) return { title: "Bài viết không tồn tại" };
+  const article = await getNewsArticleBySlug(slug);
+  if (!article) return { title: "Bai viet khong ton tai" };
   return {
     title: `${article.title} | FuelPrecision`,
     description: article.excerpt,
@@ -32,29 +28,26 @@ function formatDate(iso: string): string {
 
 export default async function NewsArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = getNewsArticleBySlug(slug);
+  const article = await getNewsArticleBySlug(slug);
   if (!article) notFound();
 
-  const related = NEWS_ARTICLES.filter(
-    (a) => a.id !== article.id && a.category === article.category,
-  ).slice(0, 2);
+  const allArticles = await getNewsArticles();
+  const related = allArticles
+    .filter((a) => a.id !== article.id && a.category === article.category)
+    .slice(0, 2);
 
   return (
     <>
       <PageHero
         title={article.title}
         breadcrumbs={[
-          { label: "Trang chủ", href: "/" },
-          { label: "Tin tức", href: "/tin-tuc" },
+          { label: "Trang chu", href: "/" },
+          { label: "Tin tuc", href: "/tin-tuc" },
           { label: article.category },
         ]}
       />
 
       <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-8 lg:py-16">
-        {/*
-          Mobile:  single column — article then sidebar below
-          Desktop: 8 + 4 column grid
-        */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           {/* Article content */}
@@ -69,7 +62,7 @@ export default async function NewsArticlePage({ params }: Props) {
               </time>
               {article.readingTime && (
                 <span className="font-sans text-[13px] text-content-muted">
-                  {article.readingTime} phút đọc
+                  {article.readingTime} phut doc
                 </span>
               )}
             </div>
@@ -91,31 +84,26 @@ export default async function NewsArticlePage({ params }: Props) {
               {article.excerpt}
             </p>
 
-            {/* Body */}
-            <div className="space-y-4">
-              <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                Trong bối cảnh ngành công nghiệp nhiên liệu ngày càng đặt ra những yêu cầu khắt khe
-                hơn về hiệu suất, độ chính xác và độ tin cậy, FuelPrecision Industrial tiếp tục
-                khẳng định vị thế tiên phong với những giải pháp kỹ thuật tiên tiến nhất.
-              </p>
-              <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                Đội ngũ kỹ sư của chúng tôi đã dành nhiều năm nghiên cứu và phát triển để mang
-                đến những thiết bị không chỉ đáp ứng các tiêu chuẩn quốc tế hiện hành mà còn
-                vượt xa kỳ vọng của khách hàng trong môi trường vận hành thực tế.
-              </p>
-              <h2 className="font-heading font-semibold text-[18px] lg:text-[22px] leading-8 text-content-heading mt-6 lg:mt-8 mb-2 lg:mb-3">
-                Ứng dụng thực tiễn
-              </h2>
-              <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                Từ các trạm xăng thương mại đến hệ thống phân phối nhiên liệu quy mô lớn tại cảng
-                biển và nhà máy công nghiệp, giải pháp của chúng tôi đã được triển khai thành công
-                tại hơn 50 quốc gia trên thế giới.
-              </p>
-              <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                Mỗi dự án đều được theo dõi chặt chẽ bởi đội ngũ kỹ thuật giàu kinh nghiệm, đảm
-                bảo rằng mọi thiết bị hoạt động đúng thông số kỹ thuật ngay từ ngày đầu tiên.
-              </p>
-            </div>
+            {/* Body — render content if available, otherwise placeholder */}
+            {article.content ? (
+              <div
+                className="prose prose-sm lg:prose-base max-w-none"
+                dangerouslySetInnerHTML={{ __html: article.content }}
+              />
+            ) : (
+              <div className="space-y-4">
+                <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
+                  Trong boi canh nganh cong nghiep nhien lieu ngay cang dat ra nhung yeu cau khat khe
+                  hon ve hieu suat, do chinh xac va do tin cay, FuelPrecision Industrial tiep tuc
+                  khang dinh vi the tien phong voi nhung giai phap ky thuat tien tien nhat.
+                </p>
+                <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
+                  Doi ngu ky su cua chung toi da danh nhieu nam nghien cuu va phat trien de mang
+                  den nhung thiet bi khong chi dap ung cac tieu chuan quoc te hien hanh ma con
+                  vuot xa ky vong cua khach hang trong moi truong van hanh thuc te.
+                </p>
+              </div>
+            )}
 
             {/* Back link */}
             <div className="mt-8 lg:mt-10 border-t border-border-ui pt-6 lg:pt-8">
@@ -126,23 +114,23 @@ export default async function NewsArticlePage({ params }: Props) {
                 <svg width="7" height="11" viewBox="0 0 7 11" fill="none" aria-hidden="true">
                   <path d="M6 1L1 5.5 6 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Quay lại danh sách tin tức
+                Quay lai danh sach tin tuc
               </Link>
             </div>
           </article>
 
-          {/* Sidebar — below article on mobile, sticky on lg */}
+          {/* Sidebar */}
           <aside className="lg:col-span-4">
             <div className="lg:sticky lg:top-24 flex flex-col gap-5 lg:gap-0">
               <h2 className="mb-4 lg:mb-5 font-heading font-semibold text-[17px] lg:text-[18px] text-content-heading">
-                Bài viết liên quan
+                Bai viet lien quan
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
                 {related.length > 0 ? (
                   related.map((a) => <NewsCard key={a.id} article={a} />)
                 ) : (
                   <p className="font-sans text-[14px] text-content-muted">
-                    Chưa có bài viết liên quan.
+                    Chua co bai viet lien quan.
                   </p>
                 )}
               </div>
@@ -150,16 +138,16 @@ export default async function NewsArticlePage({ params }: Props) {
               {/* CTA box */}
               <div className="mt-6 lg:mt-8 rounded-card bg-surface-card p-5 lg:p-6">
                 <h3 className="mb-2 font-heading font-semibold text-[15px] lg:text-[16px] text-content-heading">
-                  Cần tư vấn sản phẩm?
+                  Can tu van san pham?
                 </h3>
                 <p className="mb-4 font-sans text-[13px] leading-5 text-content-body">
-                  Đội ngũ kỹ thuật của chúng tôi sẵn sàng hỗ trợ bạn.
+                  Doi ngu ky thuat cua chung toi san sang ho tro ban.
                 </p>
                 <Link
                   href="/lien-he"
                   className="inline-flex w-full items-center justify-center bg-brand text-white rounded-btn px-4 py-[10px] font-sans text-[13px] leading-4 tracking-[0.05em] hover:bg-brand/90 transition-colors"
                 >
-                  Liên hệ ngay
+                  Lien he ngay
                 </Link>
               </div>
             </div>

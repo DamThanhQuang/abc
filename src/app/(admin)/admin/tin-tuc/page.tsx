@@ -1,33 +1,37 @@
 import type { Metadata } from "next";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
-import { NEWS_ARTICLES } from "@/lib/api/news";
+import { getNewsArticles } from "@/lib/api/news";
+import { deleteArticle } from "@/lib/actions/news";
+import Link from "next/link";
 
-export const metadata: Metadata = { title: "Quản lý tin tức | Admin" };
+export const metadata: Metadata = { title: "Quan ly tin tuc | Admin" };
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-export default function AdminTinTucPage() {
+export default async function AdminTinTucPage() {
+  const articles = await getNewsArticles();
+
   return (
     <>
-      <AdminHeader breadcrumb={[{ label: "Tổng quan", href: "/admin" }, { label: "Tin tức" }]} />
+      <AdminHeader breadcrumb={[{ label: "Tong quan", href: "/admin" }, { label: "Tin tuc" }]} />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quản lý tin tức</h1>
-            <p className="font-sans text-[13px] text-content-muted">{NEWS_ARTICLES.length} bài viết</p>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly tin tuc</h1>
+            <p className="font-sans text-[13px] text-content-muted">{articles.length} bai viet</p>
           </div>
-          <button
-            type="button"
+          <Link
+            href="/admin/tin-tuc/tao-moi"
             className="inline-flex items-center gap-2 rounded-btn bg-brand px-4 py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            Đăng bài viết mới
-          </button>
+            Dang bai viet moi
+          </Link>
         </div>
 
         <div className="rounded-card bg-white border border-border-ui shadow-card overflow-hidden">
@@ -35,7 +39,7 @@ export default function AdminTinTucPage() {
             <table className="w-full min-w-[640px]">
               <thead>
                 <tr className="border-b border-border-ui bg-surface-card/50">
-                  {["Bài viết", "Danh mục", "Ngày đăng", "Thời gian đọc", "Thao tác"].map((h) => (
+                  {["Bai viet", "Danh muc", "Ngay dang", "Thoi gian doc", "Thao tac"].map((h) => (
                     <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                       {h}
                     </th>
@@ -43,7 +47,7 @@ export default function AdminTinTucPage() {
                 </tr>
               </thead>
               <tbody>
-                {NEWS_ARTICLES.map((article, i) => (
+                {articles.map((article, i) => (
                   <tr key={article.id} className={`border-b border-border-ui last:border-0 ${i % 2 === 1 ? "bg-surface-card/30" : ""}`}>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
@@ -60,15 +64,26 @@ export default function AdminTinTucPage() {
                       </span>
                     </td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-muted whitespace-nowrap">{formatDate(article.publishedAt)}</td>
-                    <td className="px-5 py-4 font-sans text-[13px] text-content-muted">{article.readingTime ?? "—"} phút</td>
+                    <td className="px-5 py-4 font-sans text-[13px] text-content-muted">{article.readingTime ?? "-"} phut</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <button type="button" className="rounded-[6px] border border-border-ui px-3 py-1.5 font-sans text-[12px] text-content-body hover:bg-surface-card transition-colors">
-                          Sửa
-                        </button>
-                        <button type="button" className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors">
-                          Xóa
-                        </button>
+                        <Link
+                          href={`/admin/tin-tuc/${article.id}`}
+                          className="rounded-[6px] border border-border-ui px-3 py-1.5 font-sans text-[12px] text-content-body hover:bg-surface-card transition-colors"
+                        >
+                          Sua
+                        </Link>
+                        <form action={async () => {
+                          "use server";
+                          await deleteArticle(article.id);
+                        }}>
+                          <button
+                            type="submit"
+                            className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            Xoa
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>

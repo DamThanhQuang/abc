@@ -3,18 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/shared/PageHero";
-import { getProductBySlug, PRODUCTS } from "@/lib/api/products";
+import { getProductBySlug } from "@/lib/api/products";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
-  if (!product) return { title: "Sản phẩm không tồn tại" };
+  const product = await getProductBySlug(slug);
+  if (!product) return { title: "San pham khong ton tai" };
   return {
     title: `${product.name} | FuelPrecision Industrial`,
     description: product.description,
@@ -23,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   return (
@@ -31,14 +27,14 @@ export default async function ProductDetailPage({ params }: Props) {
       <PageHero
         title={product.name}
         breadcrumbs={[
-          { label: "Trang chủ", href: "/" },
-          { label: "Sản phẩm", href: "/san-pham" },
+          { label: "Trang chu", href: "/" },
+          { label: "San pham", href: "/san-pham" },
           { label: product.name },
         ]}
       />
 
       <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-8 lg:py-16">
-        {/* Image + info — stacked on mobile, side-by-side on lg */}
+        {/* Image + info */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           {/* Product image */}
@@ -64,7 +60,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </span>
               {product.model && (
                 <span className="font-sans text-[13px] text-content-muted">
-                  Mẫu: {product.model}
+                  Mau: {product.model}
                 </span>
               )}
             </div>
@@ -92,7 +88,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.features && product.features.length > 0 && (
               <div>
                 <h2 className="mb-3 font-heading font-semibold text-[15px] lg:text-[16px] text-content-heading">
-                  Tính năng nổi bật
+                  Tinh nang noi bat
                 </h2>
                 <ul className="flex flex-col gap-2">
                   {product.features.map((f) => (
@@ -108,29 +104,29 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
             )}
 
-            {/* CTAs — stack on mobile, row on sm+ */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-border-ui">
               <Link
                 href="/lien-he"
                 className="flex-1 inline-flex items-center justify-center bg-brand text-white rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] shadow-btn hover:bg-brand/90 transition-colors"
               >
-                Yêu cầu báo giá
+                Yeu cau bao gia
               </Link>
               <Link
                 href="/san-pham"
                 className="inline-flex items-center justify-center border border-brand text-brand rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] hover:bg-surface-card transition-colors"
               >
-                Xem tất cả
+                Xem tat ca
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Technical specs — horizontally scrollable on small screens */}
+        {/* Technical specs */}
         {product.technicalSpecs && product.technicalSpecs.length > 0 && (
           <div className="mt-10 lg:mt-16">
             <h2 className="mb-5 lg:mb-6 font-heading font-semibold text-[20px] lg:text-[24px] leading-8 text-content-heading">
-              Thông số kỹ thuật
+              Thong so ky thuat
             </h2>
             <div className="overflow-x-auto rounded-card border border-border-ui">
               <table className="w-full min-w-[400px]">

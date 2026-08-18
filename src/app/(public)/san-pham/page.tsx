@@ -24,12 +24,12 @@ export default async function SanPhamPage({ searchParams }: { searchParams: Sear
   const { category, page: pageStr, search, sort } = await searchParams;
   const currentPage = Math.max(1, parseInt(pageStr ?? "1", 10));
 
-  const { products, total, totalPages } = getProductsByPage(currentPage, {
+  const { products, total, totalPages } = await getProductsByPage(currentPage, {
     categorySlug: category,
     search,
     sort,
   });
-  const categories = getCategories();
+  const categories = await getCategories();
 
   function getPageHref(p: number) {
     const params = new URLSearchParams();

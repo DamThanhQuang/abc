@@ -4,8 +4,9 @@ import { FeaturedProducts }  from "@/components/public/home/FeaturedProducts";
 import { FeaturesGrid }      from "@/components/public/home/FeaturesGrid";
 import { getProducts }       from "@/lib/api/products";
 
-export default function HomePage() {
-  const products = getProducts().slice(0, 3); // top 3, no filter/sort needed
+export default async function HomePage() {
+  const allProducts = await getProducts();
+  const products = allProducts.slice(0, 3);
 
   return (
     <>

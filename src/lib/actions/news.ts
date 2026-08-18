@@ -8,7 +8,7 @@ type ActionResult = { success: boolean; error?: string; id?: string };
 
 export async function createArticle(data: NewsInput): Promise<ActionResult> {
   const parsed = newsSchema.safeParse(data);
-  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
     const article = await db.newsArticle.create({ data: parsed.data });
@@ -23,7 +23,7 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
 
 export async function updateArticle(id: string, data: Partial<NewsInput>): Promise<ActionResult> {
   const parsed = newsSchema.partial().safeParse(data);
-  if (!parsed.success) return { success: false, error: parsed.error.errors[0].message };
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
     await db.newsArticle.update({ where: { id }, data: parsed.data });

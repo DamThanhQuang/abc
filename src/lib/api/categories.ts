@@ -1,16 +1,22 @@
+import { db } from "@/lib/db";
 import type { Category } from "@/types/category";
 
-export const CATEGORIES: Category[] = [
-  { id: "1", slug: "may-bom",                name: "Máy bơm" },
-  { id: "2", slug: "dong-ho-do-luu-luong",   name: "Đồng hồ đo lưu lượng" },
-  { id: "3", slug: "he-thong-bon-chua",       name: "Hệ thống bồn chứa" },
-  { id: "4", slug: "voi-bom-tu-dong",         name: "Vòi bơm tự động" },
-];
+export async function getCategories(): Promise<Category[]> {
+  const products = await db.product.findMany({
+    where: { published: true },
+    select: { category: true, categorySlug: true },
+    distinct: ["categorySlug"],
+    orderBy: { category: "asc" },
+  });
 
-export function getCategories(): Category[] {
-  return CATEGORIES;
+  return products.map((p, i) => ({
+    id: String(i + 1),
+    slug: p.categorySlug,
+    name: p.category,
+  }));
 }
 
-export function getCategoryBySlug(slug: string): Category | undefined {
-  return CATEGORIES.find((c) => c.slug === slug);
+export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
+  const categories = await getCategories();
+  return categories.find((c) => c.slug === slug);
 }

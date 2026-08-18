@@ -15,7 +15,7 @@ export default async function TinTucPage({ searchParams }: { searchParams: Searc
   const { page: pageStr } = await searchParams;
   const currentPage = Math.max(1, parseInt(pageStr ?? "1", 10));
 
-  const { articles, totalPages } = getNewsArticlesByPage(currentPage);
+  const { articles, totalPages } = await getNewsArticlesByPage(currentPage);
 
   function getPageHref(p: number) {
     return p > 1 ? `/tin-tuc?page=${p}` : "/tin-tuc";
