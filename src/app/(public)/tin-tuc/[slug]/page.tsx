@@ -15,6 +15,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} | FuelPrecision`,
     description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: article.image ? [{ url: article.image }] : undefined,
+      type: "article",
+      publishedTime: article.publishedAt ?? undefined,
+    },
   };
 }
 
@@ -36,8 +43,23 @@ export default async function NewsArticlePage({ params }: Props) {
     .filter((a) => a.id !== article.id && a.category === article.category)
     .slice(0, 2);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    image: article.image,
+    datePublished: article.publishedAt,
+    author: { "@type": "Organization", name: "FuelPrecision Industrial" },
+    publisher: { "@type": "Organization", name: "FuelPrecision Industrial" },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero
         title={article.title}
         breadcrumbs={[

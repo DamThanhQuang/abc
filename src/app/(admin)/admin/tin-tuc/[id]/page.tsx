@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { updateArticle } from "@/lib/actions/news";
+import { ImageUpload } from "@/components/admin/shared/ImageUpload";
+import { RichTextEditor } from "@/components/admin/shared/RichTextEditor";
 import { db } from "@/lib/db";
 
 type Props = { params: Promise<{ id: string }> };
@@ -57,7 +59,7 @@ export default async function AdminEditArticlePage({ params }: Props) {
         </div>
 
         <form action={handleSave}>
-          <input type="hidden" name="image" value={article.image} />
+          {/* image is handled by ImageUpload component in sidebar */}
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8 flex flex-col gap-5">
@@ -76,7 +78,7 @@ export default async function AdminEditArticlePage({ params }: Props) {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className={labelClass}>Noi dung chi tiet</label>
-                    <textarea rows={12} name="content" defaultValue={article.content ?? ""} className={textareaClass} />
+                    <RichTextEditor name="content" defaultValue={article.content ?? ""} placeholder="Noi dung day du cua bai viet..." />
                   </div>
                 </div>
               </div>
@@ -109,10 +111,7 @@ export default async function AdminEditArticlePage({ params }: Props) {
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh dai dien</h2>
-                <div className="aspect-[16/9] overflow-hidden rounded-[8px] bg-surface-hero mb-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
-                </div>
+                <ImageUpload name="image" defaultValue={article.image} label="Anh bai viet" />
               </div>
 
               <div className="flex flex-col gap-2">

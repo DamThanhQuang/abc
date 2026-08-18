@@ -12,6 +12,8 @@ function NavIcon({ type }: { type: AdminNavItem["icon"] }) {
   switch (type) {
     case "dashboard":
       return <svg {...props}><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6"/></svg>;
+    case "category":
+      return <svg {...props}><path d="M3 4h5l2 2h7a1 1 0 011 1v9a1 1 0 01-1 1H3a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>;
     case "product":
       return <svg {...props}><path d="M10 2L2 6v8l8 4 8-4V6L10 2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="M2 6l8 4 8-4M10 10v8" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>;
     case "news":

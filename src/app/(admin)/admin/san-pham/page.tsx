@@ -61,7 +61,7 @@ export default async function AdminSanPhamPage() {
                     </td>
                     <td className="px-5 py-4">
                       <span className="rounded-pill bg-surface-tag border border-border-tag px-2.5 py-0.5 font-sans text-[12px] text-brand-dark">
-                        {product.category}
+                        {product.category.name}
                       </span>
                     </td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-body font-mono">{product.model ?? "-"}</td>

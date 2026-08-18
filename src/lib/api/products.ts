@@ -7,6 +7,7 @@ export type SortOption = "newest" | "oldest" | "name-az" | "name-za";
 
 export type ProductQuery = {
   categorySlug?: string;
+  categoryId?: string;
   search?: string;
   sort?: string;
 };
@@ -28,14 +29,18 @@ function buildWhere(query: ProductQuery) {
   const where: Record<string, unknown> = { published: true };
 
   if (query.categorySlug) {
-    where.categorySlug = query.categorySlug;
+    where.category = { slug: query.categorySlug };
+  }
+
+  if (query.categoryId) {
+    where.categoryId = query.categoryId;
   }
 
   if (query.search?.trim()) {
     const q = query.search.trim();
     where.OR = [
       { name: { contains: q, mode: "insensitive" } },
-      { category: { contains: q, mode: "insensitive" } },
+      { category: { name: { contains: q, mode: "insensitive" } } },
       { model: { contains: q, mode: "insensitive" } },
       { description: { contains: q, mode: "insensitive" } },
     ];
@@ -45,6 +50,7 @@ function buildWhere(query: ProductQuery) {
 }
 
 const productInclude = {
+  category: true,
   technicalSpecs: { orderBy: { order: "asc" as const } },
 } as const;
 

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { createArticle } from "@/lib/actions/news";
+import { ImageUpload } from "@/components/admin/shared/ImageUpload";
+import { RichTextEditor } from "@/components/admin/shared/RichTextEditor";
 
 export const metadata: Metadata = { title: "Dang bai viet | Admin" };
 
@@ -75,7 +77,7 @@ export default function AdminCreateArticlePage() {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className={labelClass}>Noi dung chi tiet</label>
-                    <textarea rows={12} name="content" className={textareaClass} placeholder="Noi dung day du cua bai viet (ho tro HTML)..." />
+                    <RichTextEditor name="content" placeholder="Noi dung day du cua bai viet..." />
                   </div>
                 </div>
               </div>
@@ -111,10 +113,7 @@ export default function AdminCreateArticlePage() {
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh dai dien</h2>
-                <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>URL anh</label>
-                  <input type="text" name="image" className={inputClass} placeholder="/images/news/my-article.svg" defaultValue="/images/news/placeholder.svg" />
-                </div>
+                <ImageUpload name="image" defaultValue="/images/news/placeholder.svg" label="Anh bai viet" />
               </div>
 
               <div className="flex flex-col gap-2">

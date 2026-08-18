@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { updateProduct } from "@/lib/actions/products";
 import { getCategories } from "@/lib/api/categories";
+import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 import { db } from "@/lib/db";
 
 type Props = { params: Promise<{ id: string }> };
@@ -33,8 +34,7 @@ export default async function AdminEditProductPage({ params }: Props) {
     const result = await updateProduct(id, {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,
-      category: formData.get("category") as string,
-      categorySlug: formData.get("categorySlug") as string,
+      categoryId: formData.get("categoryId") as string,
       model: (formData.get("model") as string) || undefined,
       spec: (formData.get("spec") as string) || undefined,
       description: (formData.get("description") as string) || undefined,
@@ -71,7 +71,7 @@ export default async function AdminEditProductPage({ params }: Props) {
 
         <form action={handleSave}>
           <input type="hidden" name="slug" value={product.slug} />
-          <input type="hidden" name="image" value={product.image} />
+          {/* image is now handled by ImageUpload component in sidebar */}
           <input
             type="hidden"
             name="technicalSpecs"
@@ -128,23 +128,19 @@ export default async function AdminEditProductPage({ params }: Props) {
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh muc</h2>
                 <select
-                  name="categorySlug"
-                  defaultValue={product.categorySlug ?? ""}
+                  name="categoryId"
+                  defaultValue={product.categoryId}
                   className="h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 appearance-none"
                 >
                   {categories.map((cat) => (
-                    <option key={cat.slug} value={cat.slug}>{cat.name}</option>
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
-                <input type="hidden" name="category" value={categories.find((c) => c.slug === product.categorySlug)?.name ?? product.category} />
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh san pham</h2>
-                <div className="aspect-square overflow-hidden rounded-[8px] bg-surface-hero mb-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
-                </div>
+                <ImageUpload name="image" defaultValue={product.image} label="Anh san pham" />
               </div>
 
               {/* Save button */}

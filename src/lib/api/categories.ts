@@ -2,21 +2,18 @@ import { db } from "@/lib/db";
 import type { Category } from "@/types/category";
 
 export async function getCategories(): Promise<Category[]> {
-  const products = await db.product.findMany({
-    where: { published: true },
-    select: { category: true, categorySlug: true },
-    distinct: ["categorySlug"],
-    orderBy: { category: "asc" },
+  const categories = await db.category.findMany({
+    orderBy: { order: "asc" },
   });
-
-  return products.map((p, i) => ({
-    id: String(i + 1),
-    slug: p.categorySlug,
-    name: p.category,
-  }));
+  return categories as Category[];
 }
 
-export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
-  const categories = await getCategories();
-  return categories.find((c) => c.slug === slug);
+export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+  const category = await db.category.findUnique({ where: { slug } });
+  return category as Category | null;
+}
+
+export async function getCategoryById(id: string): Promise<Category | null> {
+  const category = await db.category.findUnique({ where: { id } });
+  return category as Category | null;
 }

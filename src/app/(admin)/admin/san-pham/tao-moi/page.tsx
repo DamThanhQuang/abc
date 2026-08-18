@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { createProduct } from "@/lib/actions/products";
 import { getCategories } from "@/lib/api/categories";
+import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 
 export const metadata: Metadata = { title: "Them san pham | Admin" };
 
@@ -24,14 +25,12 @@ export default async function AdminCreateProductPage() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
 
-    const categorySlug = formData.get("categorySlug") as string;
-    const category = formData.get("category") as string;
+    const categoryId = formData.get("categoryId") as string;
 
     const result = await createProduct({
       slug,
       name,
-      category,
-      categorySlug,
+      categoryId,
       model: (formData.get("model") as string) || undefined,
       spec: (formData.get("spec") as string) || undefined,
       description: (formData.get("description") as string) || undefined,
@@ -113,25 +112,21 @@ export default async function AdminCreateProductPage() {
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh muc</h2>
                 <select
-                  name="categorySlug"
+                  name="categoryId"
                   required
                   defaultValue=""
                   className="h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 appearance-none"
                 >
                   <option value="" disabled>Chon danh muc...</option>
                   {categories.map((cat) => (
-                    <option key={cat.slug} value={cat.slug}>{cat.name}</option>
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
-                <input type="hidden" name="category" value="" />
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh san pham</h2>
-                <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>URL anh</label>
-                  <input type="text" name="image" className={inputClass} placeholder="/images/products/my-product.svg" defaultValue="/images/products/placeholder.svg" />
-                </div>
+                <ImageUpload name="image" defaultValue="/images/products/placeholder.svg" label="Anh san pham" />
               </div>
 
               <div className="flex flex-col gap-2">

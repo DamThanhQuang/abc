@@ -22,12 +22,30 @@ async function main() {
   });
   console.log("Admin user created -> admin@fuelprecision.vn / " + password);
 
+  // ── Categories ───────────────────────────────────────────────────────────
+  const categoriesData = [
+    { slug: "may-bom", name: "May bom", description: "May bom chuyen nhien lieu cong nghiep", order: 0 },
+    { slug: "dong-ho-do-luu-luong", name: "Dong ho do", description: "Dong ho do luu luong nhien lieu", order: 1 },
+    { slug: "voi-bom-tu-dong", name: "Voi bom", description: "Voi bom tu dong phan phoi nhien lieu", order: 2 },
+    { slug: "he-thong-bon-chua", name: "He thong bon chua", description: "Bon chua ngam va tren mat dat", order: 3 },
+  ];
+
+  const categoryMap = new Map<string, string>();
+  for (const cat of categoriesData) {
+    const category = await db.category.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: cat,
+    });
+    categoryMap.set(cat.slug, category.id);
+  }
+  console.log(categoriesData.length + " categories seeded");
+
   // ── Products ───────────────────────────────────────────────────────────────
   const products = [
     {
       slug: "may-bom-chuyen-tai-fp500x",
       name: "May Bom Chuyen Nhien Lieu Luu Luong Cao",
-      category: "May bom",
       categorySlug: "may-bom",
       model: "FP-500X",
       spec: "500 L/min",
@@ -53,7 +71,6 @@ async function main() {
     {
       slug: "dong-ho-do-luu-luong-fm-digital",
       name: "Dong Ho Do Luu Luong Ky Thuat So",
-      category: "Dong ho do",
       categorySlug: "dong-ho-do-luu-luong",
       model: "FM-Digital-Pro",
       spec: "Do chinh xac 0.5%",
@@ -79,7 +96,6 @@ async function main() {
     {
       slug: "voi-phun-tu-dong-nzl-auto",
       name: "Voi Bom Tu Dong",
-      category: "Voi bom",
       categorySlug: "voi-bom-tu-dong",
       model: "NZL-Auto-1",
       spec: "Thiet ke cong thai hoc",
@@ -105,7 +121,6 @@ async function main() {
     {
       slug: "bon-chua-ngam-doi-vach-ust-3000",
       name: "Bon Chua Ngam Doi Vach",
-      category: "He thong bon chua",
       categorySlug: "he-thong-bon-chua",
       model: "UST-3000",
       spec: "Dung tich 30.000 L",
@@ -131,7 +146,6 @@ async function main() {
     {
       slug: "may-bom-ly-tam-fp-centri",
       name: "May Bom Ly Tam Cong Suat Cao",
-      category: "May bom",
       categorySlug: "may-bom",
       model: "FP-Centri-55",
       spec: "Cot ap 55m",
@@ -157,7 +171,6 @@ async function main() {
     {
       slug: "bo-dieu-khien-phan-phoi-fp-ctrl",
       name: "Bo Dieu Khien Phan Phoi Thong Minh",
-      category: "Dong ho do",
       categorySlug: "dong-ho-do-luu-luong",
       model: "FP-CTRL-Pro",
       spec: "Ket noi IoT",
@@ -183,12 +196,14 @@ async function main() {
   ];
 
   for (const p of products) {
-    const { technicalSpecs, ...productData } = p;
+    const { technicalSpecs, categorySlug, ...productData } = p;
+    const categoryId = categoryMap.get(categorySlug)!;
     await db.product.upsert({
       where: { slug: p.slug },
       update: {},
       create: {
         ...productData,
+        categoryId,
         technicalSpecs: { create: technicalSpecs },
       },
     });

@@ -4,8 +4,7 @@ import { z } from "zod";
 export const productSchema = z.object({
   slug:         z.string().min(1).max(100),
   name:         z.string().min(1).max(200),
-  category:     z.string().min(1),
-  categorySlug: z.string().min(1),
+  categoryId:   z.string().min(1),
   model:        z.string().optional(),
   spec:         z.string().optional(),
   description:  z.string().optional(),
@@ -19,6 +18,16 @@ export const productSchema = z.object({
     order: z.number().int().default(0),
   })).default([]),
 });
+
+export const categorySchema = z.object({
+  slug:        z.string().min(1).max(100),
+  name:        z.string().min(1).max(200),
+  description: z.string().optional(),
+  image:       z.string().optional(),
+  order:       z.number().int().default(0),
+});
+
+export type CategoryInput = z.infer<typeof categorySchema>;
 
 export type ProductInput = z.infer<typeof productSchema>;
 

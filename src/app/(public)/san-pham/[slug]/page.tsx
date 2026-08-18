@@ -13,7 +13,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return { title: "San pham khong ton tai" };
   return {
     title: `${product.name} | FuelPrecision Industrial`,
-    description: product.description,
+    description: product.description ?? `${product.name} — san pham cua FuelPrecision Industrial`,
+    openGraph: {
+      title: product.name,
+      description: product.description ?? `${product.name} — san pham cua FuelPrecision Industrial`,
+      images: product.image ? [{ url: product.image }] : undefined,
+      type: "website",
+    },
   };
 }
 
@@ -22,8 +28,23 @@ export default async function ProductDetailPage({ params }: Props) {
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.image,
+    brand: { "@type": "Brand", name: "FuelPrecision" },
+    ...(product.model && { model: product.model }),
+    category: product.category.name,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageHero
         title={product.name}
         breadcrumbs={[
@@ -56,7 +77,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* Category + model */}
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-pill bg-surface-tag border border-border-tag px-[10px] py-[3px] font-sans text-[12px] leading-4 text-brand-dark">
-                {product.category}
+                {product.category.name}
               </span>
               {product.model && (
                 <span className="font-sans text-[13px] text-content-muted">

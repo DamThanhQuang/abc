@@ -60,7 +60,7 @@ function FeaturedCard({ product }: { product: Product }) {
           className="object-cover object-center"
           sizes="(max-width: 1280px) 33vw, 368px"
         />
-        <CategoryBadge label={product.category} />
+        <CategoryBadge label={product.category.name} />
       </div>
 
       {/* Content */}
@@ -129,7 +129,7 @@ function CatalogCard({ product }: { product: Product }) {
           className="object-cover object-center"
           sizes="(max-width: 1024px) 50vw, 270px"
         />
-        <CategoryBadge label={product.category} />
+        <CategoryBadge label={product.category.name} />
       </div>
 
       {/* Content */}
