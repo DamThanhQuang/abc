@@ -43,7 +43,11 @@ export async function requireAdmin(): Promise<AdminGuardResult> {
     }
 
     return { ok: true, admin: { id: admin.id, email: admin.email } };
-  } catch {
+  } catch (err) {
+    // Still fail closed, but never silently: a database or session-store
+    // outage denies every admin and would otherwise look like ordinary
+    // unauthorized traffic.
+    console.error("requireAdmin:", err);
     return { ok: false, error: DENIED_MESSAGE };
   }
 }

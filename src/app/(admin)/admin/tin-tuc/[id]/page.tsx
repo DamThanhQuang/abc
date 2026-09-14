@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { updateArticle } from "@/lib/actions/news";
+import { requireAdmin } from "@/lib/auth-guard";
 import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 import { RichTextEditor } from "@/components/admin/shared/RichTextEditor";
 import { db } from "@/lib/db";
@@ -26,6 +27,11 @@ export default async function AdminEditArticlePage({ params }: Props) {
 
   async function handleSave(formData: FormData) {
     "use server";
+    // This closure has its own action id and is directly invocable, so it must
+    // refuse anonymous callers before it touches the submitted form data.
+    const guard = await requireAdmin();
+    if (!guard.ok) return;
+
     const result = await updateArticle(id, {
       title: formData.get("title") as string,
       excerpt: formData.get("excerpt") as string,

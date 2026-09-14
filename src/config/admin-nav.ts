@@ -1,7 +1,7 @@
 export type AdminNavItem = {
   label: string;
   href: string;
-  icon: "dashboard" | "product" | "category" | "news" | "request" | "settings" | "logout";
+  icon: "dashboard" | "product" | "category" | "news" | "request" | "logout";
 };
 
 export const adminMainNav: AdminNavItem[] = [
