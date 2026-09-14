@@ -3,9 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
+import { sanitizeArticleHtml } from "@/lib/sanitize";
 import { newsSchema, type NewsInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string; id?: string };
+
+// The editor runs in the browser and cannot be trusted to have produced this
+// markup. Clean it on the way in so the stored copy is already safe; the
+// article page cleans again on the way out, which covers rows written before
+// this existed.
+function withCleanContent<T extends { content?: string }>(data: T): T {
+  if (data.content === undefined) return data;
+  return { ...data, content: sanitizeArticleHtml(data.content) };
+}
 
 export async function createArticle(data: NewsInput): Promise<ActionResult> {
   const guard = await requireAdmin();
@@ -15,7 +25,7 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
-    const article = await db.newsArticle.create({ data: parsed.data });
+    const article = await db.newsArticle.create({ data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
     revalidatePath("/admin/tin-tuc");
     return { success: true, id: article.id };
@@ -33,7 +43,7 @@ export async function updateArticle(id: string, data: Partial<NewsInput>): Promi
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
   try {
-    await db.newsArticle.update({ where: { id }, data: parsed.data });
+    await db.newsArticle.update({ where: { id }, data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
     revalidatePath("/admin/tin-tuc");
     return { success: true };

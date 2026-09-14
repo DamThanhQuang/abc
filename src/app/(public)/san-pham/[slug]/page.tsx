@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/shared/PageHero";
 import { getProductBySlug } from "@/lib/api/products";
+import { jsonLdScript } from "@/lib/sanitize";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -43,7 +44,7 @@ export default async function ProductDetailPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}
       />
       <PageHero
         title={product.name}

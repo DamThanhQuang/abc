@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { PageHero } from "@/components/shared/PageHero";
 import { NewsCard } from "@/components/public/news/NewsCard";
 import { getNewsArticleBySlug, getNewsArticles } from "@/lib/api/news";
+import { jsonLdScript, sanitizeArticleHtml } from "@/lib/sanitize";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -58,7 +59,7 @@ export default async function NewsArticlePage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}
       />
       <PageHero
         title={article.title}
@@ -110,7 +111,7 @@ export default async function NewsArticlePage({ params }: Props) {
             {article.content ? (
               <div
                 className="prose prose-sm lg:prose-base max-w-none"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(article.content) }}
               />
             ) : (
               <div className="space-y-4">
