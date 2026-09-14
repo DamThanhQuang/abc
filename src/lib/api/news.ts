@@ -35,9 +35,21 @@ export async function getNewsArticlesByPage(
   };
 }
 
+// findFirst rather than findUnique: `published` is not part of a unique index,
+// so it cannot be combined with the slug in a findUnique filter.
 export async function getNewsArticleBySlug(slug: string): Promise<NewsArticle | null> {
-  const article = await db.newsArticle.findUnique({
-    where: { slug },
+  const article = await db.newsArticle.findFirst({
+    where: { slug, published: true },
   });
   return article as unknown as NewsArticle | null;
+}
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
+// Deliberately unfiltered: the admin list has to show drafts. Never call this
+// from a public route.
+export async function listArticlesForAdmin(): Promise<NewsArticle[]> {
+  const articles = await db.newsArticle.findMany({
+    orderBy: { publishedAt: "desc" },
+  });
+  return articles as unknown as NewsArticle[];
 }

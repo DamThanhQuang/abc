@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
-import { getNewsArticles } from "@/lib/api/news";
+import { listArticlesForAdmin } from "@/lib/api/news";
 import { deleteArticle } from "@/lib/actions/news";
 import Link from "next/link";
 
@@ -11,7 +11,8 @@ function formatDate(iso: string) {
 }
 
 export default async function AdminTinTucPage() {
-  const articles = await getNewsArticles();
+  const articles = await listArticlesForAdmin();
+  const draftCount = articles.filter((article) => !article.published).length;
 
   return (
     <>
@@ -21,7 +22,10 @@ export default async function AdminTinTucPage() {
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly tin tuc</h1>
-            <p className="font-sans text-[13px] text-content-muted">{articles.length} bai viet</p>
+            <p className="font-sans text-[13px] text-content-muted">
+              {articles.length} bai viet
+              {draftCount > 0 && ` — ${draftCount} chua xuat ban`}
+            </p>
           </div>
           <Link
             href="/admin/tin-tuc/tao-moi"
@@ -39,7 +43,7 @@ export default async function AdminTinTucPage() {
             <table className="w-full min-w-[640px]">
               <thead>
                 <tr className="border-b border-border-ui bg-surface-card/50">
-                  {["Bai viet", "Danh muc", "Ngay dang", "Thoi gian doc", "Thao tac"].map((h) => (
+                  {["Bai viet", "Danh muc", "Ngay dang", "Thoi gian doc", "Trang thai", "Thao tac"].map((h) => (
                     <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                       {h}
                     </th>
@@ -65,6 +69,17 @@ export default async function AdminTinTucPage() {
                     </td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-muted whitespace-nowrap">{formatDate(article.publishedAt)}</td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-muted">{article.readingTime ?? "-"} phut</td>
+                    <td className="px-5 py-4">
+                      <span
+                        className={`rounded-pill px-2.5 py-0.5 font-sans text-[12px] whitespace-nowrap ${
+                          article.published
+                            ? "bg-green-50 text-green-700 border border-green-200"
+                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                        }`}
+                      >
+                        {article.published ? "Da xuat ban" : "Ban nhap"}
+                      </span>
+                    </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
                         <Link

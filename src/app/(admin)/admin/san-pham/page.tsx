@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
-import { getProducts } from "@/lib/api/products";
+import { listProductsForAdmin } from "@/lib/api/products";
 import { deleteProduct } from "@/lib/actions/products";
 
 export const metadata: Metadata = { title: "Quan ly san pham | Admin" };
 
 export default async function AdminSanPhamPage() {
-  const products = await getProducts();
+  const products = await listProductsForAdmin();
+  const draftCount = products.filter((product) => !product.published).length;
 
   return (
     <>
@@ -18,7 +19,10 @@ export default async function AdminSanPhamPage() {
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly san pham</h1>
-            <p className="font-sans text-[13px] text-content-muted">{products.length} san pham trong he thong</p>
+            <p className="font-sans text-[13px] text-content-muted">
+              {products.length} san pham trong he thong
+              {draftCount > 0 && ` — ${draftCount} chua xuat ban`}
+            </p>
           </div>
           <Link
             href="/admin/san-pham/tao-moi"
@@ -37,7 +41,7 @@ export default async function AdminSanPhamPage() {
             <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b border-border-ui bg-surface-card/50">
-                  {["San pham", "Danh muc", "Ma san pham", "Thong so", "Thao tac"].map((h) => (
+                  {["San pham", "Danh muc", "Ma san pham", "Thong so", "Trang thai", "Thao tac"].map((h) => (
                     <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                       {h}
                     </th>
@@ -66,6 +70,17 @@ export default async function AdminSanPhamPage() {
                     </td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-body font-mono">{product.model ?? "-"}</td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-body">{product.spec ?? "-"}</td>
+                    <td className="px-5 py-4">
+                      <span
+                        className={`rounded-pill px-2.5 py-0.5 font-sans text-[12px] ${
+                          product.published
+                            ? "bg-green-50 text-green-700 border border-green-200"
+                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                        }`}
+                      >
+                        {product.published ? "Da xuat ban" : "Ban nhap"}
+                      </span>
+                    </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
                         <Link

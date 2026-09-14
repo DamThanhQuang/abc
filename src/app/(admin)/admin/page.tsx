@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
-import { getProducts } from "@/lib/api/products";
-import { getNewsArticles } from "@/lib/api/news";
+import { listProductsForAdmin } from "@/lib/api/products";
+import { listArticlesForAdmin } from "@/lib/api/news";
 import { getContactStats, getContacts } from "@/lib/api/contacts";
 
 export const metadata: Metadata = { title: "Tong quan | Admin FuelPrecision" };
@@ -68,8 +68,8 @@ function formatDate(iso: string) {
 
 export default async function AdminDashboard() {
   const [products, articles, stats, recentContacts] = await Promise.all([
-    getProducts(),
-    getNewsArticles(),
+    listProductsForAdmin(),
+    listArticlesForAdmin(),
     getContactStats(),
     getContacts().then((c) => c.slice(0, 5)),
   ]);
