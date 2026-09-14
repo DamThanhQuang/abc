@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { getCategories } from "@/lib/api/categories";
 import { createCategory, deleteCategory } from "@/lib/actions/categories";
+import { requireAdmin } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Quan ly danh muc | Admin" };
@@ -21,6 +22,11 @@ export default async function AdminDanhMucPage() {
 
   async function handleCreate(formData: FormData) {
     "use server";
+    // This closure has its own action id and is directly invocable, so it must
+    // refuse anonymous callers before it touches the submitted form data.
+    const guard = await requireAdmin();
+    if (!guard.ok) return;
+
     const name = formData.get("name") as string;
     const slug = name
       .toLowerCase()
@@ -29,13 +35,13 @@ export default async function AdminDanhMucPage() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
 
-    await createCategory({
+    const result = await createCategory({
       slug,
       name,
       description: (formData.get("description") as string) || undefined,
       order: Number(formData.get("order")) || 0,
     });
-    redirect("/admin/danh-muc");
+    if (result.success) redirect("/admin/danh-muc");
   }
 
   return (

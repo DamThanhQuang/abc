@@ -80,7 +80,7 @@ export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUpl
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/svg+xml,image/avif"
+        accept="image/jpeg,image/png,image/webp,image/avif"
         onChange={handleFileChange}
         className="hidden"
       />

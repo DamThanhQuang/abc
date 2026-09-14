@@ -1,7 +1,7 @@
 export type AdminNavItem = {
   label: string;
   href: string;
-  icon: "dashboard" | "product" | "category" | "news" | "request" | "settings" | "logout";
+  icon: "dashboard" | "product" | "category" | "news" | "request" | "logout";
 };
 
 export const adminMainNav: AdminNavItem[] = [
@@ -12,7 +12,6 @@ export const adminMainNav: AdminNavItem[] = [
   { label: "Yêu cầu",     href: "/admin/yeu-cau",    icon: "request"   },
 ];
 
-export const adminFooterNav: AdminNavItem[] = [
-  { label: "Cài đặt",     href: "/admin/cai-dat",    icon: "settings"  },
-  { label: "Đăng xuất",   href: "/dang-nhap",        icon: "logout"    },
-];
+// Signing out is an action, not a destination, so it is rendered by the sidebar
+// as a form rather than listed here. "/admin/cai-dat" was removed: no such route
+// exists.

@@ -31,7 +31,11 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.local
+.env.production
+.env.development
+# .env.example is tracked on purpose
 
 # uploads
 /public/uploads
@@ -46,6 +50,7 @@ next-env.d.ts
 /src/generated/prisma
 
 # AI tooling
+.scratch/
 .agents/
 .claude/
 .windsurf/

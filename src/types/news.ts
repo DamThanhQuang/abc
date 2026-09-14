@@ -9,4 +9,5 @@ export type NewsArticle = {
   category: string;
   publishedAt: string; // ISO date "YYYY-MM-DD"
   readingTime?: number; // minutes
+  published: boolean;
 };

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth-guard";
 import { contactSchema, contactStatusSchema } from "@/lib/validations";
 import type { ContactInput } from "@/lib/validations";
 
@@ -27,6 +28,10 @@ export async function submitContact(data: ContactInput): Promise<ActionResult> {
       });
     }
 
+    // A new lead has to show up for the admin immediately.
+    revalidatePath("/admin/yeu-cau");
+    revalidatePath("/admin");
+
     return { success: true };
   } catch (err) {
     console.error("submitContact:", err);
@@ -36,6 +41,9 @@ export async function submitContact(data: ContactInput): Promise<ActionResult> {
 
 // ─── Admin: update contact status ─────────────────────────────────────────────
 export async function updateContactStatus(id: string, status: "NEW" | "IN_PROGRESS" | "RESOLVED"): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const parsed = contactStatusSchema.safeParse({ id, status });
   if (!parsed.success) return { success: false, error: "Dữ liệu không hợp lệ." };
 
@@ -55,6 +63,9 @@ export async function updateContactStatus(id: string, status: "NEW" | "IN_PROGRE
 
 // ─── Admin: delete contact ────────────────────────────────────────────────────
 export async function deleteContact(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   try {
     await db.contactRequest.delete({ where: { id } });
     revalidatePath("/admin/yeu-cau");

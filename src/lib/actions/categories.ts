@@ -2,11 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth-guard";
 import { categorySchema, type CategoryInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string; id?: string };
 
 export async function createCategory(data: CategoryInput): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const parsed = categorySchema.safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -22,6 +26,9 @@ export async function createCategory(data: CategoryInput): Promise<ActionResult>
 }
 
 export async function updateCategory(id: string, data: Partial<CategoryInput>): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const parsed = categorySchema.partial().safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -37,6 +44,9 @@ export async function updateCategory(id: string, data: Partial<CategoryInput>): 
 }
 
 export async function deleteCategory(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   try {
     const count = await db.product.count({ where: { categoryId: id } });
     if (count > 0) {

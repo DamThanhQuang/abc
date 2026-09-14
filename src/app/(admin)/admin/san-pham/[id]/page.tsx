@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { updateProduct } from "@/lib/actions/products";
+import { requireAdmin } from "@/lib/auth-guard";
 import { getCategories } from "@/lib/api/categories";
 import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 import { db } from "@/lib/db";
@@ -31,6 +32,11 @@ export default async function AdminEditProductPage({ params }: Props) {
 
   async function handleSave(formData: FormData) {
     "use server";
+    // This closure has its own action id and is directly invocable, so it must
+    // refuse anonymous callers before it touches the submitted form data.
+    const guard = await requireAdmin();
+    if (!guard.ok) return;
+
     const result = await updateProduct(id, {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,

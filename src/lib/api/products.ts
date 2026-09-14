@@ -89,10 +89,23 @@ export async function getProductsByPage(
   };
 }
 
+// findFirst rather than findUnique: `published` is not part of a unique index,
+// so it cannot be combined with the slug in a findUnique filter.
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const product = await db.product.findUnique({
-    where: { slug },
+  const product = await db.product.findFirst({
+    where: { slug, published: true },
     include: productInclude,
   });
   return product as unknown as Product | null;
+}
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
+// Deliberately unfiltered: the admin list has to show drafts. Never call this
+// from a public route.
+export async function listProductsForAdmin(): Promise<Product[]> {
+  const products = await db.product.findMany({
+    orderBy: { createdAt: "desc" },
+    include: productInclude,
+  });
+  return products as unknown as Product[];
 }

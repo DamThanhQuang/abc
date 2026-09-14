@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { createProduct } from "@/lib/actions/products";
+import { requireAdmin } from "@/lib/auth-guard";
 import { getCategories } from "@/lib/api/categories";
 import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 
@@ -17,6 +18,11 @@ export default async function AdminCreateProductPage() {
 
   async function handleCreate(formData: FormData) {
     "use server";
+    // This closure has its own action id and is directly invocable, so it must
+    // refuse anonymous callers before it touches the submitted form data.
+    const guard = await requireAdmin();
+    if (!guard.ok) return;
+
     const name = formData.get("name") as string;
     const slug = name
       .toLowerCase()

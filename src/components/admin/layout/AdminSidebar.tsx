@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/shared/LogoMark";
-import { adminMainNav, adminFooterNav, type AdminNavItem } from "@/config/admin-nav";
+import { adminMainNav, type AdminNavItem } from "@/config/admin-nav";
+import { logout } from "@/lib/actions/auth";
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 function NavIcon({ type }: { type: AdminNavItem["icon"] }) {
@@ -20,8 +21,6 @@ function NavIcon({ type }: { type: AdminNavItem["icon"] }) {
       return <svg {...props}><path d="M4 4h12M4 8h12M4 12h7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.6"/></svg>;
     case "request":
       return <svg {...props}><path d="M3 4h14M3 8h14M3 12h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><circle cx="16" cy="15" r="3" stroke="currentColor" strokeWidth="1.6"/><path d="M16 14v1.5l1 1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
-    case "settings":
-      return <svg {...props}><circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.6"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;
     case "logout":
       return <svg {...props}><path d="M8 3H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h4M13 15l4-5-4-5M17 10H8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
     default:
@@ -88,15 +87,23 @@ export function AdminSidebar() {
         </ul>
       </nav>
 
-      {/* Footer nav */}
+      {/* Sign out — a real action that clears the session cookie */}
       <div className="border-t border-white/10 px-3 py-3">
-        <ul className="flex flex-col gap-1">
-          {adminFooterNav.map((item) => (
-            <li key={item.href}>
-              <NavLink item={item} active={false} />
-            </li>
-          ))}
-        </ul>
+        <form action={logout}>
+          <button
+            type="submit"
+            className={cn(
+              "flex w-full items-center gap-3 h-[36px] px-3 rounded-[6px] transition-colors",
+              "font-sans text-[14px] leading-5",
+              "text-[#94a3b8] hover:bg-white/10 hover:text-white",
+            )}
+          >
+            <span className="shrink-0 w-5 flex items-center justify-center">
+              <NavIcon type="logout" />
+            </span>
+            Đăng xuất
+          </button>
+        </form>
       </div>
     </aside>
   );

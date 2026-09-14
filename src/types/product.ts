@@ -11,4 +11,5 @@ export type Product = {
   imageAlt?: string;
   features?: string[];
   technicalSpecs?: { label: string; value: string }[];
+  published: boolean;
 };
