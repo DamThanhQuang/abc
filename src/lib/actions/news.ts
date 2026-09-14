@@ -28,6 +28,7 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
     const article = await db.newsArticle.create({ data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
     revalidatePath("/admin/tin-tuc");
+    revalidatePath("/admin"); // dashboard totals
     return { success: true, id: article.id };
   } catch (err) {
     console.error("createArticle:", err);
@@ -46,6 +47,7 @@ export async function updateArticle(id: string, data: Partial<NewsInput>): Promi
     await db.newsArticle.update({ where: { id }, data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
     revalidatePath("/admin/tin-tuc");
+    revalidatePath("/admin"); // dashboard totals
     return { success: true };
   } catch (err) {
     console.error("updateArticle:", err);
@@ -61,6 +63,7 @@ export async function deleteArticle(id: string): Promise<ActionResult> {
     await db.newsArticle.delete({ where: { id } });
     revalidatePath("/tin-tuc");
     revalidatePath("/admin/tin-tuc");
+    revalidatePath("/admin"); // dashboard totals
     return { success: true };
   } catch (err) {
     console.error("deleteArticle:", err);

@@ -28,6 +28,8 @@ export async function createProduct(data: ProductInput): Promise<ActionResult> {
 
     revalidatePath("/san-pham");
     revalidatePath("/admin/san-pham");
+    revalidatePath("/admin/danh-muc"); // shows a product count per category
+    revalidatePath("/admin"); // dashboard totals
     return { success: true, id: product.id };
   } catch (err) {
     console.error("createProduct:", err);
@@ -61,6 +63,8 @@ export async function updateProduct(id: string, data: Partial<ProductInput>): Pr
     revalidatePath("/san-pham");
     revalidatePath(`/san-pham/${(await db.product.findUnique({ where: { id }, select: { slug: true } }))?.slug}`);
     revalidatePath("/admin/san-pham");
+    revalidatePath("/admin/danh-muc"); // shows a product count per category
+    revalidatePath("/admin"); // dashboard totals
     return { success: true };
   } catch (err) {
     console.error("updateProduct:", err);
@@ -76,6 +80,8 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
     await db.product.delete({ where: { id } });
     revalidatePath("/san-pham");
     revalidatePath("/admin/san-pham");
+    revalidatePath("/admin/danh-muc"); // shows a product count per category
+    revalidatePath("/admin"); // dashboard totals
     return { success: true };
   } catch (err) {
     console.error("deleteProduct:", err);

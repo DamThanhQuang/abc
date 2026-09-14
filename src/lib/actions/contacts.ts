@@ -28,6 +28,10 @@ export async function submitContact(data: ContactInput): Promise<ActionResult> {
       });
     }
 
+    // A new lead has to show up for the admin immediately.
+    revalidatePath("/admin/yeu-cau");
+    revalidatePath("/admin");
+
     return { success: true };
   } catch (err) {
     console.error("submitContact:", err);
