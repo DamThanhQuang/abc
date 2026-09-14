@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcryptjs";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -10,9 +9,12 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
+// No database adapter: this app authenticates admins with Credentials + JWT
+// sessions, and the schema has no Auth.js User/Account/Session models.
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8; // 8 hours — one working day
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: SESSION_MAX_AGE_SECONDS },
   pages: {
     signIn: "/dang-nhap",
   },

@@ -2,11 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth-guard";
 import { newsSchema, type NewsInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string; id?: string };
 
 export async function createArticle(data: NewsInput): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const parsed = newsSchema.safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -22,6 +26,9 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
 }
 
 export async function updateArticle(id: string, data: Partial<NewsInput>): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const parsed = newsSchema.partial().safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -37,6 +44,9 @@ export async function updateArticle(id: string, data: Partial<NewsInput>): Promi
 }
 
 export async function deleteArticle(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin();
+  if (!guard.ok) return { success: false, error: guard.error };
+
   try {
     await db.newsArticle.delete({ where: { id } });
     revalidatePath("/tin-tuc");

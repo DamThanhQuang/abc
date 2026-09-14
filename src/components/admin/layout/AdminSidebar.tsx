@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/shared/LogoMark";
-import { adminMainNav, adminFooterNav, type AdminNavItem } from "@/config/admin-nav";
+import { adminMainNav, type AdminNavItem } from "@/config/admin-nav";
+import { logout } from "@/lib/actions/auth";
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 function NavIcon({ type }: { type: AdminNavItem["icon"] }) {
@@ -88,15 +89,23 @@ export function AdminSidebar() {
         </ul>
       </nav>
 
-      {/* Footer nav */}
+      {/* Sign out — a real action that clears the session cookie */}
       <div className="border-t border-white/10 px-3 py-3">
-        <ul className="flex flex-col gap-1">
-          {adminFooterNav.map((item) => (
-            <li key={item.href}>
-              <NavLink item={item} active={false} />
-            </li>
-          ))}
-        </ul>
+        <form action={logout}>
+          <button
+            type="submit"
+            className={cn(
+              "flex w-full items-center gap-3 h-[36px] px-3 rounded-[6px] transition-colors",
+              "font-sans text-[14px] leading-5",
+              "text-[#94a3b8] hover:bg-white/10 hover:text-white",
+            )}
+          >
+            <span className="shrink-0 w-5 flex items-center justify-center">
+              <NavIcon type="logout" />
+            </span>
+            Đăng xuất
+          </button>
+        </form>
       </div>
     </aside>
   );

@@ -1,10 +1,12 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export default auth(function middleware(req: NextRequest & { auth: unknown }) {
+// Renamed from the deprecated `middleware` convention (Next.js 16).
+// `proxy` always runs on the Node.js runtime, so importing the full auth
+// config here no longer drags Prisma into an Edge bundle.
+export default auth(function proxy(req) {
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
-  const isLoggedIn = !!(req as { auth?: { user?: unknown } }).auth?.user;
+  const isLoggedIn = Boolean(req.auth?.user);
 
   if (isAdminRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/dang-nhap", req.url));
