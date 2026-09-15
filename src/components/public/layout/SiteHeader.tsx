@@ -2,7 +2,6 @@ import Link from "next/link";
 import { SiteNav } from "./SiteNav";
 import { MobileNav } from "./MobileNav";
 import { LogoMark } from "@/components/shared/LogoMark";
-import { siteConfig } from "@/config/site";
 
 export function SiteHeader() {
   return (
@@ -17,13 +16,9 @@ export function SiteHeader() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-1 shrink-0"
-          aria-label={siteConfig.name}
+          className="flex shrink-0 items-center"
         >
-          <LogoMark />
-          <span className="font-heading font-bold text-xl lg:text-2xl leading-8 text-brand-dark whitespace-nowrap">
-            {siteConfig.name}
-          </span>
+          <LogoMark className="h-12 w-auto lg:h-16" />
         </Link>
 
         {/* Desktop nav — hidden on mobile */}

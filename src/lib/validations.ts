@@ -9,6 +9,7 @@ export const productSchema = z.object({
   spec:         z.string().optional(),
   description:  z.string().optional(),
   image:        z.string().min(1),
+  images:       z.array(z.string().trim().min(1)).max(10).default([]),
   imageAlt:     z.string().optional(),
   features:     z.array(z.string()).default([]),
   published:    z.boolean().default(true),
@@ -29,7 +30,9 @@ export const categorySchema = z.object({
 
 export type CategoryInput = z.infer<typeof categorySchema>;
 
-export type ProductInput = z.infer<typeof productSchema>;
+// Use the schema input type so fields with defaults (including `images`) can
+// still be omitted by older internal callers. Parsed data always has defaults.
+export type ProductInput = z.input<typeof productSchema>;
 
 // ─── News article ─────────────────────────────────────────────────────────────
 export const newsSchema = z.object({

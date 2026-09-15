@@ -10,7 +10,7 @@ datasource db {
 model Admin {
   id        String   @id @default(cuid())
   email     String   @unique
-  password  String   // bcrypt hash
+  password  String // bcrypt hash
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,20 +31,21 @@ model Category {
 
 // ─── Products ─────────────────────────────────────────────────────────────────
 model Product {
-  id           String         @id @default(cuid())
-  slug         String         @unique
-  name         String
-  categoryId   String
-  category     Category       @relation(fields: [categoryId], references: [id])
-  model        String?
-  spec         String?
-  description  String?
-  image        String
-  imageAlt     String?
-  features     String[]
-  published    Boolean        @default(true)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  model       String?
+  spec        String?
+  description String?
+  image       String
+  images      String[] @default([])
+  imageAlt    String?
+  features    String[]
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   technicalSpecs TechnicalSpec[]
 }

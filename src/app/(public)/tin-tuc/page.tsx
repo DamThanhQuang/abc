@@ -5,8 +5,8 @@ import { NewsCard } from "@/components/public/news/NewsCard";
 import { getNewsArticlesByPage } from "@/lib/api/news";
 
 export const metadata: Metadata = {
-  title: "Tin Tức | FuelPrecision Industrial",
-  description: "Tin tức mới nhất về sản phẩm, dự án và kiến thức ngành từ FuelPrecision Industrial.",
+  title: "Tin tức",
+  description: "Tin tức về sản phẩm và giải pháp trạm xăng dầu từ Ánh Sáng Toàn Cầu.",
 };
 
 type SearchParams = Promise<{ page?: string }>;

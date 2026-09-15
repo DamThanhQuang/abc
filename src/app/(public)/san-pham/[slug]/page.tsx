@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ProductGallery } from "@/components/public/products/ProductGallery";
 import { PageHero } from "@/components/shared/PageHero";
 import { getProductBySlug } from "@/lib/api/products";
+import { normalizeProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 import { jsonLdScript } from "@/lib/sanitize";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -12,13 +13,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return { title: "San pham khong ton tai" };
+  const productImages = normalizeProductImages(product.images, product.image);
   return {
-    title: `${product.name} | FuelPrecision Industrial`,
-    description: product.description ?? `${product.name} — san pham cua FuelPrecision Industrial`,
+    title: product.name,
+    description: product.description ?? `${product.name} — sản phẩm của Ánh Sáng Toàn Cầu`,
     openGraph: {
       title: product.name,
-      description: product.description ?? `${product.name} — san pham cua FuelPrecision Industrial`,
-      images: product.image ? [{ url: product.image }] : undefined,
+      description: product.description ?? `${product.name} — sản phẩm của Ánh Sáng Toàn Cầu`,
+      images: productImages.map((url) => ({ url })),
       type: "website",
     },
   };
@@ -28,14 +30,15 @@ export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+  const productImages = normalizeProductImages(product.images, product.image);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: product.image,
-    brand: { "@type": "Brand", name: "FuelPrecision" },
+    image: productImages,
+    brand: { "@type": "Brand", name: "Ánh Sáng Toàn Cầu" },
     ...(product.model && { model: product.model }),
     category: product.category.name,
   };
@@ -61,16 +64,11 @@ export default async function ProductDetailPage({ params }: Props) {
 
           {/* Product image */}
           <div className="lg:col-span-6">
-            <div className="relative aspect-square overflow-hidden rounded-card bg-surface-hero">
-              <Image
-                src={product.image}
-                alt={product.imageAlt ?? product.name}
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 580px"
-                preload
-              />
-            </div>
+            <ProductGallery
+              images={productImages.length > 0 ? productImages : [PRODUCT_IMAGE_PLACEHOLDER]}
+              name={product.name}
+              imageAlt={product.imageAlt}
+            />
           </div>
 
           {/* Product info */}

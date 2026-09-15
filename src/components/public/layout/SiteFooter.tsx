@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LogoMark } from "@/components/shared/LogoMark";
 import {
-  siteConfig,
+  companyInfo,
   footerNav,
   footerTagline,
   footerCopyright,
@@ -33,17 +33,18 @@ export function SiteFooter() {
           <div className="w-full lg:w-[368px] lg:shrink-0">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 mb-4"
-              aria-label={siteConfig.name}
+              className="mb-4 inline-flex items-center"
             >
-              <LogoMark size={18} />
-              <span className="font-heading font-bold text-[20px] leading-6 text-brand-dark">
-                {siteConfig.name}
-              </span>
+              <LogoMark className="h-20 w-auto" />
             </Link>
             <p className="font-sans text-[14px] leading-[22px] text-content-body max-w-[310px] mb-5">
               {footerTagline}
             </p>
+            <div className="mb-5 space-y-1 font-sans text-[12px] leading-5 text-content-muted">
+              <p className="font-medium text-content-body">{companyInfo.legalName}</p>
+              <p>Mã số thuế: {companyInfo.taxCode}</p>
+              <p>{companyInfo.address}</p>
+            </div>
             <Link
               href="/lien-he"
               className="inline-flex items-center gap-1.5 font-sans text-[13px] leading-4 tracking-[0.04em] text-brand-dark hover:underline transition-colors"

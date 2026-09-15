@@ -19,18 +19,10 @@ vi.mock("fs/promises", () => ({
 import { POST } from "@/app/api/upload/route";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
-// A 1×1 red PNG (68 bytes).
-const PNG_BYTES = new Uint8Array([
-  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
-  0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-  0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53, 0xde, 0x00, 0x00, 0x00,
-  0x0c, 0x49, 0x44, 0x41, 0x54, 0x08, 0xd7, 0x63, 0xf8, 0xcf, 0xc0, 0x00,
-  0x00, 0x00, 0x02, 0x00, 0x01, 0xe2, 0x21, 0xbc, 0x33, 0x00, 0x00, 0x00,
-  0x00, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82,
-]);
-
-// A 1×1 red JPEG (285 bytes — shortened here, just needs valid SOI header).
-const JPEG_BYTES = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46]);
+// A valid 1×1 PNG (68 bytes).
+const PNG_BYTES = new Uint8Array(
+  Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64"),
+);
 
 function makeRequest(file: File): Request {
   const form = new FormData();
@@ -69,7 +61,9 @@ describe("POST /api/upload", () => {
 
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.url).toMatch(/\/uploads\/[a-f0-9-]+\.png$/);
+    expect(body.url).toMatch(/\/uploads\/[a-f0-9]{32}\.webp$/);
+    expect(body.format).toBe("webp");
+    expect(body.size).toBeLessThan(PNG_BYTES.length);
     expect(writtenFiles).toHaveLength(1);
   });
 
@@ -97,7 +91,7 @@ describe("POST /api/upload", () => {
   });
 
   // ── Extension ───────────────────────────────────────────────────────────
-  it("derives the extension from verified content, not from the filename", async () => {
+  it("normalizes verified image content to WebP regardless of the filename", async () => {
     authMock.mockResolvedValue({ user: ADMIN });
     findAdminMock.mockResolvedValue(ADMIN);
 
@@ -105,7 +99,7 @@ describe("POST /api/upload", () => {
     const res = await POST(makeRequest(makeFile("shell.php", PNG_BYTES, "image/png")));
     const body = await res.json();
 
-    expect(body.url).toMatch(/\.png$/);
+    expect(body.url).toMatch(/\.webp$/);
     expect(body.url).not.toContain(".php");
   });
 

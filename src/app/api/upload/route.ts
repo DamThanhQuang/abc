@@ -2,11 +2,16 @@ import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
+import sharp from "sharp";
 import { requireAdmin } from "@/lib/auth-guard";
+import { IMAGE_UPLOAD } from "@/lib/image-upload-config";
+
+export const runtime = "nodejs";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
-// Vercel Serverless Function body limit is 4.5 MB.
+// Keep the request below the common serverless body limit. Product images are
+// compressed in the browser before reaching this route.
 const MAX_SIZE = 4.5 * 1024 * 1024;
 
 // ─── Magic-byte detection ───────────────────────────────────────────────────
@@ -15,6 +20,34 @@ const MAX_SIZE = 4.5 * 1024 * 1024;
 // that can carry script and event handlers, and serving it from the same
 // origin is a stored-XSS vector.
 type ImageFormat = "png" | "jpg" | "webp" | "avif";
+
+async function optimizeForStorage(buffer: Buffer) {
+  const variants = [
+    { dimension: IMAGE_UPLOAD.maxDimension, quality: IMAGE_UPLOAD.webpQuality },
+    { dimension: 1400, quality: 70 },
+    { dimension: 1200, quality: 62 },
+  ];
+
+  for (const variant of variants) {
+    const result = await sharp(buffer, {
+      failOn: "error",
+      limitInputPixels: IMAGE_UPLOAD.maxInputPixels,
+    })
+      .rotate()
+      .resize({
+        width: variant.dimension,
+        height: variant.dimension,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({ quality: variant.quality, effort: 4 })
+      .toBuffer({ resolveWithObject: true });
+
+    if (result.data.length <= IMAGE_UPLOAD.maxStoredBytes) return result;
+  }
+
+  throw new Error("Ảnh sau khi tối ưu vẫn vượt quá 1,5 MB.");
+}
 
 function detectImageFormat(header: Uint8Array): ImageFormat | null {
   // PNG: 89 50 4E 47
@@ -71,7 +104,11 @@ export async function POST(request: Request) {
     }
 
     if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: "File qua lon (toi da 4.5 MB)" }, { status: 400 });
+      console.warn("Upload rejected: request image exceeds 4.5 MB", { size: file.size });
+      return NextResponse.json(
+        { error: "Ảnh gửi lên vượt quá 4,5 MB. Vui lòng để trình duyệt nén ảnh trước." },
+        { status: 400 },
+      );
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -81,19 +118,48 @@ export async function POST(request: Request) {
     const format = detectImageFormat(header);
 
     if (!format) {
+      console.warn("Upload rejected: unsupported image content", { size: file.size });
       return NextResponse.json(
-        { error: "Dinh dang khong duoc ho tro. Chi chap nhan: JPEG, PNG, WebP, AVIF." },
+        { error: "Định dạng không được hỗ trợ. Chỉ chấp nhận JPEG, PNG, WebP, AVIF." },
         { status: 400 },
       );
     }
 
-    // Extension comes from the verified format, never from the client filename.
-    const filename = `${crypto.randomUUID()}.${format}`;
+    let optimized: Awaited<ReturnType<typeof optimizeForStorage>>;
+    try {
+      optimized = await optimizeForStorage(buffer);
+    } catch (optimizationError) {
+      const message = optimizationError instanceof Error
+        ? optimizationError.message
+        : "Không thể xử lý ảnh.";
+      console.warn("Upload rejected during image optimization", {
+        format,
+        size: file.size,
+        reason: message,
+      });
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
+
+    // Content-based names deduplicate identical optimized images. The same key
+    // can be reused when this storage adapter is replaced with Cloudflare R2.
+    const hash = crypto.createHash("sha256").update(optimized.data).digest("hex").slice(0, 32);
+    const filename = `${hash}.webp`;
 
     await mkdir(UPLOAD_DIR, { recursive: true });
-    await writeFile(path.join(UPLOAD_DIR, filename), buffer);
+    try {
+      await writeFile(path.join(UPLOAD_DIR, filename), optimized.data, { flag: "wx" });
+    } catch (writeError) {
+      if ((writeError as NodeJS.ErrnoException).code !== "EEXIST") throw writeError;
+    }
 
-    return NextResponse.json({ url: `/uploads/${filename}` });
+    return NextResponse.json({
+      url: `/uploads/${filename}`,
+      size: optimized.data.length,
+      originalSize: file.size,
+      width: optimized.info.width,
+      height: optimized.info.height,
+      format: "webp",
+    });
   } catch (err) {
     console.error("Upload error:", err);
     return NextResponse.json({ error: "Upload that bai" }, { status: 500 });

@@ -11,7 +11,7 @@ export default async function HomePage() {
   return (
     <>
       {/* 1 — Hero */}
-      <HeroSection imageSrc="/images/hero-bg.svg" />
+      <HeroSection />
 
       {/* 2 — About Us Intro */}
       <AboutUsIntro />

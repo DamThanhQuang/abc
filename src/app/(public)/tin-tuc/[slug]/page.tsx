@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getNewsArticleBySlug(slug);
   if (!article) return { title: "Bai viet khong ton tai" };
   return {
-    title: `${article.title} | FuelPrecision`,
+    title: article.title,
     description: article.excerpt,
     openGraph: {
       title: article.title,
@@ -51,8 +51,8 @@ export default async function NewsArticlePage({ params }: Props) {
     description: article.excerpt,
     image: article.image,
     datePublished: article.publishedAt,
-    author: { "@type": "Organization", name: "FuelPrecision Industrial" },
-    publisher: { "@type": "Organization", name: "FuelPrecision Industrial" },
+    author: { "@type": "Organization", name: "Ánh Sáng Toàn Cầu" },
+    publisher: { "@type": "Organization", name: "Ánh Sáng Toàn Cầu" },
   };
 
   return (
@@ -117,7 +117,7 @@ export default async function NewsArticlePage({ params }: Props) {
               <div className="space-y-4">
                 <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
                   Trong boi canh nganh cong nghiep nhien lieu ngay cang dat ra nhung yeu cau khat khe
-                  hon ve hieu suat, do chinh xac va do tin cay, FuelPrecision Industrial tiep tuc
+                  hơn về hiệu suất, độ chính xác và độ tin cậy, Ánh Sáng Toàn Cầu tiếp tục
                   khang dinh vi the tien phong voi nhung giai phap ky thuat tien tien nhat.
                 </p>
                 <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">

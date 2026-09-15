@@ -1,126 +1,116 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type HeroSectionProps = {
-  imageSrc?: string;
-};
+const features = [
+  { icon: "◎", title: "Thiết bị", subtitle: "chính xác" },
+  { icon: "⚙", title: "Tích hợp", subtitle: "tự động" },
+  { icon: "☁", title: "Quản lý", subtitle: "tập trung" },
+];
 
-export function HeroSection({ imageSrc }: HeroSectionProps) {
+export function HeroSection() {
   return (
     <section
-      aria-label="Hero"
-      className="relative overflow-hidden bg-surface-hero
-        min-h-[420px] sm:min-h-[500px] lg:h-[600px]"
+      aria-labelledby="hero-heading"
+      className="relative min-h-[680px] overflow-hidden bg-[#06264a]"
     >
-      {/* Background image */}
-      {imageSrc && (
-        <div className="absolute inset-0">
-          <Image
-            src={imageSrc}
-            alt=""
-            fill
-            className="object-cover object-center"
-            preload
-            sizes="100vw"
-          />
-        </div>
-      )}
-
-      {/* Gradient overlay — left fade (desktop) / full tint (mobile) */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to right, rgba(247,249,255,0.97) 0%, rgba(247,249,255,0.90) 40%, rgba(247,249,255,0.70) 65%, rgba(247,249,255,0) 100%)",
-        }}
+      <Image
+        src="/images/hero-fuel-station-clean.png"
+        alt=""
+        fill
+        preload
+        sizes="100vw"
+        className="object-cover object-[68%_center] lg:object-center"
       />
 
-      {/* Content */}
       <div
-        className="
-          relative z-10 mx-auto h-full max-w-content
-          px-4 sm:px-6 lg:px-16
-          flex items-center
-          py-12 lg:py-0
-        "
-      >
-        {/* On mobile: full-width. On desktop: 8/12 columns */}
-        <div className="w-full lg:w-2/3 xl:w-[calc(8/12*100%)] flex flex-col gap-4 lg:gap-6">
+        aria-hidden="true"
+        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,38,74,0.98)_0%,rgba(6,38,74,0.94)_34%,rgba(6,38,74,0.62)_56%,rgba(6,38,74,0.08)_100%)]"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,24,48,0.45)_0%,transparent_45%)]" />
+      <div aria-hidden="true" className="absolute -left-40 top-20 h-[500px] w-[500px] rounded-full bg-green-400/15 blur-[140px]" />
+      <div aria-hidden="true" className="absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-blue-400/15 blur-[160px]" />
 
-          {/* Badge */}
-          <span
-            className="
-              self-start
-              bg-surface-tag border border-border-tag rounded-pill
-              px-[13px] py-[5px]
-              font-sans text-[13px] lg:text-[14px] leading-4 tracking-[0.05em]
-              text-brand-dark whitespace-nowrap
-            "
-          >
-            Industrial Grade Equipment
-          </span>
+      <div className="relative mx-auto grid min-h-[680px] max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2 lg:px-8">
+        <div className="z-10 py-14 sm:py-16">
+          <HeroBrand />
 
-          {/* H1 — scales from mobile to desktop */}
           <h1
-            className="
-              font-heading font-bold
-              text-[28px] leading-[36px]
-              sm:text-[36px] sm:leading-[44px]
-              lg:text-[48px] lg:leading-[56px]
-              tracking-[-0.02em]
-              text-content-heading
-            "
+            id="hero-heading"
+            className="max-w-3xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
-            Giải pháp nhiên liệu chính xác cho
-            <br className="hidden sm:block" />
-            {" "}hạ tầng hiện đại
+            Giải pháp thiết bị &amp; công nghệ
+            <span className="mt-2 block text-green-400">trạm xăng dầu</span>
           </h1>
 
-          {/* Description */}
-          <p
-            className="
-              font-sans leading-7
-              text-[15px] sm:text-[16px] lg:text-[18px]
-              text-content-body max-w-[672px]
-            "
-          >
-            Kỹ thuật hệ thống nhiên liệu hiệu suất cao, đáng tin cậy. Từ
-            máy bơm thương mại mạnh mẽ đến công nghệ giám sát thông minh,
-            chúng tôi xây dựng nền tảng quản lý chất lỏng công nghiệp.
+          <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+            Đo bồn tự động <span aria-hidden="true">•</span> Thiết bị trạm xăng dầu{" "}
+            <span aria-hidden="true">•</span> Phần mềm quản lý
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-row items-center gap-3 pt-1 lg:pt-3">
-            <Link
-              href="/san-pham"
-              className="
-                inline-flex items-center justify-center
-                bg-brand text-white
-                font-sans text-[14px] leading-4 tracking-[0.05em]
-                rounded-btn px-6 py-[13px]
-                shadow-btn
-                hover:bg-brand/90 transition-colors
-              "
-            >
-              Xem danh mục
-            </Link>
-            <Link
-              href="/lien-he"
-              className="
-                inline-flex items-center justify-center
-                border border-brand text-brand
-                font-sans text-[14px] leading-4 tracking-[0.05em]
-                rounded-btn px-6 py-[13px]
-                hover:bg-surface-card transition-colors
-              "
-            >
-              Liên hệ kinh doanh
-            </Link>
-          </div>
+          <Link
+            href="#solutions"
+            className="mt-8 inline-flex items-center gap-3 rounded-full bg-[linear-gradient(90deg,#4ade80,#22d3ee)] px-8 py-4 text-base font-bold text-white shadow-lg shadow-green-500/20 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06264a]"
+          >
+            KHÁM PHÁ GIẢI PHÁP
+            <span aria-hidden="true" className="text-xl">→</span>
+          </Link>
 
+          <div className="mt-14 grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-3">
+            {features.map((feature) => (
+              <Feature key={feature.title} {...feature} />
+            ))}
+          </div>
         </div>
+
+        <div className="relative hidden h-[600px] lg:block" aria-hidden="true" />
       </div>
     </section>
+  );
+}
+
+function HeroBrand() {
+  return (
+    <div className="mb-10 flex items-center gap-3" aria-label="Ánh Sáng Toàn Cầu">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 64 64"
+        className="h-14 w-14 shrink-0 text-green-400"
+        fill="none"
+      >
+        <path d="M10 30C10 18 20 8 32 8s22 10 22 22" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        <path d="M15 30c0-9.4 7.6-17 17-17s17 7.6 17 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".75" />
+        <path d="M7 29c7 3 12 9 15 17l5 13C16 54 9 44 7 29Z" fill="currentColor" />
+        <path d="M57 29c-7 3-12 9-15 17l-5 13c11-5 18-15 20-30Z" fill="currentColor" />
+      </svg>
+      <div className="font-bold uppercase leading-none tracking-tight text-white">
+        <span className="block text-xl sm:text-2xl">Ánh Sáng</span>
+        <span className="mt-1 block text-xl sm:text-2xl">Toàn Cầu</span>
+      </div>
+    </div>
+  );
+}
+
+function Feature({
+  icon,
+  title,
+  subtitle,
+}: {
+  icon: string;
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        aria-hidden="true"
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-green-400 text-2xl text-green-400"
+      >
+        {icon}
+      </div>
+      <div className="text-sm text-white">
+        <div className="font-semibold">{title}</div>
+        <div className="text-white/70">{subtitle}</div>
+      </div>
+    </div>
   );
 }

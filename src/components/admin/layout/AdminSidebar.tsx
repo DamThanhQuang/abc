@@ -62,14 +62,9 @@ export function AdminSidebar() {
     <aside className="flex h-full w-[280px] shrink-0 flex-col bg-[#0f172a]">
       {/* Header */}
       <div className="flex h-[77px] items-center gap-3 px-4 border-b border-white/10">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-brand">
-          <LogoMark size={20} />
-        </div>
+        <LogoMark className="h-14 w-auto shrink-0 rounded-[6px]" />
         <div>
-          <p className="font-heading font-bold text-[15px] leading-5 text-white">
-            FuelPrecision
-          </p>
-          <p className="font-sans text-[12px] text-[#64748b]">Admin Console</p>
+          <p className="font-sans text-[12px] text-[#94a3b8]">Admin Console</p>
         </div>
       </div>
 

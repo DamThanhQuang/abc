@@ -76,9 +76,8 @@ export function MobileNav() {
       >
         {/* Drawer header */}
         <div className="flex h-16 items-center justify-between px-5 border-b border-border-ui">
-          <Link href="/" className="inline-flex items-center gap-1.5">
-            <LogoMark size={18} />
-            <span className="font-heading font-bold text-[18px] text-brand-dark">FuelPrecision</span>
+          <Link href="/" className="inline-flex items-center">
+            <LogoMark className="h-12 w-auto" />
           </Link>
           <button
             type="button"

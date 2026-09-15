@@ -1,203 +1,147 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
-import { SectionHeading } from "@/components/shared/SectionHeading";
-import { StatCard } from "@/components/shared/StatCard";
+import { companyInfo } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Giới Thiệu | FuelPrecision Industrial",
-  description: "Hai thập kỷ tiên phong trong ngành kỹ thuật hệ thống nhiên liệu công nghiệp tại Việt Nam và khu vực.",
+  title: "Giới thiệu",
+  description: `${companyInfo.legalName} cung cấp thông tin về thiết bị và giải pháp cho trạm xăng dầu.`,
 };
 
-function PrecisionIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <circle cx="16" cy="16" r="14" stroke="#0f4c81" strokeWidth="1.8" />
-      <circle cx="16" cy="16" r="5" fill="#0f4c81" />
-      <line x1="16" y1="2"  x2="16" y2="6"  stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="16" y1="26" x2="16" y2="30" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="2"  y1="16" x2="6"  y2="16" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="26" y1="16" x2="30" y2="16" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-function ReliabilityIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <path d="M16 3L4 8v10c0 6 5.5 10.5 12 13 6.5-2.5 12-7 12-13V8L16 3Z" stroke="#0f4c81" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M11 16l3.5 3.5 7-7" stroke="#0f4c81" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function InnovationIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <path d="M16 4a9 9 0 0 1 6.5 15.2L21 22H11l-1.5-2.8A9 9 0 0 1 16 4Z" stroke="#0f4c81" strokeWidth="1.8" />
-      <line x1="12" y1="26" x2="20" y2="26" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="13" y1="29" x2="19" y2="29" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M16 8v5M13 11l3 3 3-3" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function SustainabilityIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <circle cx="16" cy="16" r="13" stroke="#0f4c81" strokeWidth="1.8" />
-      <path d="M10 20c0-5 4-9 9-7-1 3-3 5-6 5h-3Z" stroke="#0f4c81" strokeWidth="1.6" strokeLinejoin="round" />
-      <line x1="16" y1="24" x2="16" y2="16" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-const VALUES = [
-  { icon: <PrecisionIcon />,     title: "Độ Chính Xác",  description: "Mọi sản phẩm đều được gia công với dung sai nghiêm ngặt và kiểm định kép trước khi xuất xưởng." },
-  { icon: <ReliabilityIcon />,   title: "Độ Tin Cậy",    description: "Cam kết 99.9% thời gian hoạt động với chính sách hỗ trợ kỹ thuật 24/7 và phụ tùng thay thế sẵn sàng." },
-  { icon: <InnovationIcon />,    title: "Đổi Mới",       description: "Liên tục đầu tư vào R&D, tích hợp IoT và tự động hóa để giữ vững vị thế tiên phong công nghệ." },
-  { icon: <SustainabilityIcon />,title: "Bền Vững",      description: "Thiết kế thiết bị tiết kiệm năng lượng, giảm rò rỉ và tối ưu vòng đời sản phẩm vì môi trường." },
-];
-
-const MILESTONES = [
-  { year: "2003", text: "Thành lập tại Hà Nội với 12 kỹ sư và xưởng lắp ráp đầu tiên." },
-  { year: "2008", text: "Xuất khẩu sản phẩm đầu tiên sang thị trường Đông Nam Á." },
-  { year: "2014", text: "Đạt chứng nhận ISO 9001 và mở văn phòng khu vực tại TP. Hồ Chí Minh." },
-  { year: "2019", text: "Ra mắt nền tảng giám sát IoT FuelConnect, phục vụ 200+ trạm nhiên liệu." },
-  { year: "2024", text: "Vượt mốc 500 dự án hoàn thành tại 50 quốc gia, đội ngũ 380 nhân viên." },
+const solutionGroups = [
+  {
+    number: "01",
+    title: "Đo bồn tự động",
+    description: "Giải pháp theo dõi dữ liệu bồn chứa theo nhu cầu triển khai thực tế.",
+  },
+  {
+    number: "02",
+    title: "Thiết bị trạm xăng dầu",
+    description: "Danh mục thiết bị phục vụ hoạt động tại trạm xăng dầu.",
+  },
+  {
+    number: "03",
+    title: "Phần mềm quản lý",
+    description: "Công cụ hỗ trợ quản lý thông tin vận hành tại trạm.",
+  },
 ];
 
 export default function GioiThieuPage() {
   return (
     <>
       <PageHero
-        title="Về FuelPrecision Industrial"
-        subtitle="Hai thập kỷ tiên phong trong kỹ thuật hệ thống nhiên liệu công nghiệp"
+        title="Về Ánh Sáng Toàn Cầu"
+        subtitle="Thông tin doanh nghiệp và các nhóm giải pháp đang được giới thiệu"
         breadcrumbs={[{ label: "Trang chủ", href: "/" }, { label: "Giới thiệu" }]}
       />
 
-      {/* ── Mission ── */}
-      <section className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-12 lg:py-20">
-        {/* Mobile: stacked. Desktop: image + text side by side */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
-          <div className="lg:col-span-6 flex flex-col gap-4 lg:gap-5">
-            <SectionHeading heading="Sứ mệnh của chúng tôi" className="mb-0" />
-            <p className="font-sans text-[15px] lg:text-[16px] leading-7 text-content-body">
-              FuelPrecision ra đời với một mục tiêu duy nhất: đảm bảo rằng mọi lít nhiên liệu được
-              đo lường chính xác, vận chuyển an toàn và phân phối hiệu quả. Từ những trạm xăng nhỏ
-              lẻ đến cảng biển quốc tế và nhà máy công nghiệp nặng, chúng tôi xây dựng hạ tầng cho
-              phép doanh nghiệp vận hành không gián đoạn.
-            </p>
-            <p className="font-sans text-[15px] lg:text-[16px] leading-7 text-content-body">
-              Với đội ngũ hơn 380 kỹ sư và chuyên gia có kinh nghiệm thực chiến, chúng tôi không
-              chỉ cung cấp thiết bị mà còn đồng hành trong toàn bộ vòng đời dự án — từ thiết kế,
-              thi công, đào tạo đến bảo trì dài hạn.
-            </p>
-            <Link
-              href="/lien-he"
-              className="self-start inline-flex items-center justify-center bg-brand text-white rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] shadow-btn hover:bg-brand/90 transition-colors"
-            >
-              Liên hệ tư vấn
-            </Link>
-          </div>
+      <main>
+        <section className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">
+                Giới thiệu
+              </p>
+              <h2 className="mt-3 font-heading text-[28px] font-semibold leading-[38px] text-content-heading sm:text-[34px] sm:leading-[44px]">
+                {companyInfo.legalName}
+              </h2>
+              <p className="mt-5 font-sans text-[15px] leading-7 text-content-body lg:text-[16px]">
+                Ánh Sáng Toàn Cầu giới thiệu các sản phẩm và giải pháp phục vụ
+                trạm xăng dầu. Nội dung trên website tập trung vào đo bồn tự động,
+                thiết bị tại trạm và phần mềm quản lý.
+              </p>
+              <p className="mt-3 font-sans text-[14px] leading-6 text-content-muted">
+                Thông số kỹ thuật, khả năng tương thích và phạm vi triển khai được
+                xác nhận theo từng sản phẩm và nhu cầu cụ thể.
+              </p>
+            </div>
 
-          {/* Image — below text on mobile */}
-          <div className="lg:col-span-6">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-surface-hero">
-              <Image
-                src="/images/about/mission.svg"
-                alt="Đội ngũ kỹ sư FuelPrecision"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 580px"
-              />
+            <div className="rounded-[20px] border border-border-ui bg-surface-card p-6 sm:p-8 lg:col-span-6">
+              <h2 className="font-heading text-[20px] font-semibold text-content-heading">
+                Thông tin pháp lý
+              </h2>
+              <dl className="mt-5 divide-y divide-border-ui">
+                <InfoRow label="Tên giao dịch" value={companyInfo.brandName} />
+                <InfoRow label="Mã số thuế" value={companyInfo.taxCode} />
+                <InfoRow label="Địa chỉ" value={companyInfo.address} />
+                <InfoRow
+                  label="Email nhận hóa đơn"
+                  value={companyInfo.invoiceEmail}
+                  href={`mailto:${companyInfo.invoiceEmail}`}
+                />
+              </dl>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Stats ── */}
-      <section className="bg-surface-card py-10 lg:py-16">
-        <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
-          {/* 2 col grid on mobile → 4 flex on lg */}
-          <div className="grid grid-cols-2 lg:flex gap-4 lg:gap-6">
-            <StatCard value="20+"   label="Năm kinh nghiệm" />
-            <StatCard value="50+"   label="Quốc gia phục vụ" />
-            <StatCard value="99.9%" label="Thời gian hoạt động" />
-            <StatCard value="500+"  label="Dự án hoàn thành" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Core values ── */}
-      <section className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-12 lg:py-20">
-        <SectionHeading
-          heading="Giá Trị Cốt Lõi"
-          subtitle="Những nguyên tắc định hướng mọi quyết định thiết kế và vận hành của chúng tôi."
-          align="center"
-        />
-        {/* 1 col → 2 col → 4 col */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {VALUES.map((v) => (
-            <div key={v.title} className="flex flex-col gap-4 rounded-card bg-white p-5 lg:p-7 shadow-card">
-              <div className="flex h-14 w-14 items-center justify-center rounded-[10px] bg-surface-card">
-                {v.icon}
-              </div>
-              <h3 className="font-heading font-semibold text-[16px] lg:text-[18px] leading-6 text-content-heading">
-                {v.title}
-              </h3>
-              <p className="font-sans text-[13px] lg:text-[14px] leading-5 text-content-body">{v.description}</p>
+        <section className="bg-surface-card py-12 lg:py-20" aria-labelledby="solution-groups-heading">
+          <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
+            <div className="max-w-2xl">
+              <h2
+                id="solution-groups-heading"
+                className="font-heading text-[26px] font-semibold leading-9 text-content-heading sm:text-[32px] sm:leading-10"
+              >
+                Nhóm giải pháp
+              </h2>
+              <p className="mt-2 font-sans text-[14px] leading-6 text-content-muted lg:text-[16px]">
+                Các nội dung chính được công bố trên website.
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ── Timeline ── */}
-      <section className="bg-surface-card py-12 lg:py-20">
-        <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
-          <SectionHeading
-            heading="Hành Trình Của Chúng Tôi"
-            subtitle="Những dấu mốc quan trọng trong 20 năm phát triển."
-          />
-          <ol className="relative border-l-2 border-border-ui pl-8 lg:pl-10 flex flex-col gap-8 lg:gap-10">
-            {MILESTONES.map((m) => (
-              <li key={m.year} className="relative">
-                <span className="absolute -left-[37px] lg:-left-[41px] flex h-6 w-6 items-center justify-center rounded-full bg-brand ring-4 ring-surface-card">
-                  <span className="h-2 w-2 rounded-full bg-white" />
-                </span>
-                <p className="mb-1 font-heading font-bold text-[14px] lg:text-[15px] text-brand-dark">{m.year}</p>
-                <p className="font-sans text-[14px] lg:text-[15px] leading-6 text-content-body">{m.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {solutionGroups.map((item) => (
+                <article key={item.number} className="rounded-card border border-border-ui bg-white p-6 shadow-card">
+                  <span className="font-mono text-[13px] font-bold text-brand">{item.number}</span>
+                  <h3 className="mt-5 font-heading text-[19px] font-semibold text-content-heading">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
+                    {item.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-      {/* ── CTA ── */}
-      <section className="bg-brand-gradient py-12 lg:py-20">
-        <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 text-center">
-          <h2 className="font-heading font-bold text-[26px] sm:text-[30px] lg:text-[36px] leading-[34px] sm:leading-[38px] lg:leading-[44px] text-white mb-4">
-            Sẵn sàng hợp tác với chúng tôi?
-          </h2>
-          <p className="mb-6 lg:mb-8 font-sans text-[14px] lg:text-[16px] leading-6 text-white/80 max-w-xl mx-auto">
-            Hãy để chúng tôi giúp bạn thiết kế hệ thống nhiên liệu phù hợp nhất với nhu cầu
-            hoạt động của doanh nghiệp.
-          </p>
-          {/* Stack on mobile, row on sm+ */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <section className="bg-brand-gradient py-12 lg:py-16">
+          <div className="mx-auto flex max-w-content flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-16">
+            <div>
+              <h2 className="font-heading text-[26px] font-semibold leading-9 text-white sm:text-[30px]">
+                Cần trao đổi về sản phẩm?
+              </h2>
+              <p className="mt-2 font-sans text-[14px] leading-6 text-white/75">
+                Liên hệ qua Zalo để gửi nhu cầu và nhận thông tin phù hợp.
+              </p>
+            </div>
             <Link
               href="/lien-he"
-              className="inline-flex w-full sm:w-auto items-center justify-center bg-white text-brand rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] hover:bg-surface-card transition-colors"
+              className="inline-flex shrink-0 items-center justify-center rounded-btn bg-white px-6 py-3 font-sans text-[14px] font-semibold text-brand transition-colors hover:bg-surface-card"
             >
-              Liên hệ ngay
-            </Link>
-            <Link
-              href="/san-pham"
-              className="inline-flex w-full sm:w-auto items-center justify-center border border-white/60 text-white rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] hover:bg-white/10 transition-colors"
-            >
-              Xem sản phẩm
+              Liên hệ qua Zalo
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
+  );
+}
+
+function InfoRow({ label, value, href }: { label: string; value: string; href?: string }) {
+  return (
+    <div className="grid gap-1 py-4 sm:grid-cols-[140px_1fr] sm:gap-4">
+      <dt className="font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
+        {label}
+      </dt>
+      <dd className="font-sans text-[14px] leading-6 text-content-heading">
+        {href ? (
+          <a href={href} className="font-medium text-brand-dark hover:underline">
+            {value}
+          </a>
+        ) : (
+          value
+        )}
+      </dd>
+    </div>
   );
 }

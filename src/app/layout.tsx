@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
+import { companyInfo, siteConfig } from "@/config/site";
 import { jsonLdScript } from "@/lib/sanitize";
 import "./globals.css";
 
@@ -15,24 +16,24 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fuelprecision.vn"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "FuelPrecision Industrial — Giai phap nhien lieu chinh xac",
-    template: "%s | FuelPrecision",
+    default: "Ánh Sáng Toàn Cầu — Thiết bị và giải pháp trạm xăng dầu",
+    template: "%s | Ánh Sáng Toàn Cầu",
   },
-  description: "Giải pháp nhiên liệu chính xác cho hạ tầng hiện đại. Hơn 20 năm kinh nghiệm, 500+ dự án tại 50+ quốc gia.",
+  description: "Đo bồn tự động, thiết bị trạm xăng dầu và phần mềm quản lý.",
   openGraph: {
     type: "website",
     locale: "vi_VN",
-    siteName: "FuelPrecision Industrial",
-    title: "FuelPrecision Industrial — Giai phap nhien lieu chinh xac",
-    description: "Giải pháp nhiên liệu chính xác cho hạ tầng hiện đại. Hơn 20 năm kinh nghiệm, 500+ dự án tại 50+ quốc gia.",
-    url: "https://fuelprecision.vn",
+    siteName: companyInfo.brandName,
+    title: "Ánh Sáng Toàn Cầu — Thiết bị và giải pháp trạm xăng dầu",
+    description: "Đo bồn tự động, thiết bị trạm xăng dầu và phần mềm quản lý.",
+    url: siteConfig.url,
   },
   twitter: {
     card: "summary_large_image",
-    title: "FuelPrecision Industrial",
-    description: "Giải pháp nhiên liệu chính xác cho hạ tầng hiện đại.",
+    title: companyInfo.brandName,
+    description: "Thiết bị và giải pháp cho trạm xăng dầu.",
   },
   robots: {
     index: true,
@@ -48,27 +49,24 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "FuelPrecision Industrial",
-    url: "https://fuelprecision.vn",
-    description: "Giải pháp nhiên liệu chính xác cho hạ tầng hiện đại",
+    name: companyInfo.brandName,
+    legalName: companyInfo.legalName,
+    taxID: companyInfo.taxCode,
+    url: siteConfig.url,
+    description: siteConfig.description,
+    email: companyInfo.invoiceEmail,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "120 Hoàng Quốc Việt",
-      addressLocality: "Cầu Giấy",
-      addressRegion: "Hà Nội",
-      addressCountry: "VN",
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: "+84-24-3856-7890",
-      contactType: "customer service",
-      availableLanguage: "Vietnamese",
+      streetAddress: companyInfo.streetAddress,
+      addressLocality: companyInfo.locality,
+      addressRegion: companyInfo.locality,
+      addressCountry: companyInfo.country,
     },
   };
 
   return (
     <html lang="vi" className={`${inter.variable} ${manrope.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}

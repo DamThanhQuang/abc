@@ -3,44 +3,51 @@ import Link from "next/link";
 function ArrowIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-      <path d="M1 5.5h9M6 1l4.5 4.5L6 10" stroke="#00355f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M1 5.5h9M6 1l4.5 4.5L6 10"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-function UptimeIcon() {
-  return (
-    <svg width="23" height="24" viewBox="0 0 23 24" fill="none" aria-hidden="true">
-      <path d="M11.5 2C6.25 2 2 6.25 2 11.5S6.25 21 11.5 21 21 16.75 21 11.5 16.75 2 11.5 2Z" stroke="#0f4c81" strokeWidth="1.8" />
-      <path d="M11.5 6.5v5l3.5 2" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function GlobeIcon() {
+function TankIcon() {
   return (
     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" aria-hidden="true">
-      <circle cx="12.5" cy="12.5" r="10.5" stroke="#0f4c81" strokeWidth="1.8" />
-      <ellipse cx="12.5" cy="12.5" rx="5" ry="10.5" stroke="#0f4c81" strokeWidth="1.8" />
-      <path d="M2 12.5h21M12.5 2a16 16 0 0 1 0 21M12.5 2a16 16 0 0 0 0 21" stroke="#0f4c81" strokeWidth="1.8" />
+      <rect x="4" y="3" width="17" height="19" rx="4" stroke="#0f4c81" strokeWidth="1.8" />
+      <path d="M8 15c2-2 3 2 5 0s3 2 5 0" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M12.5 7v4" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
 
-type StatCardProps = {
+function StationIcon() {
+  return (
+    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" aria-hidden="true">
+      <path d="M5 22V4h10v18M3 22h14" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="7.5" y="7" width="5" height="5" rx="1" stroke="#0f4c81" strokeWidth="1.6" />
+      <path d="M15 8h2l3 3v7a2 2 0 0 0 4 0v-5l-2-2" stroke="#0f4c81" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+type InfoCardProps = {
   icon: React.ReactNode;
-  value: string;
+  title: string;
   label: string;
 };
 
-function StatCard({ icon, value, label }: StatCardProps) {
+function InfoCard({ icon, title, label }: InfoCardProps) {
   return (
-    <div className="flex flex-1 min-w-0 flex-col gap-1 bg-surface-card rounded-card p-5 lg:p-6 shadow-card">
+    <div className="flex min-w-0 flex-1 flex-col gap-1 rounded-card bg-surface-card p-5 shadow-card lg:p-6">
       <div className="mb-1">{icon}</div>
-      <p className="font-heading font-semibold text-[22px] lg:text-[24px] leading-8 text-content-heading">
-        {value}
+      <p className="font-heading text-[20px] font-semibold leading-7 text-content-heading lg:text-[22px]">
+        {title}
       </p>
-      <p className="font-sans text-[13px] lg:text-[14px] leading-5 text-content-body">
+      <p className="font-sans text-[13px] leading-5 text-content-body lg:text-[14px]">
         {label}
       </p>
     </div>
@@ -51,53 +58,44 @@ export function AboutUsIntro() {
   return (
     <section
       aria-labelledby="about-heading"
-      className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-12 lg:py-20"
+      className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20"
     >
-      {/*
-        Mobile:  single column — text then stat cards
-        Desktop: 12-col grid — text (5 cols) | gap (1) | stats (6)
-      */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
-
-        {/* Left — heading + body + link */}
-        <div className="lg:col-span-5 flex flex-col gap-3">
+      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-6">
+        <div className="flex flex-col gap-3 lg:col-span-5">
           <h2
             id="about-heading"
-            className="
-              font-heading font-semibold
-              text-[24px] sm:text-[28px] lg:text-[32px]
-              leading-[32px] sm:leading-[36px] lg:leading-[40px]
-              tracking-[-0.01em] text-content-heading
-            "
+            className="font-heading text-[24px] font-semibold leading-[32px] tracking-[-0.01em] text-content-heading sm:text-[28px] sm:leading-[36px] lg:text-[32px] lg:leading-[40px]"
           >
-            Được thiết kế để tin cậy
+            Giải pháp cho trạm xăng dầu
           </h2>
-          <p className="font-sans text-[15px] lg:text-[16px] leading-6 text-content-body">
-            For over two decades, FuelPrecision has set the industry standard
-            for commercial fueling infrastructure. Our commitment to precision
-            engineering ensures that every component—from underground storage
-            to point-of-sale systems—operates seamlessly under the most
-            demanding industrial conditions.
+          <p className="font-sans text-[15px] leading-6 text-content-body lg:text-[16px]">
+            Ánh Sáng Toàn Cầu giới thiệu các giải pháp về đo bồn tự động,
+            thiết bị trạm xăng dầu và phần mềm quản lý. Thông tin kỹ thuật và
+            phạm vi triển khai được xác nhận theo từng sản phẩm và nhu cầu thực tế.
           </p>
           <Link
-            href="/gioi-thieu"
-            className="inline-flex items-center gap-1 pt-2 self-start font-sans text-[14px] leading-4 tracking-[0.05em] text-brand-dark hover:underline transition-colors"
+            href="/san-pham"
+            className="inline-flex items-center gap-1 self-start pt-2 font-sans text-[14px] leading-4 tracking-[0.05em] text-brand-dark transition-colors hover:underline"
           >
-            Khám phá di sản của chúng tôi
+            Xem danh mục sản phẩm
             <ArrowIcon />
           </Link>
         </div>
 
-        {/* Gap col — desktop only */}
-        <div className="hidden lg:block lg:col-span-1" aria-hidden="true" />
+        <div className="hidden lg:col-span-1 lg:block" aria-hidden="true" />
 
-        {/* Right — two stat cards */}
-        {/* Mobile: horizontal row. Desktop: constrained to h-[144px] */}
-        <div className="lg:col-span-6 flex gap-3 lg:h-[144px]">
-          <StatCard icon={<UptimeIcon />} value="99.9%" label="Đảm bảo thời gian hoạt động" />
-          <StatCard icon={<GlobeIcon />}  value="50+"   label="Quốc gia phục vụ" />
+        <div className="flex gap-3 lg:col-span-6 lg:h-[144px]">
+          <InfoCard
+            icon={<TankIcon />}
+            title="Đo bồn"
+            label="Giải pháp đo bồn tự động"
+          />
+          <InfoCard
+            icon={<StationIcon />}
+            title="Thiết bị & phần mềm"
+            label="Dành cho hoạt động tại trạm xăng dầu"
+          />
         </div>
-
       </div>
     </section>
   );

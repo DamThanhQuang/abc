@@ -1,123 +1,198 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import type { Metadata } from "next";
+import Image from "next/image";
+import { CopyPhoneButton } from "@/components/public/contact/CopyPhoneButton";
 import { PageHero } from "@/components/shared/PageHero";
-import { ContactForm } from "@/components/public/contact/ContactForm";
+import { companyInfo } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Liên Hệ | FuelPrecision Industrial",
-  description: "Liên hệ với đội ngũ chuyên gia FuelPrecision để được tư vấn giải pháp hệ thống nhiên liệu.",
+  title: "Liên Hệ | Ánh Sáng Toàn Cầu",
+  description: "Liên hệ Ánh Sáng Toàn Cầu qua Zalo để trao đổi nhu cầu về thiết bị và giải pháp trạm xăng dầu.",
 };
 
-function PhoneIcon() {
+function ZaloIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M3 3h4l2 4.5-2 1.5a11 11 0 0 0 4 4l1.5-2L17 13v4a1 1 0 0 1-1 1A15 15 0 0 1 2 4a1 1 0 0 1 1-1Z" stroke="#0f4c81" strokeWidth="1.6" strokeLinejoin="round" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5.5 4.5h13a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3H11l-4.5 3v-3h-1a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <path d="M7 9h4l-4 5h4M13 14V9h2.5a2.5 2.5 0 0 1 0 5H13Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
-function EmailIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <rect x="2" y="4" width="16" height="12" rx="2" stroke="#0f4c81" strokeWidth="1.6" />
-      <path d="M2 7l8 5 8-5" stroke="#0f4c81" strokeWidth="1.6" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function LocationIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 2a6 6 0 0 1 6 6c0 4-6 10-6 10S4 12 4 8a6 6 0 0 1 6-6Z" stroke="#0f4c81" strokeWidth="1.6" />
-      <circle cx="10" cy="8" r="2" stroke="#0f4c81" strokeWidth="1.6" />
-    </svg>
-  );
-}
+
 function ClockIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <circle cx="10" cy="10" r="8" stroke="#0f4c81" strokeWidth="1.6" />
-      <path d="M10 6v4l3 2" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M10 5.5V10l3 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-const CONTACT_INFO = [
-  { icon: <PhoneIcon />,   label: "Điện thoại",   value: "+84 24 3856 7890" },
-  { icon: <EmailIcon />,   label: "Email",         value: "contact@fuelprecision.vn" },
-  { icon: <LocationIcon />,label: "Địa chỉ",       value: "Tầng 8, Tòa nhà FuelPrecision, 120 Hoàng Quốc Việt, Cầu Giấy, Hà Nội" },
-  { icon: <ClockIcon />,   label: "Giờ làm việc",  value: "Thứ 2 – Thứ 6: 8:00 – 17:30" },
-];
-
 export default function LienHePage() {
+  const rawZaloId = process.env.NEXT_PUBLIC_ZALO_ID?.trim() ?? "";
+  const zaloId = rawZaloId.replace(/\D/g, "");
+  const displayPhone = process.env.NEXT_PUBLIC_PHONE_DISPLAY?.trim() || rawZaloId;
+  const hasZaloContact = Boolean(zaloId && displayPhone);
+  const hasQr = existsSync(join(process.cwd(), "public", "images", "zalo-qr.png"));
+
   return (
     <>
       <PageHero
-        title="Liên Hệ Với Chúng Tôi"
-        subtitle="Đội ngũ kỹ thuật và kinh doanh sẵn sàng hỗ trợ bạn trong vòng 24 giờ"
+        title="Liên hệ qua Zalo"
+        subtitle="Quét mã QR hoặc mở Zalo để trao đổi nhu cầu về thiết bị và giải pháp trạm xăng dầu"
         breadcrumbs={[{ label: "Trang chủ", href: "/" }, { label: "Liên hệ" }]}
       />
 
-      <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-8 lg:py-16">
-        {/*
-          Mobile:  form first, info card below
-          Desktop: 7 + 5 column grid side by side
-        */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+      <main className="mx-auto max-w-content px-4 py-10 sm:px-6 lg:px-16 lg:py-16">
+        <section
+          aria-labelledby="zalo-contact-heading"
+          className="mx-auto max-w-4xl overflow-hidden rounded-[24px] border border-border-ui bg-white shadow-card"
+        >
+          <div className="grid lg:grid-cols-[300px_1fr]">
+            <div className="flex min-h-[300px] items-center justify-center bg-surface-card p-8">
+              {hasQr ? (
+                <div className="rounded-2xl bg-white p-3 shadow-card">
+                  <Image
+                    src="/images/zalo-qr.png"
+                    alt="Mã QR Zalo của Ánh Sáng Toàn Cầu"
+                    width={180}
+                    height={180}
+                    className="h-[180px] w-[180px] object-contain"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="flex h-[206px] w-[206px] items-center justify-center rounded-2xl border border-dashed border-border-ui bg-white p-6 text-center">
+                  <p className="font-sans text-[13px] leading-5 text-content-muted">
+                    Mã QR Zalo đang được cập nhật
+                  </p>
+                </div>
+              )}
+            </div>
 
-          {/* Contact form */}
-          <div className="lg:col-span-7">
-            <h2 className="mb-2 font-heading font-semibold text-[22px] lg:text-[26px] leading-8 text-content-heading">
-              Gửi yêu cầu
-            </h2>
-            <p className="mb-6 lg:mb-8 font-sans text-[14px] lg:text-[15px] leading-6 text-content-muted">
-              Điền vào biểu mẫu bên dưới và chúng tôi sẽ phản hồi trong vòng 1–2 ngày làm việc.
-            </p>
-            <ContactForm />
-          </div>
-
-          {/* Company info */}
-          <aside className="lg:col-span-5">
-            <div className="rounded-card bg-surface-card p-6 lg:p-8 shadow-card">
-              <h2 className="mb-5 lg:mb-6 font-heading font-semibold text-[18px] lg:text-[20px] leading-7 text-content-heading">
-                Thông tin liên hệ
+            <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+              <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#0068ff]/10 text-[#0068ff]">
+                <ZaloIcon />
+              </span>
+              <h2
+                id="zalo-contact-heading"
+                className="font-heading text-[26px] font-semibold leading-9 text-content-heading sm:text-[30px]"
+              >
+                Liên hệ với chúng tôi
               </h2>
+              <p className="mt-3 max-w-xl font-sans text-[14px] leading-6 text-content-body sm:text-[15px]">
+                Sử dụng Zalo để trao đổi thông tin sản phẩm và nhu cầu tư vấn.
+                Bạn có thể quét mã QR, mở liên kết hoặc sao chép số để tìm trên Zalo.
+              </p>
 
-              <ul className="flex flex-col gap-5 lg:gap-6">
-                {CONTACT_INFO.map((item) => (
-                  <li key={item.label} className="flex items-start gap-3 lg:gap-4">
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-white shadow-card">
-                      {item.icon}
-                    </span>
-                    <div>
-                      <p className="mb-0.5 font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
-                        {item.label}
+              {hasZaloContact ? (
+                <>
+                  <div className="mt-6 rounded-xl border border-border-ui bg-surface-card p-4">
+                    <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                      Số điện thoại / Zalo
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+                      <p className="font-heading text-[20px] font-semibold text-content-heading">
+                        {displayPhone}
                       </p>
-                      <p className="font-sans text-[13px] lg:text-[14px] leading-5 text-content-heading">
-                        {item.value}
-                      </p>
+                      <CopyPhoneButton value={displayPhone} />
                     </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="my-5 lg:my-6 border-t border-border-ui" />
-
-              <h3 className="mb-3 lg:mb-4 font-heading font-semibold text-[14px] lg:text-[15px] text-content-heading">
-                Văn phòng khu vực
-              </h3>
-              <div className="flex flex-col gap-3">
-                {[
-                  { city: "TP. Hồ Chí Minh", addr: "28 Lý Tự Trọng, Quận 1" },
-                  { city: "Đà Nẵng",          addr: "96 Nguyễn Văn Linh, Thanh Khê" },
-                ].map((b) => (
-                  <div key={b.city}>
-                    <p className="font-sans text-[13px] font-semibold text-content-heading">{b.city}</p>
-                    <p className="font-sans text-[13px] text-content-muted">{b.addr}</p>
                   </div>
-                ))}
+
+                  <a
+                    href={`https://zalo.me/${zaloId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center justify-center gap-2 rounded-btn bg-[#0068ff] px-6 py-3.5 font-sans text-[14px] font-semibold text-white shadow-btn transition-colors hover:bg-[#0057d9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068ff]/40"
+                  >
+                    <ZaloIcon />
+                    Nhắn Zalo
+                  </a>
+                </>
+              ) : (
+                <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 font-sans text-[13px] leading-5 text-amber-800">
+                  Kênh Zalo đang được cập nhật.
+                </p>
+              )}
+
+              <div className="mt-5 flex items-start gap-3 border-t border-border-ui pt-5 text-content-muted">
+                <span className="mt-0.5 shrink-0 text-brand-dark"><ClockIcon /></span>
+                <p className="font-sans text-[13px] leading-5 sm:text-[14px]">
+                  Phản hồi trong giờ hành chính, Thứ 2–Thứ 7, 8:00–17:30.
+                </p>
               </div>
             </div>
-          </aside>
-        </div>
-      </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="company-information-heading"
+          className="mx-auto mt-8 max-w-4xl rounded-[24px] border border-border-ui bg-surface-card p-6 sm:p-8 lg:p-10"
+        >
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:gap-12">
+            <div>
+              <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-brand">
+                Thông tin doanh nghiệp
+              </p>
+              <h2
+                id="company-information-heading"
+                className="mt-2 font-heading text-[22px] font-semibold leading-8 text-content-heading sm:text-[26px]"
+              >
+                {companyInfo.brandName}
+              </h2>
+              <p className="mt-3 font-sans text-[14px] leading-6 text-content-body">
+                Thông tin pháp lý và địa chỉ liên hệ chính thức của doanh nghiệp.
+              </p>
+            </div>
+
+            <dl className="divide-y divide-border-ui overflow-hidden rounded-xl border border-border-ui bg-white px-5">
+              <div className="py-4">
+                <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                  Tên pháp lý
+                </dt>
+                <dd className="mt-1 font-sans text-[14px] leading-6 text-content-heading">
+                  {companyInfo.legalName}
+                </dd>
+              </div>
+              <div className="py-4">
+                <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                  Mã số thuế
+                </dt>
+                <dd className="mt-1 font-sans text-[14px] font-semibold text-content-heading">
+                  {companyInfo.taxCode}
+                </dd>
+              </div>
+              <div className="py-4">
+                <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                  Địa chỉ
+                </dt>
+                <dd className="mt-1 font-sans text-[14px] leading-6 text-content-heading">
+                  {companyInfo.address}
+                </dd>
+              </div>
+              <div className="py-4">
+                <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                  Email nhận hóa đơn
+                </dt>
+                <dd className="mt-1">
+                  <a
+                    href={`mailto:${companyInfo.invoiceEmail}`}
+                    className="font-sans text-[14px] font-medium text-brand-dark hover:underline"
+                  >
+                    {companyInfo.invoiceEmail}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+      </main>
     </>
   );
 }

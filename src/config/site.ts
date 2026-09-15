@@ -1,12 +1,19 @@
-// ─── Site metadata ────────────────────────────────────────────────────────────
-
-export const siteConfig = {
-  name: "FuelPrecision",
-  description: "Giải pháp nhiên liệu chính xác cho hạ tầng hiện đại",
-  url: "https://fuelprecision.vn",
+export const companyInfo = {
+  brandName: "Ánh Sáng Toàn Cầu",
+  legalName: "Công ty Cổ phần Sản xuất và Thương mại Ánh Sáng Toàn Cầu",
+  taxCode: "0110425439",
+  address: "Số 11, ngõ 134 đường Giải Phóng, Phường Phương Liệt, TP Hà Nội, Việt Nam",
+  streetAddress: "Số 11, ngõ 134 đường Giải Phóng, Phường Phương Liệt",
+  locality: "Hà Nội",
+  country: "VN",
+  invoiceEmail: "hoadonastc@gmail.com",
 } as const;
 
-// ─── Main navigation ──────────────────────────────────────────────────────────
+export const siteConfig = {
+  name: companyInfo.brandName,
+  description: "Thiết bị và giải pháp cho trạm xăng dầu",
+  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+} as const;
 
 export type NavItem = {
   label: string;
@@ -14,47 +21,40 @@ export type NavItem = {
 };
 
 export const mainNav: NavItem[] = [
-  { label: "Trang Chủ",  href: "/" },
+  { label: "Trang chủ", href: "/" },
   { label: "Giới thiệu", href: "/gioi-thieu" },
-  { label: "Sản phẩm",   href: "/san-pham" },
-  { label: "Tin tức",    href: "/tin-tuc" },
-  { label: "Liên hệ",    href: "/lien-he" },
+  { label: "Sản phẩm", href: "/san-pham" },
+  { label: "Tin tức", href: "/tin-tuc" },
+  { label: "Liên hệ", href: "/lien-he" },
 ];
-
-// ─── Footer navigation ────────────────────────────────────────────────────────
 
 export type FooterNavColumn = {
   heading: string;
   links: NavItem[];
 };
 
-/**
- * Two columns ordered to match Figma:
- *   Col 1 — "Công ty"   (~40px heading, shorter) — left
- *   Col 2 — "Sản phẩm"  (~77px heading, longer)  — right
- */
 export const footerNav: FooterNavColumn[] = [
   {
     heading: "Công ty",
     links: [
       { label: "Giới thiệu", href: "/gioi-thieu" },
-      { label: "Tin tức",    href: "/tin-tuc" },
-      { label: "Liên hệ",    href: "/lien-he" },
+      { label: "Tin tức", href: "/tin-tuc" },
+      { label: "Liên hệ", href: "/lien-he" },
     ],
   },
   {
     heading: "Sản phẩm",
     links: [
-      { label: "Máy bơm nhiên liệu",    href: "/san-pham?category=may-bom" },
-      { label: "Đồng hồ đo lưu lượng",  href: "/san-pham?category=dong-ho-do-luu-luong" },
-      { label: "Hệ thống bồn chứa",     href: "/san-pham?category=he-thong-bon-chua" },
-      { label: "Vòi bơm tự động",        href: "/san-pham?category=voi-bom-tu-dong" },
+      { label: "Máy bơm nhiên liệu", href: "/san-pham?category=may-bom" },
+      { label: "Đồng hồ đo lưu lượng", href: "/san-pham?category=dong-ho-do-luu-luong" },
+      { label: "Hệ thống bồn chứa", href: "/san-pham?category=he-thong-bon-chua" },
+      { label: "Vòi bơm tự động", href: "/san-pham?category=voi-bom-tu-dong" },
     ],
   },
 ];
 
 export const footerTagline =
-  "Kỹ thuật hệ thống nhiên liệu hiệu suất cao cho cơ sở hạ tầng công nghiệp hiện đại.";
+  "Thiết bị và giải pháp phục vụ hoạt động tại trạm xăng dầu.";
 
 export const footerCopyright =
-  `© ${new Date().getFullYear()} FuelPrecision Industrial. Đã đăng ký bản quyền.`;
+  `© ${new Date().getFullYear()} ${companyInfo.legalName}.`;

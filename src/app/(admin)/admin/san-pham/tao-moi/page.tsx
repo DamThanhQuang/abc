@@ -5,7 +5,8 @@ import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { createProduct } from "@/lib/actions/products";
 import { requireAdmin } from "@/lib/auth-guard";
 import { getCategories } from "@/lib/api/categories";
-import { ImageUpload } from "@/components/admin/shared/ImageUpload";
+import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
+import { parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 
 export const metadata: Metadata = { title: "Them san pham | Admin" };
 
@@ -32,6 +33,7 @@ export default async function AdminCreateProductPage() {
       .replace(/^-|-$/g, "");
 
     const categoryId = formData.get("categoryId") as string;
+    const images = parseProductImages(formData.get("images"));
 
     const result = await createProduct({
       slug,
@@ -40,7 +42,8 @@ export default async function AdminCreateProductPage() {
       model: (formData.get("model") as string) || undefined,
       spec: (formData.get("spec") as string) || undefined,
       description: (formData.get("description") as string) || undefined,
-      image: (formData.get("image") as string) || "/images/products/placeholder.svg",
+      image: images[0] ?? PRODUCT_IMAGE_PLACEHOLDER,
+      images,
       published: true,
       features: (formData.get("features") as string)
         .split("\n")
@@ -64,8 +67,8 @@ export default async function AdminCreateProductPage() {
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Them san pham moi</h1>
-            <p className="font-sans text-[13px] text-content-muted">Dien thong tin san pham ben duoi</p>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Thêm sản phẩm mới</h1>
+            <p className="font-sans text-[13px] text-content-muted">Điền thông tin sản phẩm bên dưới</p>
           </div>
           <Link href="/admin/san-pham" className="font-sans text-[13px] text-brand hover:underline">
             &larr; Quay lai
@@ -78,33 +81,33 @@ export default async function AdminCreateProductPage() {
             <div className="lg:col-span-8 flex flex-col gap-5">
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
-                  Thong tin co ban
+                  Thông tin cơ bản
                 </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className={labelClass}>Ten san pham *</label>
+                    <label className={labelClass}>Tên sản phẩm *</label>
                     <input type="text" name="name" className={inputClass} required placeholder="VD: May Bom Chuyen Nhien Lieu" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
-                      <label className={labelClass}>Ma san pham</label>
+                      <label className={labelClass}>Mã sản phẩm</label>
                       <input type="text" name="model" className={inputClass} placeholder="VD: FP-500X" />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label className={labelClass}>Thong so noi bat</label>
-                      <input type="text" name="spec" className={inputClass} placeholder="VD: 500 L/min" />
+                      <label className={labelClass}>Thông số nổi bật</label>
+                      <input type="text" name="spec" className={inputClass}/>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className={labelClass}>Mo ta</label>
-                    <textarea rows={4} name="description" className={textareaClass} placeholder="Mo ta chi tiet ve san pham..." />
+                    <label className={labelClass}>Mô tả</label>
+                    <textarea rows={4} name="description" className={textareaClass} placeholder="Mô tả chi tiết về sản phẩm..." />
                   </div>
                 </div>
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
-                  Tinh nang noi bat
+                  Tính năng nổi bật
                 </h2>
                 <div className="flex flex-col gap-1.5">
                   <label className={labelClass}>Moi dong mot tinh nang</label>
@@ -116,14 +119,14 @@ export default async function AdminCreateProductPage() {
             {/* Sidebar */}
             <div className="lg:col-span-4 flex flex-col gap-5">
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
-                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh muc</h2>
+                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh mục</h2>
                 <select
                   name="categoryId"
                   required
                   defaultValue=""
                   className="h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 appearance-none"
                 >
-                  <option value="" disabled>Chon danh muc...</option>
+                  <option value="" disabled>Chọn danh mục...</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
@@ -131,16 +134,16 @@ export default async function AdminCreateProductPage() {
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
-                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh san pham</h2>
-                <ImageUpload name="image" defaultValue="/images/products/placeholder.svg" label="Anh san pham" />
+                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Ảnh sản phẩm</h2>
+                <MultiImageUpload name="images" label="Ảnh sản phẩm" />
               </div>
 
               <div className="flex flex-col gap-2">
                 <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
-                  Tao san pham
+                  Tạo sản phẩm
                 </button>
                 <Link href="/admin/san-pham" className="w-full rounded-btn border border-border-ui py-2.5 text-center font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors">
-                  Huy
+                  Hủy
                 </Link>
               </div>
             </div>

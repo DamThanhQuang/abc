@@ -29,13 +29,13 @@ export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUpl
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error ?? "Upload that bai");
+        setError(data.error ?? "Tải lên thất bại");
         return;
       }
 
       setUrl(data.url);
     } catch {
-      setError("Upload that bai");
+      setError("Tải lên thất bại");
     } finally {
       setUploading(false);
     }
@@ -64,7 +64,7 @@ export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUpl
           disabled={uploading}
           className="flex-1 rounded-btn border border-border-ui py-2 font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors disabled:opacity-50"
         >
-          {uploading ? "Dang tai len..." : url ? "Doi anh" : "Chon anh"}
+          {uploading ? "Đang tải lên..." : url ? "Đổi ảnh" : "Chọn ảnh"}
         </button>
         {url && (
           <button
@@ -72,7 +72,7 @@ export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUpl
             onClick={() => setUrl("")}
             className="rounded-btn border border-red-200 px-3 py-2 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
           >
-            Xoa
+            Xóa
           </button>
         )}
       </div>

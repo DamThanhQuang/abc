@@ -9,6 +9,7 @@ type FeaturedProductsProps = {
 export function FeaturedProducts({ products }: FeaturedProductsProps) {
   return (
     <section
+      id="solutions"
       aria-labelledby="featured-heading"
       className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-12 lg:py-20"
     >

@@ -149,9 +149,9 @@ export default async function AdminDashboard() {
               <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Quan ly nhanh</h2>
               <div className="flex flex-col gap-2">
                 {[
-                  { label: "Them san pham moi", href: "/admin/san-pham/tao-moi", color: "bg-brand text-white" },
-                  { label: "Dang bai viet", href: "/admin/tin-tuc/tao-moi", color: "bg-surface-card text-content-heading hover:bg-border-ui" },
-                  { label: "Xem yeu cau cho xu ly", href: "/admin/yeu-cau", color: "bg-surface-card text-content-heading hover:bg-border-ui" },
+                  { label: "Thêm sản phẩm mới", href: "/admin/san-pham/tao-moi", color: "bg-brand text-white" },
+                  { label: "Đăng bài viết", href: "/admin/tin-tuc/tao-moi", color: "bg-surface-card text-content-heading hover:bg-border-ui" },
+                  { label: "Xem yêu cầu cho xử lý", href: "/admin/yeu-cau", color: "bg-surface-card text-content-heading hover:bg-border-ui" },
                 ].map((item) => (
                   <Link
                     key={item.href}

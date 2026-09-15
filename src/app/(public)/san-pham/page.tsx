@@ -9,8 +9,8 @@ import { getProductsByPage } from "@/lib/api/products";
 import { getCategories } from "@/lib/api/categories";
 
 export const metadata: Metadata = {
-  title: "Danh Mục Sản Phẩm | FuelPrecision Industrial",
-  description: "Khám phá đầy đủ danh mục thiết bị hệ thống nhiên liệu công nghiệp của FuelPrecision.",
+  title: "Danh mục sản phẩm",
+  description: "Danh mục thiết bị và giải pháp trạm xăng dầu của Ánh Sáng Toàn Cầu.",
 };
 
 type SearchParams = Promise<{

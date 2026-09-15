@@ -21,11 +21,9 @@ export default function DangNhapPage() {
       <div className="w-full max-w-[400px]">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="flex h-14 w-14 items-center justify-center rounded-[12px] bg-brand mb-4">
-            <LogoMark size={28} />
-          </div>
+          <LogoMark className="mb-4 h-36 w-auto rounded-[10px]" />
           <h1 className="font-heading font-bold text-[22px] text-content-heading">
-            FuelPrecision Admin
+            Quản trị hệ thống
           </h1>
           <p className="mt-1 font-sans text-[14px] text-content-muted">
             Dang nhap de quan ly he thong

@@ -4,72 +4,63 @@ import Link from "next/link";
 function ArrowIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-      <path d="M1 5.5h9M6 1l4.5 4.5L6 10" stroke="#00355f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M1 5.5h9M6 1l4.5 4.5L6 10"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-// Large Feature Card — full-bleed image, text at bottom
 function LargeFeatureCard() {
   return (
-    <div
-      className="
-        relative w-full lg:flex-1 lg:min-w-0
-        min-h-[220px] lg:h-[280px]
-        rounded-card overflow-hidden bg-surface-hero
-      "
-    >
+    <div className="relative min-h-[220px] w-full overflow-hidden rounded-card bg-surface-hero lg:h-[280px] lg:min-w-0 lg:flex-1">
       <Image
-        src="/images/features/high-flow-dispensers.svg"
-        alt="High-Flow Dispensers"
+        src="/images/hero-fuel-station-clean.png"
+        alt="Thiết bị tại trạm xăng dầu"
         fill
-        className="object-cover object-center"
+        className="object-cover object-[70%_center]"
         sizes="(max-width: 1024px) 100vw, 67vw"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)",
-        }}
+        className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,24,48,0.92)_0%,rgba(3,24,48,0.32)_65%,transparent_100%)]"
       />
-      <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
-        <span className="inline-block mb-2 lg:mb-3 backdrop-blur-sm bg-white/20 border border-white/30 rounded-pill px-2.5 py-1 font-sans text-[12px] leading-[14px] text-white">
-          Máy bơm &amp; Phân phối
+      <div className="absolute inset-x-0 bottom-0 p-5 lg:p-6">
+        <span className="mb-2 inline-block rounded-pill border border-green-300/30 bg-green-400/15 px-2.5 py-1 font-sans text-[12px] leading-[14px] text-green-200 backdrop-blur-sm lg:mb-3">
+          Thiết bị trạm xăng dầu
         </span>
-        <h3 className="font-heading font-semibold text-[18px] lg:text-[20px] leading-7 text-white mb-1">
-          High-Flow Dispensers
+        <h3 className="mb-1 font-heading text-[18px] font-semibold leading-7 text-white lg:text-[20px]">
+          Giải pháp thiết bị tại trạm
         </h3>
-        <p className="font-sans text-[13px] lg:text-[14px] leading-5 text-white/80 line-clamp-2">
-          Commercial-grade dispensing systems engineered for high-volume fuel distribution with precision metering.
+        <p className="max-w-xl font-sans text-[13px] leading-5 text-white/80 lg:text-[14px]">
+          Danh mục sản phẩm được cập nhật và quản lý trực tiếp trên website.
         </p>
       </div>
     </div>
   );
 }
 
-// Small info card
-type SmallCardProps = { icon: React.ReactNode; title: string; description: string };
+type SmallCardProps = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
 
 function SmallCard({ icon, title, description }: SmallCardProps) {
   return (
-    <div
-      className="
-        w-full sm:flex-1 lg:w-[376px] lg:shrink-0
-        min-h-[180px] lg:h-[280px]
-        bg-white rounded-card shadow-card
-        p-5 lg:p-6 flex flex-col
-      "
-    >
-      <div className="w-12 h-12 rounded-[10px] mb-auto bg-surface-card flex items-center justify-center shrink-0">
+    <div className="flex min-h-[180px] w-full flex-col rounded-card bg-white p-5 shadow-card sm:flex-1 lg:h-[280px] lg:w-[376px] lg:shrink-0 lg:p-6">
+      <div className="mb-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-surface-card">
         {icon}
       </div>
       <div className="mt-4 lg:mt-auto">
-        <h3 className="font-heading font-semibold text-[18px] lg:text-[20px] leading-7 text-content-heading mb-2">
+        <h3 className="mb-2 font-heading text-[18px] font-semibold leading-7 text-content-heading lg:text-[20px]">
           {title}
         </h3>
-        <p className="font-sans text-[13px] lg:text-[14px] leading-5 text-content-body line-clamp-2">
+        <p className="font-sans text-[13px] leading-5 text-content-body lg:text-[14px]">
           {description}
         </p>
       </div>
@@ -77,43 +68,26 @@ function SmallCard({ icon, title, description }: SmallCardProps) {
   );
 }
 
-// CTA card with brand gradient
 function CTACard() {
   return (
-    <div
-      className="
-        w-full lg:flex-1 lg:min-w-0
-        min-h-[200px] lg:h-[280px]
-        rounded-card overflow-hidden relative
-        bg-brand-gradient
-      "
-    >
+    <div className="relative min-h-[200px] w-full overflow-hidden rounded-card bg-brand-gradient lg:h-[280px] lg:min-w-0 lg:flex-1">
       <div
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 60%)",
-        }}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(74,222,128,0.18)_0%,transparent_60%)]"
       />
-      <div className="relative p-5 lg:p-6 flex flex-col h-full">
-        <h3
-          className="
-            font-heading font-semibold
-            text-[20px] lg:text-[24px] leading-8 tracking-[-0.01em]
-            text-white mt-3 lg:mt-[46px]
-          "
-        >
-          Xây dựng cấu hình
+      <div className="relative flex h-full flex-col p-5 lg:p-6">
+        <h3 className="mt-3 font-heading text-[20px] font-semibold leading-8 tracking-[-0.01em] text-white lg:mt-[46px] lg:text-[24px]">
+          Trao đổi nhu cầu
           <br />
-          tùy chỉnh của bạn
+          của bạn
         </h3>
-        <p className="mt-3 font-sans text-[13px] lg:text-[14px] leading-5 text-white/75 max-w-[426px]">
-          Mô tả nhu cầu cụ thể của bạn và chúng tôi sẽ thiết kế một hệ thống nhiên liệu phù hợp chính xác với yêu cầu hoạt động của bạn.
+        <p className="mt-3 max-w-[426px] font-sans text-[13px] leading-5 text-white/75 lg:text-[14px]">
+          Gửi thông tin về nhu cầu thiết bị hoặc phần mềm để được liên hệ và
+          trao đổi nội dung phù hợp.
         </p>
         <Link
           href="/lien-he"
-          className="mt-5 lg:mt-6 self-start inline-flex items-center justify-center bg-white text-brand font-sans text-[14px] leading-4 tracking-[0.05em] rounded-btn px-6 py-[10px] hover:bg-surface-card transition-colors"
+          className="mt-5 inline-flex self-start items-center justify-center rounded-btn bg-white px-6 py-[10px] font-sans text-[14px] leading-4 tracking-[0.05em] text-brand transition-colors hover:bg-surface-card lg:mt-6"
         >
           Liên hệ tư vấn
         </Link>
@@ -122,12 +96,12 @@ function CTACard() {
   );
 }
 
-function USTIcon() {
+function TankIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <rect x="1" y="5" width="16" height="10" rx="2" stroke="#0f4c81" strokeWidth="1.6" />
-      <path d="M5 5V4a4 4 0 0 1 8 0v1" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="9" cy="10" r="1.5" fill="#0f4c81" />
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <rect x="3" y="2" width="14" height="16" rx="3" stroke="#0f4c81" strokeWidth="1.6" />
+      <path d="M6 12c1.6-1.7 2.7 1.7 4.3 0 1.6-1.7 2.7 1.7 4.3 0" stroke="#0f4c81" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M10 5v4" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   );
 }
@@ -137,7 +111,7 @@ function MonitoringIcon() {
     <svg width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true">
       <rect x="1" y="1" width="18" height="12" rx="2" stroke="#0f4c81" strokeWidth="1.6" />
       <path d="M7 15h6M10 13v2" stroke="#0f4c81" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M4 8l3-3 2.5 2.5L13 4l3 3" stroke="#0f4c81" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 9l3-3 2.5 2.5L13 5l3 2" stroke="#0f4c81" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -146,56 +120,43 @@ export function FeaturesGrid() {
   return (
     <section
       aria-labelledby="features-heading"
-      className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-12 lg:py-20"
+      className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20"
     >
-      {/* Heading row */}
-      <div className="flex items-start sm:items-end justify-between gap-4 mb-8 lg:mb-12">
+      <div className="mb-8 flex items-start justify-between gap-4 sm:items-end lg:mb-12">
         <div>
           <h2
             id="features-heading"
-            className="
-              font-heading font-semibold
-              text-[24px] sm:text-[28px] lg:text-[32px]
-              leading-[32px] sm:leading-[36px] lg:leading-[40px]
-              tracking-[-0.01em] text-content-heading
-            "
+            className="font-heading text-[24px] font-semibold leading-[32px] tracking-[-0.01em] text-content-heading sm:text-[28px] sm:leading-[36px] lg:text-[32px] lg:leading-[40px]"
           >
-            Giải Pháp Hạ Tầng Nhiên Liệu
+            Thiết bị &amp; giải pháp trạm xăng dầu
           </h2>
-          <p className="mt-2 font-sans text-[14px] lg:text-[16px] leading-6 text-content-muted">
-            Hệ thống tích hợp từ bồn chứa đến điểm phân phối.
+          <p className="mt-2 font-sans text-[14px] leading-6 text-content-muted lg:text-[16px]">
+            Đo bồn tự động • Thiết bị trạm xăng dầu • Phần mềm quản lý
           </p>
         </div>
         <Link
           href="/san-pham"
-          className="inline-flex items-center gap-1 shrink-0 pb-1 font-sans text-[14px] leading-4 tracking-[0.05em] text-brand-dark hover:underline transition-colors"
+          className="inline-flex shrink-0 items-center gap-1 pb-1 font-sans text-[14px] leading-4 tracking-[0.05em] text-brand-dark transition-colors hover:underline"
         >
           Xem tất cả
           <ArrowIcon />
         </Link>
       </div>
 
-      {/*
-        Mobile / sm:  all cards full-width stacked
-        md:           Large + UST side by side, then Remote + CTA side by side
-        lg+:          Bento: row1=[Large(flex-1) + Small(376px)], row2=[Small(376px) + CTA(flex-1)]
-      */}
       <div className="flex flex-col gap-3">
-        {/* Row 1 */}
-        <div className="flex flex-col md:flex-row gap-3">
+        <div className="flex flex-col gap-3 md:flex-row">
           <LargeFeatureCard />
           <SmallCard
-            icon={<USTIcon />}
-            title="UST Systems"
-            description="Double-walled underground storage tanks with continuous leak detection."
+            icon={<TankIcon />}
+            title="Đo bồn tự động"
+            description="Một trong các nhóm giải pháp đang được giới thiệu trên website."
           />
         </div>
-        {/* Row 2 */}
-        <div className="flex flex-col md:flex-row gap-3">
+        <div className="flex flex-col gap-3 md:flex-row">
           <SmallCard
             icon={<MonitoringIcon />}
-            title="Viễn thám & Giám sát"
-            description="Real-time inventory management and predictive maintenance software."
+            title="Phần mềm quản lý"
+            description="Giải pháp hỗ trợ quản lý thông tin phục vụ hoạt động tại trạm."
           />
           <CTACard />
         </div>

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
+import { normalizeProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 import { productSchema, type ProductInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string; id?: string };
@@ -16,10 +17,13 @@ export async function createProduct(data: ProductInput): Promise<ActionResult> {
 
   try {
     const { technicalSpecs, ...productData } = parsed.data;
+    const images = normalizeProductImages(productData.images);
 
     const product = await db.product.create({
       data: {
         ...productData,
+        images,
+        image: images[0] ?? productData.image ?? PRODUCT_IMAGE_PLACEHOLDER,
         technicalSpecs: {
           create: technicalSpecs,
         },
@@ -46,11 +50,18 @@ export async function updateProduct(id: string, data: Partial<ProductInput>): Pr
 
   try {
     const { technicalSpecs, ...productData } = parsed.data;
+    const images = productData.images === undefined
+      ? undefined
+      : normalizeProductImages(productData.images);
 
     await db.product.update({
       where: { id },
       data: {
         ...productData,
+        ...(images !== undefined && {
+          images,
+          image: images[0] ?? productData.image ?? PRODUCT_IMAGE_PLACEHOLDER,
+        }),
         ...(technicalSpecs !== undefined && {
           technicalSpecs: {
             deleteMany: {},

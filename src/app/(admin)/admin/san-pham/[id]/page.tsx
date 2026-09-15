@@ -5,8 +5,9 @@ import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { updateProduct } from "@/lib/actions/products";
 import { requireAdmin } from "@/lib/auth-guard";
 import { getCategories } from "@/lib/api/categories";
-import { ImageUpload } from "@/components/admin/shared/ImageUpload";
+import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
 import { db } from "@/lib/db";
+import { normalizeProductImages, parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -37,6 +38,7 @@ export default async function AdminEditProductPage({ params }: Props) {
     const guard = await requireAdmin();
     if (!guard.ok) return;
 
+    const images = parseProductImages(formData.get("images"));
     const result = await updateProduct(id, {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,
@@ -44,7 +46,8 @@ export default async function AdminEditProductPage({ params }: Props) {
       model: (formData.get("model") as string) || undefined,
       spec: (formData.get("spec") as string) || undefined,
       description: (formData.get("description") as string) || undefined,
-      image: formData.get("image") as string,
+      image: images[0] ?? PRODUCT_IMAGE_PLACEHOLDER,
+      images,
       features: (formData.get("features") as string)
         .split("\n")
         .map((f) => f.trim())
@@ -77,7 +80,7 @@ export default async function AdminEditProductPage({ params }: Props) {
 
         <form action={handleSave}>
           <input type="hidden" name="slug" value={product.slug} />
-          {/* image is now handled by ImageUpload component in sidebar */}
+          {/* Images are handled by MultiImageUpload in the sidebar. */}
           <input
             type="hidden"
             name="technicalSpecs"
@@ -145,8 +148,12 @@ export default async function AdminEditProductPage({ params }: Props) {
               </div>
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
-                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Anh san pham</h2>
-                <ImageUpload name="image" defaultValue={product.image} label="Anh san pham" />
+                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Ảnh sản phẩm</h2>
+                <MultiImageUpload
+                  name="images"
+                  defaultValues={normalizeProductImages(product.images, product.image)}
+                  label="Ảnh sản phẩm"
+                />
               </div>
 
               {/* Save button */}
