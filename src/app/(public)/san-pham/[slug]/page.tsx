@@ -52,8 +52,8 @@ export default async function ProductDetailPage({ params }: Props) {
       <PageHero
         title={product.name}
         breadcrumbs={[
-          { label: "Trang chu", href: "/" },
-          { label: "San pham", href: "/san-pham" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Sản phẩm", href: "/san-pham" },
           { label: product.name },
         ]}
       />
@@ -80,7 +80,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </span>
               {product.model && (
                 <span className="font-sans text-[13px] text-content-muted">
-                  Mau: {product.model}
+                  Mẫu: {product.model}
                 </span>
               )}
             </div>
@@ -108,7 +108,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.features && product.features.length > 0 && (
               <div>
                 <h2 className="mb-3 font-heading font-semibold text-[15px] lg:text-[16px] text-content-heading">
-                  Tinh nang noi bat
+                  Tính năng nổi bật
                 </h2>
                 <ul className="flex flex-col gap-2">
                   {product.features.map((f) => (
@@ -130,13 +130,13 @@ export default async function ProductDetailPage({ params }: Props) {
                 href="/lien-he"
                 className="flex-1 inline-flex items-center justify-center bg-brand text-white rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] shadow-btn hover:bg-brand/90 transition-colors"
               >
-                Yeu cau bao gia
+                Yêu cầu báo giá
               </Link>
               <Link
                 href="/san-pham"
                 className="inline-flex items-center justify-center border border-brand text-brand rounded-btn px-6 py-[13px] font-sans text-[14px] leading-4 tracking-[0.05em] hover:bg-surface-card transition-colors"
               >
-                Xem tat ca
+                Xem tất cả
               </Link>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default async function ProductDetailPage({ params }: Props) {
         {product.technicalSpecs && product.technicalSpecs.length > 0 && (
           <div className="mt-10 lg:mt-16">
             <h2 className="mb-5 lg:mb-6 font-heading font-semibold text-[20px] lg:text-[24px] leading-8 text-content-heading">
-              Thong so ky thuat
+              Thông số kỹ thuật
             </h2>
             <div className="overflow-x-auto rounded-card border border-border-ui">
               <table className="w-full min-w-[400px]">

@@ -64,8 +64,8 @@ export default async function NewsArticlePage({ params }: Props) {
       <PageHero
         title={article.title}
         breadcrumbs={[
-          { label: "Trang chu", href: "/" },
-          { label: "Tin tuc", href: "/tin-tuc" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Tin tức", href: "/tin-tuc" },
           { label: article.category },
         ]}
       />
@@ -85,7 +85,7 @@ export default async function NewsArticlePage({ params }: Props) {
               </time>
               {article.readingTime && (
                 <span className="font-sans text-[13px] text-content-muted">
-                  {article.readingTime} phut doc
+                  {article.readingTime} phút đọc
                 </span>
               )}
             </div>
@@ -116,14 +116,14 @@ export default async function NewsArticlePage({ params }: Props) {
             ) : (
               <div className="space-y-4">
                 <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                  Trong boi canh nganh cong nghiep nhien lieu ngay cang dat ra nhung yeu cau khat khe
+                  Trong bối cảnh ngành công nghiệp nhiên liệu ngày càng đặt ra những yêu cầu khắt khe
                   hơn về hiệu suất, độ chính xác và độ tin cậy, Ánh Sáng Toàn Cầu tiếp tục
-                  khang dinh vi the tien phong voi nhung giai phap ky thuat tien tien nhat.
+                  khẳng định vị thế tiên phong với những giải pháp kỹ thuật tiên tiến nhất.
                 </p>
                 <p className="font-sans text-[14px] lg:text-[15px] leading-7 text-content-body">
-                  Doi ngu ky su cua chung toi da danh nhieu nam nghien cuu va phat trien de mang
-                  den nhung thiet bi khong chi dap ung cac tieu chuan quoc te hien hanh ma con
-                  vuot xa ky vong cua khach hang trong moi truong van hanh thuc te.
+                  Đội ngũ kỹ sư của chúng tôi đã dành nhiều năm nghiên cứu và phát triển để mang
+                  đến những thiết bị không chỉ đáp ứng các tiêu chuẩn quốc tế hiện hành mà còn
+                  vượt xa kỳ vọng của khách hàng trong môi trường vận hành thực tế.
                 </p>
               </div>
             )}
@@ -137,7 +137,7 @@ export default async function NewsArticlePage({ params }: Props) {
                 <svg width="7" height="11" viewBox="0 0 7 11" fill="none" aria-hidden="true">
                   <path d="M6 1L1 5.5 6 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Quay lai danh sach tin tuc
+                Quay lại danh sách tin tức
               </Link>
             </div>
           </article>
@@ -146,14 +146,14 @@ export default async function NewsArticlePage({ params }: Props) {
           <aside className="lg:col-span-4">
             <div className="lg:sticky lg:top-24 flex flex-col gap-5 lg:gap-0">
               <h2 className="mb-4 lg:mb-5 font-heading font-semibold text-[17px] lg:text-[18px] text-content-heading">
-                Bai viet lien quan
+                Bài viết liên quan
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
                 {related.length > 0 ? (
                   related.map((a) => <NewsCard key={a.id} article={a} />)
                 ) : (
                   <p className="font-sans text-[14px] text-content-muted">
-                    Chua co bai viet lien quan.
+                    Chưa có bài viết liên quan.
                   </p>
                 )}
               </div>
@@ -161,16 +161,16 @@ export default async function NewsArticlePage({ params }: Props) {
               {/* CTA box */}
               <div className="mt-6 lg:mt-8 rounded-card bg-surface-card p-5 lg:p-6">
                 <h3 className="mb-2 font-heading font-semibold text-[15px] lg:text-[16px] text-content-heading">
-                  Can tu van san pham?
+                  Cần tư vấn sản phẩm?
                 </h3>
                 <p className="mb-4 font-sans text-[13px] leading-5 text-content-body">
-                  Doi ngu ky thuat cua chung toi san sang ho tro ban.
+                  Đội ngũ kỹ thuật của chúng tôi sẵn sàng hỗ trợ bạn.
                 </p>
                 <Link
                   href="/lien-he"
                   className="inline-flex w-full items-center justify-center bg-brand text-white rounded-btn px-4 py-[10px] font-sans text-[13px] leading-4 tracking-[0.05em] hover:bg-brand/90 transition-colors"
                 >
-                  Lien he ngay
+                  Liên hệ ngay
                 </Link>
               </div>
             </div>

@@ -21,7 +21,7 @@ export async function createCategory(data: CategoryInput): Promise<ActionResult>
     return { success: true, id: category.id };
   } catch (err) {
     console.error("createCategory:", err);
-    return { success: false, error: "Khong the tao danh muc." };
+    return { success: false, error: "Không thể tạo danh mục." };
   }
 }
 
@@ -39,7 +39,7 @@ export async function updateCategory(id: string, data: Partial<CategoryInput>): 
     return { success: true };
   } catch (err) {
     console.error("updateCategory:", err);
-    return { success: false, error: "Khong the cap nhat danh muc." };
+    return { success: false, error: "Không thể cập nhật danh mục." };
   }
 }
 
@@ -50,13 +50,13 @@ export async function deleteCategory(id: string): Promise<ActionResult> {
   try {
     const count = await db.product.count({ where: { categoryId: id } });
     if (count > 0) {
-      return { success: false, error: `Danh muc dang chua ${count} san pham. Vui long chuyen san pham sang danh muc khac truoc.` };
+      return { success: false, error: `Danh mục đang chứa ${count} sản phẩm. Vui lòng chuyển sản phẩm sang danh mục khác trước.` };
     }
     await db.category.delete({ where: { id } });
     revalidatePath("/admin/danh-muc");
     return { success: true };
   } catch (err) {
     console.error("deleteCategory:", err);
-    return { success: false, error: "Khong the xoa danh muc." };
+    return { success: false, error: "Không thể xóa danh mục." };
   }
 }

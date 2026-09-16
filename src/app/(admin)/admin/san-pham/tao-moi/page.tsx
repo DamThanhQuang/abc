@@ -8,7 +8,7 @@ import { getCategories } from "@/lib/api/categories";
 import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
 import { parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 
-export const metadata: Metadata = { title: "Them san pham | Admin" };
+export const metadata: Metadata = { title: "Thêm sản phẩm | Admin" };
 
 const inputClass = "h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
 const textareaClass = "w-full resize-none rounded-btn border border-border-ui bg-white px-3 py-2 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
@@ -58,9 +58,9 @@ export default async function AdminCreateProductPage() {
     <>
       <AdminHeader
         breadcrumb={[
-          { label: "Tong quan", href: "/admin" },
-          { label: "San pham", href: "/admin/san-pham" },
-          { label: "Them moi" },
+          { label: "Tổng quan", href: "/admin" },
+          { label: "Sản phẩm", href: "/admin/san-pham" },
+          { label: "Thêm mới" },
         ]}
       />
 
@@ -71,7 +71,7 @@ export default async function AdminCreateProductPage() {
             <p className="font-sans text-[13px] text-content-muted">Điền thông tin sản phẩm bên dưới</p>
           </div>
           <Link href="/admin/san-pham" className="font-sans text-[13px] text-brand hover:underline">
-            &larr; Quay lai
+            &larr; Quay lại
           </Link>
         </div>
 
@@ -110,8 +110,8 @@ export default async function AdminCreateProductPage() {
                   Tính năng nổi bật
                 </h2>
                 <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>Moi dong mot tinh nang</label>
-                  <textarea rows={6} name="features" className={textareaClass} placeholder={"Tinh nang 1\nTinh nang 2\nTinh nang 3"} />
+                  <label className={labelClass}>Mỗi dòng một tính năng</label>
+                  <textarea rows={6} name="features" className={textareaClass} placeholder={"Tính năng 1\nTính năng 2\nTính năng 3"} />
                 </div>
               </div>
             </div>

@@ -100,7 +100,7 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "Khong co file" }, { status: 400 });
+      return NextResponse.json({ error: "Không có file" }, { status: 400 });
     }
 
     if (file.size > MAX_SIZE) {
@@ -162,6 +162,6 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error("Upload error:", err);
-    return NextResponse.json({ error: "Upload that bai" }, { status: 500 });
+    return NextResponse.json({ error: "Tải lên thất bại" }, { status: 500 });
   }
 }

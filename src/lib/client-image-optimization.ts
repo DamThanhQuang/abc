@@ -57,6 +57,13 @@ export async function optimizeImageForUpload(file: File): Promise<OptimizedImage
     if (blob.size > IMAGE_UPLOAD.maxReceivedBytes) {
       blob = await canvasToWebp(canvas, 0.68);
     }
+
+    // Release the canvas backing store before throwing or returning so that
+    // the GPU/CPU memory is freed immediately instead of waiting for GC.
+    // This matters when the caller processes several large images in a loop.
+    canvas.width = 0;
+    canvas.height = 0;
+
     if (blob.size > IMAGE_UPLOAD.maxReceivedBytes) {
       throw new Error("Không thể nén ảnh xuống dưới 3 MB. Hãy chọn ảnh khác.");
     }

@@ -26,7 +26,7 @@ export default function DangNhapPage() {
             Quản trị hệ thống
           </h1>
           <p className="mt-1 font-sans text-[14px] text-content-muted">
-            Dang nhap de quan ly he thong
+            Đăng nhập để quản lý hệ thống
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export default function DangNhapPage() {
                 htmlFor="password"
                 className="font-sans text-[13px] font-medium text-content-heading"
               >
-                Mat khau
+                Mật khẩu
               </label>
               <input
                 id="password"
@@ -80,7 +80,7 @@ export default function DangNhapPage() {
               disabled={pending}
               className="h-11 w-full rounded-btn bg-brand font-sans text-[14px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {pending ? "Dang dang nhap..." : "Dang nhap"}
+              {pending ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
           </form>
         </div>

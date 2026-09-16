@@ -4,7 +4,7 @@ import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { listProductsForAdmin } from "@/lib/api/products";
 import { deleteProduct } from "@/lib/actions/products";
 
-export const metadata: Metadata = { title: "Quan ly san pham | Admin" };
+export const metadata: Metadata = { title: "Quản lý sản phẩm | Admin" };
 
 export default async function AdminSanPhamPage() {
   const products = await listProductsForAdmin();
@@ -12,16 +12,16 @@ export default async function AdminSanPhamPage() {
 
   return (
     <>
-      <AdminHeader breadcrumb={[{ label: "Tong quan", href: "/admin" }, { label: "San pham" }]} />
+      <AdminHeader breadcrumb={[{ label: "Tổng quan", href: "/admin" }, { label: "Sản phẩm" }]} />
 
       <main className="flex-1 overflow-y-auto p-6">
         {/* Page header */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly san pham</h1>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quản lý sản phẩm</h1>
             <p className="font-sans text-[13px] text-content-muted">
-              {products.length} san pham trong he thong
-              {draftCount > 0 && ` — ${draftCount} chua xuat ban`}
+              {products.length} sản phẩm trong hệ thống
+              {draftCount > 0 && ` — ${draftCount} chưa xuất bản`}
             </p>
           </div>
           <Link
@@ -31,7 +31,7 @@ export default async function AdminSanPhamPage() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            Them san pham
+            Thêm sản phẩm
           </Link>
         </div>
 
@@ -41,7 +41,7 @@ export default async function AdminSanPhamPage() {
             <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b border-border-ui bg-surface-card/50">
-                  {["San pham", "Danh muc", "Ma san pham", "Thong so", "Trang thai", "Thao tac"].map((h) => (
+                  {["Sản phẩm", "Danh mục", "Mã sản phẩm", "Thông số", "Trạng thái", "Thao tác"].map((h) => (
                     <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                       {h}
                     </th>
@@ -59,7 +59,7 @@ export default async function AdminSanPhamPage() {
                         </div>
                         <div>
                           <p className="font-sans text-[13px] font-medium text-content-heading line-clamp-1">{product.name}</p>
-                          {product.model && <p className="font-sans text-[12px] text-content-muted">Mau: {product.model}</p>}
+                          {product.model && <p className="font-sans text-[12px] text-content-muted">Mẫu: {product.model}</p>}
                         </div>
                       </div>
                     </td>
@@ -78,7 +78,7 @@ export default async function AdminSanPhamPage() {
                             : "bg-amber-50 text-amber-700 border border-amber-200"
                         }`}
                       >
-                        {product.published ? "Da xuat ban" : "Ban nhap"}
+                        {product.published ? "Đã xuất bản" : "Bản nháp"}
                       </span>
                     </td>
                     <td className="px-5 py-4">
@@ -87,7 +87,7 @@ export default async function AdminSanPhamPage() {
                           href={`/admin/san-pham/${product.id}`}
                           className="rounded-[6px] border border-border-ui px-3 py-1.5 font-sans text-[12px] text-content-body hover:bg-surface-card transition-colors"
                         >
-                          Sua
+                          Sửa
                         </Link>
                         <form action={async () => {
                           "use server";
@@ -97,7 +97,7 @@ export default async function AdminSanPhamPage() {
                             type="submit"
                             className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
                           >
-                            Xoa
+                            Xóa
                           </button>
                         </form>
                       </div>

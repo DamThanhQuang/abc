@@ -8,7 +8,7 @@ type ImageUploadProps = {
   label?: string;
 };
 
-export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUploadProps) {
+export function ImageUpload({ name, defaultValue = "", label = "Ảnh" }: ImageUploadProps) {
   const [url, setUrl] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -91,7 +91,7 @@ export function ImageUpload({ name, defaultValue = "", label = "Anh" }: ImageUpl
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         className="h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors"
-        placeholder="Hoac nhap URL anh truc tiep"
+        placeholder="Hoặc nhập URL ảnh trực tiếp"
       />
 
       {error && <p className="font-sans text-[12px] text-red-600">{error}</p>}

@@ -6,7 +6,7 @@ import { createCategory, deleteCategory } from "@/lib/actions/categories";
 import { requireAdmin } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
 
-export const metadata: Metadata = { title: "Quan ly danh muc | Admin" };
+export const metadata: Metadata = { title: "Quản lý danh mục | Admin" };
 
 const inputClass = "h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
 
@@ -46,12 +46,12 @@ export default async function AdminDanhMucPage() {
 
   return (
     <>
-      <AdminHeader breadcrumb={[{ label: "Tong quan", href: "/admin" }, { label: "Danh muc" }]} />
+      <AdminHeader breadcrumb={[{ label: "Tổng quan", href: "/admin" }, { label: "Danh mục" }]} />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6">
-          <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly danh muc</h1>
-          <p className="font-sans text-[13px] text-content-muted">{categories.length} danh muc trong he thong</p>
+          <h1 className="font-heading font-bold text-[22px] text-content-heading">Quản lý danh mục</h1>
+          <p className="font-sans text-[13px] text-content-muted">{categories.length} danh mục trong hệ thống</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -62,7 +62,7 @@ export default async function AdminDanhMucPage() {
                 <table className="w-full min-w-[500px]">
                   <thead>
                     <tr className="border-b border-border-ui bg-surface-card/50">
-                      {["Thu tu", "Ten danh muc", "Slug", "San pham", "Thao tac"].map((h) => (
+                      {["Thứ tự", "Tên danh mục", "Slug", "Sản phẩm", "Thao tác"].map((h) => (
                         <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                           {h}
                         </th>
@@ -85,7 +85,7 @@ export default async function AdminDanhMucPage() {
                               type="submit"
                               className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
                             >
-                              Xoa
+                              Xóa
                             </button>
                           </form>
                         </td>
@@ -94,7 +94,7 @@ export default async function AdminDanhMucPage() {
                     {categories.length === 0 && (
                       <tr>
                         <td colSpan={5} className="px-5 py-8 text-center font-sans text-[13px] text-content-muted">
-                          Chua co danh muc nao.
+                          Chưa có danh mục nào.
                         </td>
                       </tr>
                     )}
@@ -108,23 +108,23 @@ export default async function AdminDanhMucPage() {
           <div className="lg:col-span-4">
             <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
               <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
-                Them danh muc moi
+                Thêm danh mục mới
               </h2>
               <form action={handleCreate} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Ten danh muc *</label>
+                  <label className="font-sans text-[12px] font-semibold text-content-heading">Tên danh mục *</label>
                   <input type="text" name="name" required className={inputClass} placeholder="VD: May bom" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Mo ta</label>
-                  <input type="text" name="description" className={inputClass} placeholder="Mo ta ngan gon" />
+                  <label className="font-sans text-[12px] font-semibold text-content-heading">Mô tả</label>
+                  <input type="text" name="description" className={inputClass} placeholder="Mô tả ngắn gọn" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Thu tu hien thi</label>
+                  <label className="font-sans text-[12px] font-semibold text-content-heading">Thứ tự hiển thị</label>
                   <input type="number" name="order" className={inputClass} defaultValue="0" min="0" />
                 </div>
                 <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
-                  Tao danh muc
+                  Tạo danh mục
                 </button>
               </form>
             </div>

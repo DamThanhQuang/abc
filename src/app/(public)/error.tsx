@@ -9,12 +9,12 @@ export default function PublicError({
   return (
     <div className="flex-1 flex items-center justify-center py-20 px-4">
       <div className="text-center max-w-md">
-        <p className="font-heading text-[48px] font-bold text-red-200 leading-none mb-2">Loi</p>
+        <p className="font-heading text-[48px] font-bold text-red-200 leading-none mb-2">Lỗi</p>
         <h1 className="font-heading font-bold text-[22px] text-content-heading mb-3">
-          Da xay ra loi
+          Đã xảy ra lỗi
         </h1>
         <p className="font-sans text-[14px] text-content-muted mb-6">
-          Xin loi, da co loi xay ra. Vui long thu lai.
+          Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại.
         </p>
         <button
           onClick={reset}

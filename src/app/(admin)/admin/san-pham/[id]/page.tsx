@@ -14,7 +14,7 @@ type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const product = await db.product.findUnique({ where: { id }, select: { name: true } });
-  return { title: product ? `Sua: ${product.name} | Admin` : "Khong tim thay" };
+  return { title: product ? `Sửa: ${product.name} | Admin` : "Không tìm thấy" };
 }
 
 const inputClass = "h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
@@ -61,20 +61,20 @@ export default async function AdminEditProductPage({ params }: Props) {
     <>
       <AdminHeader
         breadcrumb={[
-          { label: "Tong quan", href: "/admin" },
-          { label: "San pham", href: "/admin/san-pham" },
-          { label: "Chinh sua" },
+          { label: "Tổng quan", href: "/admin" },
+          { label: "Sản phẩm", href: "/admin/san-pham" },
+          { label: "Chỉnh sửa" },
         ]}
       />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Chinh sua san pham</h1>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Chỉnh sửa sản phẩm</h1>
             <p className="font-sans text-[13px] text-content-muted">{product.name}</p>
           </div>
           <Link href="/admin/san-pham" className="font-sans text-[13px] text-brand hover:underline">
-            &larr; Quay lai
+            &larr; Quay lại
           </Link>
         </div>
 
@@ -92,25 +92,25 @@ export default async function AdminEditProductPage({ params }: Props) {
             <div className="lg:col-span-8 flex flex-col gap-5">
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
-                  Thong tin co ban
+                  Thông tin cơ bản
                 </h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className={labelClass}>Ten san pham</label>
+                    <label className={labelClass}>Tên sản phẩm</label>
                     <input type="text" name="name" defaultValue={product.name} className={inputClass} required />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
-                      <label className={labelClass}>Ma san pham</label>
+                      <label className={labelClass}>Mã sản phẩm</label>
                       <input type="text" name="model" defaultValue={product.model ?? ""} className={inputClass} />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label className={labelClass}>Thong so noi bat</label>
+                      <label className={labelClass}>Thông số nổi bật</label>
                       <input type="text" name="spec" defaultValue={product.spec ?? ""} className={inputClass} />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className={labelClass}>Mo ta</label>
+                    <label className={labelClass}>Mô tả</label>
                     <textarea rows={4} name="description" defaultValue={product.description ?? ""} className={textareaClass} />
                   </div>
                 </div>
@@ -118,10 +118,10 @@ export default async function AdminEditProductPage({ params }: Props) {
 
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
                 <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
-                  Tinh nang noi bat
+                  Tính năng nổi bật
                 </h2>
                 <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>Moi dong mot tinh nang</label>
+                  <label className={labelClass}>Mỗi dòng một tính năng</label>
                   <textarea
                     rows={6}
                     name="features"
@@ -135,7 +135,7 @@ export default async function AdminEditProductPage({ params }: Props) {
             {/* Sidebar */}
             <div className="lg:col-span-4 flex flex-col gap-5">
               <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
-                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh muc</h2>
+                <h2 className="mb-4 font-heading font-semibold text-[15px] text-content-heading">Danh mục</h2>
                 <select
                   name="categoryId"
                   defaultValue={product.categoryId}
@@ -159,10 +159,10 @@ export default async function AdminEditProductPage({ params }: Props) {
               {/* Save button */}
               <div className="flex flex-col gap-2">
                 <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
-                  Luu thay doi
+                  Lưu thay đổi
                 </button>
                 <Link href="/admin/san-pham" className="w-full rounded-btn border border-border-ui py-2.5 text-center font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors">
-                  Huy
+                  Hủy
                 </Link>
               </div>
             </div>

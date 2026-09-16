@@ -40,7 +40,7 @@ function ToolbarButton({
   );
 }
 
-export function RichTextEditor({ name, defaultValue = "", placeholder = "Noi dung bai viet..." }: RichTextEditorProps) {
+export function RichTextEditor({ name, defaultValue = "", placeholder = "Nội dung bài viết..." }: RichTextEditorProps) {
   const hiddenRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
@@ -68,14 +68,14 @@ export function RichTextEditor({ name, defaultValue = "", placeholder = "Noi dun
   if (!editor) return null;
 
   function addLink() {
-    const url = prompt("Nhap URL:");
+    const url = prompt("Nhập URL:");
     if (url) {
       editor!.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
     }
   }
 
   function addImage() {
-    const url = prompt("Nhap URL anh:");
+    const url = prompt("Nhập URL ảnh:");
     if (url) {
       editor!.chain().focus().setImage({ src: url }).run();
     }
@@ -88,21 +88,21 @@ export function RichTextEditor({ name, defaultValue = "", placeholder = "Noi dun
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           active={editor.isActive("bold")}
-          title="In dam"
+          title="In đậm"
         >
           B
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
           active={editor.isActive("italic")}
-          title="In nghieng"
+          title="In nghiêng"
         >
           <em>I</em>
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleStrike().run()}
           active={editor.isActive("strike")}
-          title="Gach ngang"
+          title="Gạch ngang"
         >
           <s>S</s>
         </ToolbarButton>
@@ -129,14 +129,14 @@ export function RichTextEditor({ name, defaultValue = "", placeholder = "Noi dun
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           active={editor.isActive("bulletList")}
-          title="Danh sach"
+          title="Danh sách"
         >
           &bull; List
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           active={editor.isActive("orderedList")}
-          title="Danh sach so"
+          title="Danh sách số"
         >
           1. List
         </ToolbarButton>
@@ -146,22 +146,22 @@ export function RichTextEditor({ name, defaultValue = "", placeholder = "Noi dun
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           active={editor.isActive("blockquote")}
-          title="Trich dan"
+          title="Trích dẫn"
         >
           &ldquo;&rdquo;
         </ToolbarButton>
-        <ToolbarButton onClick={addLink} active={editor.isActive("link")} title="Them link">
+        <ToolbarButton onClick={addLink} active={editor.isActive("link")} title="Thêm link">
           Link
         </ToolbarButton>
-        <ToolbarButton onClick={addImage} title="Them anh">
-          Anh
+        <ToolbarButton onClick={addImage} title="Thêm ảnh">
+          Ảnh
         </ToolbarButton>
 
         <div className="w-px h-5 bg-border-ui mx-1" />
 
         <ToolbarButton
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          title="Duong ke ngang"
+          title="Đường kẻ ngang"
         >
           &#8212;
         </ToolbarButton>

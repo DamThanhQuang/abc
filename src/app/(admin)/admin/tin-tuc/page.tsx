@@ -4,7 +4,7 @@ import { listArticlesForAdmin } from "@/lib/api/news";
 import { deleteArticle } from "@/lib/actions/news";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Quan ly tin tuc | Admin" };
+export const metadata: Metadata = { title: "Quản lý tin tức | Admin" };
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -16,15 +16,15 @@ export default async function AdminTinTucPage() {
 
   return (
     <>
-      <AdminHeader breadcrumb={[{ label: "Tong quan", href: "/admin" }, { label: "Tin tuc" }]} />
+      <AdminHeader breadcrumb={[{ label: "Tổng quan", href: "/admin" }, { label: "Tin tức" }]} />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quan ly tin tuc</h1>
+            <h1 className="font-heading font-bold text-[22px] text-content-heading">Quản lý tin tức</h1>
             <p className="font-sans text-[13px] text-content-muted">
-              {articles.length} bai viet
-              {draftCount > 0 && ` — ${draftCount} chua xuat ban`}
+              {articles.length} bài viết
+              {draftCount > 0 && ` — ${draftCount} chưa xuất bản`}
             </p>
           </div>
           <Link
@@ -34,7 +34,7 @@ export default async function AdminTinTucPage() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            Dang bai viet moi
+            Đăng bài viết mới
           </Link>
         </div>
 
@@ -43,7 +43,7 @@ export default async function AdminTinTucPage() {
             <table className="w-full min-w-[640px]">
               <thead>
                 <tr className="border-b border-border-ui bg-surface-card/50">
-                  {["Bai viet", "Danh muc", "Ngay dang", "Thoi gian doc", "Trang thai", "Thao tac"].map((h) => (
+                  {["Bài viết", "Danh mục", "Ngày đăng", "Thời gian đọc", "Trạng thái", "Thao tác"].map((h) => (
                     <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                       {h}
                     </th>
@@ -68,7 +68,7 @@ export default async function AdminTinTucPage() {
                       </span>
                     </td>
                     <td className="px-5 py-4 font-sans text-[13px] text-content-muted whitespace-nowrap">{formatDate(article.publishedAt)}</td>
-                    <td className="px-5 py-4 font-sans text-[13px] text-content-muted">{article.readingTime ?? "-"} phut</td>
+                    <td className="px-5 py-4 font-sans text-[13px] text-content-muted">{article.readingTime ?? "-"} phút</td>
                     <td className="px-5 py-4">
                       <span
                         className={`rounded-pill px-2.5 py-0.5 font-sans text-[12px] whitespace-nowrap ${
@@ -77,7 +77,7 @@ export default async function AdminTinTucPage() {
                             : "bg-amber-50 text-amber-700 border border-amber-200"
                         }`}
                       >
-                        {article.published ? "Da xuat ban" : "Ban nhap"}
+                        {article.published ? "Đã xuất bản" : "Bản nháp"}
                       </span>
                     </td>
                     <td className="px-5 py-4">
@@ -86,7 +86,7 @@ export default async function AdminTinTucPage() {
                           href={`/admin/tin-tuc/${article.id}`}
                           className="rounded-[6px] border border-border-ui px-3 py-1.5 font-sans text-[12px] text-content-body hover:bg-surface-card transition-colors"
                         >
-                          Sua
+                          Sửa
                         </Link>
                         <form action={async () => {
                           "use server";
@@ -96,7 +96,7 @@ export default async function AdminTinTucPage() {
                             type="submit"
                             className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
                           >
-                            Xoa
+                            Xóa
                           </button>
                         </form>
                       </div>
