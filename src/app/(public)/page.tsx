@@ -1,5 +1,6 @@
 import { HeroSection }       from "@/components/public/home/HeroSection";
 import { AboutUsIntro }      from "@/components/public/home/AboutUsIntro";
+import { ProductLineup }     from "@/components/public/home/ProductLineup";
 import { FeaturedProducts }  from "@/components/public/home/FeaturedProducts";
 import { FeaturesGrid }      from "@/components/public/home/FeaturesGrid";
 import { getProducts }       from "@/lib/api/products";
@@ -16,10 +17,13 @@ export default async function HomePage() {
       {/* 2 — About Us Intro */}
       <AboutUsIntro />
 
-      {/* 3 — Featured Products */}
+      {/* 3 — Product lineup */}
+      <ProductLineup />
+
+      {/* 4 — Featured Products */}
       <FeaturedProducts products={products} />
 
-      {/* 4 — Features bento grid */}
+      {/* 5 — Features bento grid */}
       <FeaturesGrid />
     </>
   );
