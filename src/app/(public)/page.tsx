@@ -1,5 +1,4 @@
 import { HeroSection }       from "@/components/public/home/HeroSection";
-import { AboutUsIntro }      from "@/components/public/home/AboutUsIntro";
 import { ProductLineup }     from "@/components/public/home/ProductLineup";
 import { FeaturedProducts }  from "@/components/public/home/FeaturedProducts";
 import { FeaturesGrid }      from "@/components/public/home/FeaturesGrid";
@@ -14,16 +13,13 @@ export default async function HomePage() {
       {/* 1 — Hero */}
       <HeroSection />
 
-      {/* 2 — About Us Intro */}
-      <AboutUsIntro />
-
-      {/* 3 — Product lineup */}
+      {/* 2 — Product lineup */}
       <ProductLineup />
 
-      {/* 4 — Featured Products */}
+      {/* 3 — Featured Products */}
       <FeaturedProducts products={products} />
 
-      {/* 5 — Features bento grid */}
+      {/* 4 — Features bento grid */}
       <FeaturesGrid />
     </>
   );

@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  ProductImageCarousel,
+  type ProductCarouselImage,
+} from "@/components/public/home/ProductImageCarousel";
 
 function ArrowIcon() {
   return (
@@ -141,6 +145,25 @@ const SOLUTIONS: readonly Solution[] = [
   },
 ];
 
+const PRODUCT_GALLERY_IMAGES: readonly ProductCarouselImage[] = [
+  {
+    src: "/images/home/astc-fuel-station.png",
+    alt: "Hệ thống thiết bị ASTC tại trạm xăng dầu",
+  },
+  {
+    src: "/images/home/astc-box-data-controller.png",
+    alt: "Tủ ASTC BOX Data Controller hiển thị dữ liệu trạm xăng dầu",
+  },
+  {
+    src: "/images/home/astc-box-data-controller-front.png",
+    alt: "Mặt trước tủ ASTC BOX Data Controller",
+  },
+  {
+    src: "/images/home/astc-smart-tank.png",
+    alt: "Tủ ASTC Smart Tank hiển thị thông tin bồn chứa",
+  },
+];
+
 function SolutionRow({ solution, order }: { solution: Solution; order: number }) {
   return (
     <li className="group border-b border-border-ui/50 last:border-b-0">
@@ -205,7 +228,7 @@ export function ProductLineup() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           <header className="lg:col-span-4">
             <p className="font-sans text-[13px] uppercase leading-5 tracking-[0.12em] text-brand">
-              Danh mục thiết bị
+              Giới thiệu
             </p>
             <h2
               id="lineup-heading"
@@ -237,6 +260,12 @@ export function ProductLineup() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="mx-auto max-w-content px-4 pb-12 sm:px-6 lg:px-16 lg:pb-20">
+        <ProductImageCarousel
+          title="Hình ảnh sản phẩm"
+          images={PRODUCT_GALLERY_IMAGES}
+        />
       </div>
     </section>
   );

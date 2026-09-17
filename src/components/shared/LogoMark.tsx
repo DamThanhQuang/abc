@@ -8,10 +8,10 @@ type LogoMarkProps = {
 export function LogoMark({ className = "h-12 w-auto" }: LogoMarkProps) {
   return (
     <Image
-      src="/images/brand/anh-sang-toan-cau-logo.png"
+      src="/images/brand/anh-sang-toan-cau-logo-20260917.png"
       alt="Ánh Sáng Toàn Cầu"
-      width={1536}
-      height={1024}
+      width={782}
+      height={260}
       className={className}
     />
   );

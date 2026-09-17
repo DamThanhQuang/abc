@@ -9,7 +9,7 @@ export function SiteHeader() {
       <div
         className="
           mx-auto flex h-16 lg:h-20 w-full max-w-content
-          items-center justify-between
+          items-center justify-between lg:justify-center
           px-4 sm:px-6 lg:px-16
         "
       >
@@ -22,7 +22,7 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop nav — hidden on mobile */}
-        <div className="hidden lg:flex items-center">
+        <div className="hidden lg:ml-12 lg:flex items-center">
           <SiteNav />
         </div>
 
