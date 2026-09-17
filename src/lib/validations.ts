@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const idSchema = z.string().cuid();
+
 // ─── Product ──────────────────────────────────────────────────────────────────
 export const productSchema = z.object({
   slug:         z.string().min(1).max(100),

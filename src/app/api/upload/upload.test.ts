@@ -1,19 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ─── Mocks ──────────────────────────────────────────────────────────────────
-const { authMock, findAdminMock, writtenFiles } = vi.hoisted(() => ({
+const { authMock, findAdminMock, uploadedObjects } = vi.hoisted(() => ({
   authMock: vi.fn(),
   findAdminMock: vi.fn(),
-  writtenFiles: [] as Array<{ path: string; size: number }>,
+  uploadedObjects: [] as Array<{ key: string; size: number }>,
 }));
 
 vi.mock("@/lib/auth", () => ({ auth: authMock }));
 vi.mock("@/lib/db", () => ({ db: { admin: { findUnique: findAdminMock } } }));
-vi.mock("fs/promises", () => ({
-  writeFile: vi.fn(async (p: string, buf: Buffer) => {
-    writtenFiles.push({ path: p, size: buf.length });
+vi.mock("@/lib/r2", () => ({
+  uploadToR2: vi.fn(async (key: string, body: Buffer) => {
+    uploadedObjects.push({ key, size: body.length });
   }),
-  mkdir: vi.fn(async () => undefined),
+  getPublicUrl: vi.fn((key: string) => `https://r2.example.com/${key}`),
 }));
 
 import { POST } from "@/app/api/upload/route";
@@ -38,7 +38,7 @@ const ADMIN = { id: "admin-1", email: "admin@example.com" };
 
 describe("POST /api/upload", () => {
   beforeEach(() => {
-    writtenFiles.length = 0;
+    uploadedObjects.length = 0;
     authMock.mockReset();
     findAdminMock.mockReset();
   });
@@ -50,7 +50,7 @@ describe("POST /api/upload", () => {
     const res = await POST(makeRequest(makeFile("photo.png", PNG_BYTES, "image/png")));
 
     expect(res.status).toBe(401);
-    expect(writtenFiles).toHaveLength(0);
+    expect(uploadedObjects).toHaveLength(0);
   });
 
   it("accepts an upload from an authenticated admin", async () => {
@@ -61,10 +61,10 @@ describe("POST /api/upload", () => {
 
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.url).toMatch(/\/uploads\/[a-f0-9]{32}\.webp$/);
+    expect(body.url).toMatch(/uploads\/[a-f0-9]{32}\.webp/);
     expect(body.format).toBe("webp");
     expect(body.size).toBeLessThan(PNG_BYTES.length);
-    expect(writtenFiles).toHaveLength(1);
+    expect(uploadedObjects).toHaveLength(1);
   });
 
   // ── Content verification ────────────────────────────────────────────────
@@ -76,7 +76,7 @@ describe("POST /api/upload", () => {
     const res = await POST(makeRequest(makeFile("page.html", html, "image/png")));
 
     expect(res.status).toBe(400);
-    expect(writtenFiles).toHaveLength(0);
+    expect(uploadedObjects).toHaveLength(0);
   });
 
   it("rejects SVG regardless of content", async () => {
@@ -87,7 +87,7 @@ describe("POST /api/upload", () => {
     const res = await POST(makeRequest(makeFile("icon.svg", svg, "image/svg+xml")));
 
     expect(res.status).toBe(400);
-    expect(writtenFiles).toHaveLength(0);
+    expect(uploadedObjects).toHaveLength(0);
   });
 
   // ── Extension ───────────────────────────────────────────────────────────
@@ -115,6 +115,6 @@ describe("POST /api/upload", () => {
     const res = await POST(makeRequest(makeFile("huge.png", big, "image/png")));
 
     expect(res.status).toBe(400);
-    expect(writtenFiles).toHaveLength(0);
+    expect(uploadedObjects).toHaveLength(0);
   });
 });

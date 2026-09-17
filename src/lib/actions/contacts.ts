@@ -1,15 +1,32 @@
 "use server";
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
-import { contactSchema, contactStatusSchema } from "@/lib/validations";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { idSchema, contactSchema, contactStatusSchema } from "@/lib/validations";
 import type { ContactInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string };
 
+const CONTACT_MAX = 5;
+const CONTACT_WINDOW_MS = 60_000;
+
 // ─── Public: submit contact form ──────────────────────────────────────────────
 export async function submitContact(data: ContactInput): Promise<ActionResult> {
+  let ip = "unknown";
+  try {
+    const hdrs = await headers();
+    ip = hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  } catch {
+    // headers() throws outside a request scope (e.g., in tests)
+  }
+  const rl = checkRateLimit(`contact:${ip}`, CONTACT_MAX, CONTACT_WINDOW_MS);
+  if (!rl.allowed) {
+    return { success: false, error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." };
+  }
+
   const parsed = contactSchema.safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -65,6 +82,8 @@ export async function updateContactStatus(id: string, status: "NEW" | "IN_PROGRE
 export async function deleteContact(id: string): Promise<ActionResult> {
   const guard = await requireAdmin();
   if (!guard.ok) return { success: false, error: guard.error };
+
+  if (!idSchema.safeParse(id).success) return { success: false, error: "ID không hợp lệ." };
 
   try {
     await db.contactRequest.delete({ where: { id } });

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
-import { categorySchema, type CategoryInput } from "@/lib/validations";
+import { idSchema, categorySchema, type CategoryInput } from "@/lib/validations";
 
 type ActionResult = { success: boolean; error?: string; id?: string };
 
@@ -29,6 +29,8 @@ export async function updateCategory(id: string, data: Partial<CategoryInput>): 
   const guard = await requireAdmin();
   if (!guard.ok) return { success: false, error: guard.error };
 
+  if (!idSchema.safeParse(id).success) return { success: false, error: "ID không hợp lệ." };
+
   const parsed = categorySchema.partial().safeParse(data);
   if (!parsed.success) return { success: false, error: parsed.error.issues[0].message };
 
@@ -46,6 +48,8 @@ export async function updateCategory(id: string, data: Partial<CategoryInput>): 
 export async function deleteCategory(id: string): Promise<ActionResult> {
   const guard = await requireAdmin();
   if (!guard.ok) return { success: false, error: guard.error };
+
+  if (!idSchema.safeParse(id).success) return { success: false, error: "ID không hợp lệ." };
 
   try {
     const count = await db.product.count({ where: { categoryId: id } });

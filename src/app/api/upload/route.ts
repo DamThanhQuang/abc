@@ -1,18 +1,16 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 import crypto from "crypto";
 import sharp from "sharp";
 import { requireAdmin } from "@/lib/auth-guard";
 import { IMAGE_UPLOAD } from "@/lib/image-upload-config";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { uploadToR2, getPublicUrl } from "@/lib/r2";
 
 export const runtime = "nodejs";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
-
-// Keep the request below the common serverless body limit. Product images are
-// compressed in the browser before reaching this route.
 const MAX_SIZE = 4.5 * 1024 * 1024;
+const UPLOAD_MAX = 20;
+const UPLOAD_WINDOW_MS = 60_000;
 
 // ─── Magic-byte detection ───────────────────────────────────────────────────
 // We decide the format from the first bytes of the actual file content, not
@@ -89,7 +87,15 @@ function detectImageFormat(header: Uint8Array): ImageFormat | null {
 }
 
 export async function POST(request: Request) {
-  // ── Auth ────────────────────────────────────────────────────────────────
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const rl = checkRateLimit(`upload:${ip}`, UPLOAD_MAX, UPLOAD_WINDOW_MS);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } },
+    );
+  }
+
   const guard = await requireAdmin();
   if (!guard.ok) {
     return NextResponse.json({ error: guard.error }, { status: 401 });
@@ -140,20 +146,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: message }, { status: 400 });
     }
 
-    // Content-based names deduplicate identical optimized images. The same key
-    // can be reused when this storage adapter is replaced with Cloudflare R2.
     const hash = crypto.createHash("sha256").update(optimized.data).digest("hex").slice(0, 32);
-    const filename = `${hash}.webp`;
+    const key = `uploads/${hash}.webp`;
 
-    await mkdir(UPLOAD_DIR, { recursive: true });
-    try {
-      await writeFile(path.join(UPLOAD_DIR, filename), optimized.data, { flag: "wx" });
-    } catch (writeError) {
-      if ((writeError as NodeJS.ErrnoException).code !== "EEXIST") throw writeError;
-    }
+    await uploadToR2(key, optimized.data, "image/webp");
 
     return NextResponse.json({
-      url: `/uploads/${filename}`,
+      url: getPublicUrl(key),
       size: optimized.data.length,
       originalSize: file.size,
       width: optimized.info.width,
