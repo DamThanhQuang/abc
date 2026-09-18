@@ -3,6 +3,7 @@ import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { listArticlesForAdmin } from "@/lib/api/news";
 import { deleteArticle } from "@/lib/actions/news";
 import Link from "next/link";
+import { SubmitButton } from "@/components/admin/shared/SubmitButton";
 
 export const metadata: Metadata = { title: "Quản lý tin tức | Admin" };
 
@@ -92,12 +93,12 @@ export default async function AdminTinTucPage() {
                           "use server";
                           await deleteArticle(article.id);
                         }}>
-                          <button
-                            type="submit"
+                          <SubmitButton
+                            pendingText="Đang xóa..."
                             className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
                           >
                             Xóa
-                          </button>
+                          </SubmitButton>
                         </form>
                       </div>
                     </td>

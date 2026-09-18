@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/public/products/ProductGallery";
 import { RelatedProducts } from "@/components/public/products/RelatedProducts";
@@ -25,6 +26,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
     },
   };
+}
+
+function RelatedProductsSkeleton() {
+  return (
+    <section className="mt-12 lg:mt-20 border-t border-border-ui pt-10 lg:pt-14">
+      <div className="mb-6 lg:mb-8 h-8 w-56 rounded bg-surface-card animate-pulse" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="rounded-card bg-white border border-border-ui shadow-card overflow-hidden">
+            <div className="aspect-[4/3] bg-surface-card animate-pulse" />
+            <div className="p-5 flex flex-col gap-3">
+              <div className="h-3 w-16 rounded bg-surface-card animate-pulse" />
+              <div className="h-5 w-3/4 rounded bg-surface-card animate-pulse" />
+              <div className="h-3 w-2/3 rounded bg-surface-card animate-pulse" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export default async function ProductDetailPage({ params }: Props) {
@@ -160,7 +181,9 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         )}
 
-        <RelatedProducts productId={product.id} categoryId={product.categoryId} />
+        <Suspense fallback={<RelatedProductsSkeleton />}>
+          <RelatedProducts productId={product.id} categoryId={product.categoryId} />
+        </Suspense>
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { getContacts, getContactStats } from "@/lib/api/contacts";
 import { updateContactStatus, deleteContact } from "@/lib/actions/contacts";
+import { SubmitButton } from "@/components/admin/shared/SubmitButton";
 
 export const metadata: Metadata = { title: "Yêu cầu liên hệ | Admin" };
 
@@ -81,9 +82,9 @@ export default async function AdminYeuCauPage() {
                             "use server";
                             await updateContactStatus(c.id, "IN_PROGRESS");
                           }}>
-                            <button type="submit" className="rounded-[6px] border border-amber-200 px-3 py-1.5 font-sans text-[12px] text-amber-600 hover:bg-amber-50 transition-colors whitespace-nowrap">
+                            <SubmitButton pendingText="Đang lưu..." className="rounded-[6px] border border-amber-200 px-3 py-1.5 font-sans text-[12px] text-amber-600 hover:bg-amber-50 transition-colors whitespace-nowrap">
                               Xử lý
-                            </button>
+                            </SubmitButton>
                           </form>
                         )}
                         {c.status !== "resolved" && (
@@ -91,18 +92,18 @@ export default async function AdminYeuCauPage() {
                             "use server";
                             await updateContactStatus(c.id, "RESOLVED");
                           }}>
-                            <button type="submit" className="rounded-[6px] border border-green-200 px-3 py-1.5 font-sans text-[12px] text-green-600 hover:bg-green-50 transition-colors whitespace-nowrap">
+                            <SubmitButton pendingText="Đang lưu..." className="rounded-[6px] border border-green-200 px-3 py-1.5 font-sans text-[12px] text-green-600 hover:bg-green-50 transition-colors whitespace-nowrap">
                               Đã xử lý
-                            </button>
+                            </SubmitButton>
                           </form>
                         )}
                         <form action={async () => {
                           "use server";
                           await deleteContact(c.id);
                         }}>
-                          <button type="submit" className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors whitespace-nowrap">
+                          <SubmitButton pendingText="Đang xóa..." className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors whitespace-nowrap">
                             Xóa
-                          </button>
+                          </SubmitButton>
                         </form>
                       </div>
                     </td>

@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/auth-guard";
 import { getCategories } from "@/lib/api/categories";
 import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
 import { parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
+import { SubmitButton } from "@/components/admin/shared/SubmitButton";
 
 export const metadata: Metadata = { title: "Thêm sản phẩm | Admin" };
 
@@ -139,9 +140,9 @@ export default async function AdminCreateProductPage() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
+                <SubmitButton pendingText="Đang tạo..." className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
                   Tạo sản phẩm
-                </button>
+                </SubmitButton>
                 <Link href="/admin/san-pham" className="w-full rounded-btn border border-border-ui py-2.5 text-center font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors">
                   Hủy
                 </Link>
