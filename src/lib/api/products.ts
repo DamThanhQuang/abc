@@ -99,6 +99,20 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return product as unknown as Product | null;
 }
 
+export async function getRelatedProducts(
+  productId: string,
+  categoryId: string,
+  limit = 4,
+): Promise<Product[]> {
+  const products = await db.product.findMany({
+    where: { published: true, categoryId, id: { not: productId } },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    include: productInclude,
+  });
+  return products as unknown as Product[];
+}
+
 // ─── Admin ────────────────────────────────────────────────────────────────────
 // Deliberately unfiltered: the admin list has to show drafts. Never call this
 // from a public route.
