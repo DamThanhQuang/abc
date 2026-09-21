@@ -30,9 +30,6 @@ export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  // Close drawer on route change
-  useEffect(() => { setOpen(false); }, [pathname]);
-
   // Lock body scroll when open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -76,7 +73,11 @@ export function MobileNav() {
       >
         {/* Drawer header */}
         <div className="flex h-16 items-center justify-between px-5 border-b border-border-ui">
-          <Link href="/" className="inline-flex items-center">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="inline-flex items-center"
+          >
             <LogoMark className="h-12 w-auto" />
           </Link>
           <button
@@ -99,6 +100,7 @@ export function MobileNav() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className={cn(
                       "flex items-center h-12 px-3 rounded-btn",
                       "font-sans text-[16px] transition-colors",
@@ -119,6 +121,7 @@ export function MobileNav() {
         <div className="px-4 pb-6 pt-4 border-t border-border-ui">
           <Link
             href="/lien-he"
+            onClick={() => setOpen(false)}
             className="
               flex w-full items-center justify-center
               bg-brand text-white rounded-btn
