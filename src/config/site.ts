@@ -2,10 +2,12 @@ export const companyInfo = {
   brandName: "Ánh Sáng Toàn Cầu",
   legalName: "Công ty Cổ phần Sản xuất và Thương mại Ánh Sáng Toàn Cầu",
   taxCode: "0110425439",
-  address: "Số 11, ngõ 134 đường Giải Phóng, Phường Phương Liệt, TP Hà Nội, Việt Nam",
-  streetAddress: "Số 11, ngõ 134 đường Giải Phóng, Phường Phương Liệt",
+  address: "Số 11/134 đường Giải Phóng, Phương Liệt, Hà Nội",
+  streetAddress: "Số 11/134 đường Giải Phóng, Phương Liệt",
+  workshopAddress: "Số 19 LK30, Khu đô thị Vân Canh Hub",
   locality: "Hà Nội",
   country: "VN",
+  phone: "0858.786.786",
   invoiceEmail: "hoadonastc@gmail.com",
 } as const;
 

@@ -1,76 +1,117 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
 import { companyInfo } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Giới thiệu",
-  description: `${companyInfo.legalName} — thiết bị và giải pháp cho trạm xăng dầu.`,
+  title: "Giới thiệu | Ánh Sáng Toàn Cầu",
+  description:
+    "Giới thiệu Ánh Sáng Toàn Cầu — doanh nghiệp sản xuất thiết bị, hệ thống tự động hóa và giải pháp quản lý cho ngành xăng dầu.",
 };
 
-// ─── Placeholder data — thay nội dung thật vào đây ─────────────────────────
-
-const stats = [
-  { value: "XX+", label: "Năm kinh nghiệm" },
-  { value: "XXX+", label: "Trạm xăng dầu" },
-  { value: "X,XXX+", label: "Thiết bị đã cung cấp" },
-  { value: "XX+", label: "Tỉnh thành phủ sóng" },
-];
+const businessAreas = [
+  {
+    title: "Cột bơm xăng dầu",
+    description: "Sản xuất và kinh doanh cột bơm phục vụ các cửa hàng xăng dầu.",
+  },
+  {
+    title: "Thiết bị ngành xăng dầu",
+    description: "Cung cấp thiết bị chuyên dụng cho hoạt động kinh doanh xăng dầu.",
+  },
+  {
+    title: "Đo bồn bể tự động",
+    description: "Phát triển hệ thống đo và giám sát bồn bể theo hướng tự động hóa.",
+  },
+  {
+    title: "Phần mềm quản lý bán hàng",
+    description: "Giải pháp quản lý bán hàng dành cho các cửa hàng xăng dầu.",
+  },
+  {
+    title: "Bán hàng tự động",
+    description: "Hệ thống hỗ trợ tự động hóa quy trình bán hàng tại cửa hàng.",
+  },
+  {
+    title: "Cấp dầu tự động",
+    description: "Hệ thống cấp dầu cho nhà máy và doanh nghiệp vận tải, logistics.",
+  },
+  {
+    title: "Tự động hóa doanh nghiệp",
+    description: "Xây dựng hệ thống tự động hóa theo nhu cầu của từng doanh nghiệp.",
+  },
+] as const;
 
 const coreValues = [
   {
-    title: "Chất lượng",
-    description:
-      "Cam kết cung cấp thiết bị đạt tiêu chuẩn đo lường, vận hành ổn định trong điều kiện thực tế tại trạm.",
-  },
-  {
-    title: "Uy tín",
-    description:
-      "Đồng hành cùng khách hàng từ tư vấn, lắp đặt đến bảo hành — đảm bảo hỗ trợ kỹ thuật nhanh chóng.",
-  },
-  {
-    title: "Đổi mới",
-    description:
-      "Liên tục cập nhật công nghệ đo bồn tự động, phần mềm quản lý và thiết bị thế hệ mới.",
-  },
-];
-
-const solutionGroups = [
-  {
     number: "01",
-    title: "Đo bồn tự động",
+    title: "Khách hàng",
     description:
-      "Giải pháp theo dõi dữ liệu bồn chứa theo nhu cầu triển khai thực tế.",
+      "Luôn lấy khách hàng làm trọng tâm trong định hướng sản phẩm và dịch vụ.",
   },
   {
     number: "02",
-    title: "Thiết bị trạm xăng dầu",
+    title: "Đổi mới",
     description:
-      "Danh mục thiết bị phục vụ hoạt động tại trạm xăng dầu.",
+      "Duy trì tinh thần học hỏi, liên tục cải tiến để nâng cao chất lượng sản phẩm.",
   },
   {
     number: "03",
-    title: "Phần mềm quản lý",
+    title: "Trí tín",
     description:
-      "Công cụ hỗ trợ quản lý thông tin vận hành tại trạm.",
+      "Đề cao trí tuệ, tầm nhìn, sự quyết đoán và giữ vững chữ tín trong hợp tác.",
   },
-];
+] as const;
 
-const certifications = [
-  "Chứng nhận 1 (VD: ISO 9001:2015)",
-  "Chứng nhận 2 (VD: Giấy phép phân phối)",
-  "Chứng nhận 3 (VD: Chứng nhận đo lường)",
-  "Chứng nhận 4 (VD: Chứng nhận PCCC)",
-];
+const partners = [
+  "Hải Bình Petro",
+  "Hapeco",
+  "Pimex",
+  "Sông Vân Petro",
+  "Thành Long Petro",
+  "TTH Petro",
+] as const;
 
-// ─── Page ───────────────────────────────────────────────────────────────────
+const highlights = [
+  { value: "20+", label: "Tỉnh thành có sản phẩm hiện diện" },
+  { value: "07", label: "Lĩnh vực hoạt động trọng tâm" },
+  { value: "2027", label: "Mục tiêu trở thành thương hiệu Top 10" },
+] as const;
+
+function ArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M3 8h10M9 4l4 4-4 4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path
+        d="m4 9.25 3.1 3.1L14.25 5.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function GioiThieuPage() {
   return (
     <>
       <PageHero
         title="Về Ánh Sáng Toàn Cầu"
-        subtitle="Đơn vị chuyên cung cấp thiết bị và giải pháp toàn diện cho trạm xăng dầu"
+        subtitle="Năng lực sản xuất, công nghệ và tự động hóa cho ngành xăng dầu Việt Nam"
+        imageSrc="/images/about/fuel-station-banner.png"
         breadcrumbs={[
           { label: "Trang chủ", href: "/" },
           { label: "Giới thiệu" },
@@ -78,239 +119,266 @@ export default function GioiThieuPage() {
       />
 
       <main>
-        {/* ── Section 1: Company story + Legal info ── */}
-        <section className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-7">
-              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">
-                Câu chuyện của chúng tôi
+        <section
+          aria-labelledby="company-overview-heading"
+          className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20"
+        >
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-6">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">
+                Giới thiệu doanh nghiệp
               </p>
-              <h2 className="mt-3 font-heading text-[28px] font-semibold leading-[38px] text-content-heading sm:text-[34px] sm:leading-[44px]">
-                {companyInfo.legalName}
+              <h2
+                id="company-overview-heading"
+                className="mt-3 font-heading text-[28px] font-semibold leading-[38px] tracking-[-0.02em] text-content-heading sm:text-[34px] sm:leading-[44px]"
+              >
+                Giải pháp thiết bị và tự động hóa được phát triển từ nhu cầu thực tế
               </h2>
-
-              {/* TODO: Thay nội dung thật — năm thành lập, quá trình phát triển */}
               <p className="mt-5 font-sans text-[15px] leading-7 text-content-body lg:text-[16px]">
-                Được thành lập từ năm [XXXX], Ánh Sáng Toàn Cầu khởi đầu với
-                [mô tả hoạt động ban đầu]. Qua hơn [XX] năm hoạt động, công ty
-                đã phát triển thành đơn vị chuyên cung cấp thiết bị và giải pháp
-                toàn diện cho trạm xăng dầu trên khắp cả nước.
+                {companyInfo.legalName} hoạt động trong lĩnh vực sản xuất, kinh doanh
+                thiết bị và phát triển các hệ thống công nghệ cho ngành xăng dầu. Năng
+                lực của công ty trải rộng từ cột bơm, thiết bị chuyên dụng đến đo bồn,
+                quản lý bán hàng và cấp dầu tự động.
               </p>
               <p className="mt-4 font-sans text-[15px] leading-7 text-content-body lg:text-[16px]">
-                Với đội ngũ kỹ thuật giàu kinh nghiệm và mạng lưới phân phối
-                rộng khắp, chúng tôi tự hào đồng hành cùng [XX+] đối tác và
-                hàng trăm trạm xăng dầu trong việc nâng cao hiệu quả vận hành
-                và đảm bảo an toàn đo lường.
+                Với định hướng kết hợp sản xuất và công nghệ, Ánh Sáng Toàn Cầu xây dựng
+                các giải pháp phù hợp cho cửa hàng xăng dầu, nhà máy, doanh nghiệp vận tải
+                và logistics trên toàn quốc.
               </p>
-              <p className="mt-3 font-sans text-[14px] leading-6 text-content-muted">
-                Thông số kỹ thuật, khả năng tương thích và phạm vi triển khai
-                được xác nhận theo từng sản phẩm và nhu cầu cụ thể.
-              </p>
+              <Link
+                href="/san-pham"
+                className="mt-7 inline-flex items-center gap-2 rounded-btn bg-brand px-5 py-3 font-sans text-[14px] font-semibold text-white shadow-btn transition-colors hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+              >
+                Khám phá sản phẩm
+                <ArrowIcon />
+              </Link>
             </div>
 
-            <div className="rounded-[20px] border border-border-ui bg-surface-card p-6 sm:p-8 lg:col-span-5">
-              <h2 className="font-heading text-[20px] font-semibold text-content-heading">
-                Thông tin pháp lý
-              </h2>
-              <dl className="mt-5 divide-y divide-border-ui">
-                <InfoRow label="Tên giao dịch" value={companyInfo.brandName} />
-                <InfoRow label="Mã số thuế" value={companyInfo.taxCode} />
-                <InfoRow label="Địa chỉ" value={companyInfo.address} />
-                <InfoRow
-                  label="Email hóa đơn"
-                  value={companyInfo.invoiceEmail}
-                  href={`mailto:${companyInfo.invoiceEmail}`}
+            <div className="relative lg:col-span-6">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-surface-card shadow-card">
+                <Image
+                  src="/images/about/business-areas.png"
+                  alt="Giải pháp thiết bị và công nghệ tại trạm xăng dầu"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
                 />
-              </dl>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Section 2: Stats counter ── */}
-        {/* TODO: Thay XX bằng số liệu thật */}
-        <section className="bg-brand-gradient py-10 lg:py-14">
-          <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
-            <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <p className="font-heading text-[36px] font-bold leading-none text-white sm:text-[44px] lg:text-[48px]">
-                    {stat.value}
-                  </p>
-                  <p className="mt-2 font-sans text-[13px] leading-5 text-white/70 sm:text-[14px]">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Section 3: Mission + Vision + Core Values ── */}
-        <section className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-5">
-              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">
-                Tầm nhìn & Sứ mệnh
-              </p>
-              {/* TODO: Thay nội dung thật */}
-              <h2 className="mt-3 font-heading text-[26px] font-semibold leading-[34px] text-content-heading sm:text-[30px] sm:leading-[40px]">
-                Kiến tạo tiêu chuẩn mới cho trạm xăng dầu Việt Nam
-              </h2>
-              <div className="mt-6 space-y-4">
-                <div className="rounded-card border border-border-ui bg-surface-card p-5">
-                  <h3 className="font-heading text-[15px] font-semibold text-content-heading">
-                    Tầm nhìn
-                  </h3>
-                  <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
-                    Trở thành đơn vị hàng đầu Việt Nam trong lĩnh vực cung cấp
-                    thiết bị và giải pháp công nghệ cho trạm xăng dầu.
-                  </p>
-                </div>
-                <div className="rounded-card border border-border-ui bg-surface-card p-5">
-                  <h3 className="font-heading text-[15px] font-semibold text-content-heading">
-                    Sứ mệnh
-                  </h3>
-                  <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
-                    Nâng cao hiệu quả vận hành và đảm bảo an toàn đo lường cho
-                    mọi trạm xăng dầu thông qua thiết bị chất lượng và dịch vụ
-                    tận tâm.
-                  </p>
-                </div>
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#001f38]/70 to-transparent" aria-hidden="true" />
               </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">
-                Giá trị cốt lõi
-              </p>
-              <h2 className="mt-3 font-heading text-[26px] font-semibold leading-[34px] text-content-heading sm:text-[30px] sm:leading-[40px]">
-                Nền tảng để phát triển bền vững
-              </h2>
-              {/* TODO: Chỉnh lại mô tả cho phù hợp thực tế */}
-              <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                {coreValues.map((item, i) => (
-                  <div
-                    key={item.title}
-                    className="rounded-card border border-border-ui bg-white p-5 shadow-card"
-                  >
-                    <span className="inline-flex size-10 items-center justify-center rounded-full bg-brand/10 font-heading text-[16px] font-bold text-brand">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="mt-4 font-heading text-[16px] font-semibold text-content-heading">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
+              <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-[#00355f] p-5 text-white shadow-lg sm:left-auto sm:w-[280px]">
+                <p className="font-heading text-[32px] font-bold leading-none">20+</p>
+                <p className="mt-2 font-sans text-[13px] leading-5 text-white/80">
+                  tỉnh thành trên cả nước đã có sản phẩm của công ty hiện diện
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── Section 4: Solution groups ── */}
+        <section className="bg-brand-gradient" aria-label="Dấu ấn doanh nghiệp">
+          <div className="mx-auto grid max-w-content divide-y divide-white/15 px-4 sm:px-6 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-16">
+            {highlights.map((item) => (
+              <div key={item.value} className="px-4 py-8 text-center md:px-8 lg:py-10">
+                <p className="font-heading text-[34px] font-bold leading-none text-white sm:text-[40px]">
+                  {item.value}
+                </p>
+                <p className="mx-auto mt-3 max-w-[220px] font-sans text-[13px] leading-5 text-white/75 sm:text-[14px]">
+                  {item.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section
+          aria-labelledby="business-areas-heading"
           className="bg-surface-card py-12 lg:py-20"
-          aria-labelledby="solution-groups-heading"
         >
           <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
-            <div className="max-w-2xl">
+            <div className="max-w-3xl">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">
+                Lĩnh vực hoạt động
+              </p>
               <h2
-                id="solution-groups-heading"
-                className="font-heading text-[26px] font-semibold leading-9 text-content-heading sm:text-[32px] sm:leading-10"
+                id="business-areas-heading"
+                className="mt-3 font-heading text-[28px] font-semibold leading-[38px] tracking-[-0.02em] text-content-heading sm:text-[34px] sm:leading-[44px]"
               >
-                Nhóm giải pháp
+                Hệ sinh thái giải pháp toàn diện cho vận hành và quản lý
               </h2>
-              <p className="mt-2 font-sans text-[14px] leading-6 text-content-muted lg:text-[16px]">
-                Ba trụ cột giải pháp phục vụ toàn diện hoạt động tại trạm xăng
-                dầu.
+              <p className="mt-3 font-sans text-[15px] leading-7 text-content-muted">
+                Từ thiết bị tại điểm bán đến nền tảng quản lý và hệ thống tự động hóa
+                dành cho doanh nghiệp.
               </p>
             </div>
 
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
-              {solutionGroups.map((item) => (
+            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {businessAreas.map((item, index) => (
                 <article
-                  key={item.number}
-                  className="rounded-card border border-border-ui bg-white p-6 shadow-card"
+                  key={item.title}
+                  className={`group rounded-[18px] border border-border-ui bg-white p-6 shadow-card transition-transform duration-200 hover:-translate-y-1 ${
+                    index === businessAreas.length - 1 ? "sm:col-span-2 lg:col-span-3" : ""
+                  }`}
                 >
-                  <span className="font-mono text-[13px] font-bold text-brand">
-                    {item.number}
-                  </span>
-                  <h3 className="mt-5 font-heading text-[19px] font-semibold text-content-heading">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
-                    {item.description}
-                  </p>
+                  <div className="flex items-start gap-4">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 font-heading text-[13px] font-bold text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="font-heading text-[17px] font-semibold leading-6 text-content-heading">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 font-sans text-[14px] leading-6 text-content-body">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Section 5: Certifications ── */}
-        {/* TODO: Thay tên chứng nhận thật */}
-        <section className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
-          <div className="text-center">
-            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">
-              Chứng nhận & Tiêu chuẩn
-            </p>
-            <h2 className="mt-3 font-heading text-[26px] font-semibold leading-9 text-content-heading sm:text-[32px] sm:leading-10">
-              Cam kết chất lượng được chứng nhận
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl font-sans text-[14px] leading-6 text-content-muted lg:text-[15px]">
-              Sản phẩm và dịch vụ của chúng tôi tuân thủ các tiêu chuẩn trong
-              nước và quốc tế.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {certifications.map((cert) => (
-              <div
-                key={cert}
-                className="flex items-center gap-3 rounded-card border border-border-ui bg-surface-card p-5"
+        <section
+          aria-labelledby="vision-heading"
+          className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20"
+        >
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
+            <div className="rounded-[24px] bg-brand-dark p-7 text-white shadow-card sm:p-9 lg:col-span-5">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
+                Tầm nhìn & Mục tiêu
+              </p>
+              <h2
+                id="vision-heading"
+                className="mt-3 font-heading text-[26px] font-semibold leading-[36px] tracking-[-0.02em] text-white sm:text-[30px] sm:leading-[40px]"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand/10">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33-3.87-3.77 5.34-.78L10 1z"
-                      stroke="#0f4c81"
-                      strokeWidth="1.3"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                <span className="font-sans text-[14px] font-medium leading-5 text-content-heading">
-                  {cert}
-                </span>
+                Nâng chuẩn thiết bị xăng dầu Việt Nam
+              </h2>
+              <div className="mt-7 space-y-6">
+                <div className="border-l-2 border-white/25 pl-5">
+                  <h3 className="font-heading text-[15px] font-semibold text-white">Tầm nhìn</h3>
+                  <p className="mt-2 font-sans text-[14px] leading-6 text-white/75">
+                    Trở thành doanh nghiệp sản xuất và kinh doanh thiết bị xăng dầu đạt
+                    chất lượng, kỹ thuật, mỹ thuật và giá thành tốt nhất.
+                  </p>
+                </div>
+                <div className="border-l-2 border-white/25 pl-5">
+                  <h3 className="font-heading text-[15px] font-semibold text-white">Mục tiêu 2027</h3>
+                  <p className="mt-2 font-sans text-[14px] leading-6 text-white/75">
+                    Trở thành thương hiệu Top 10 trong lĩnh vực sản xuất và kinh doanh
+                    thiết bị xăng dầu, với quy mô phủ rộng khắp Việt Nam.
+                  </p>
+                </div>
               </div>
-            ))}
+            </div>
+
+            <div className="lg:col-span-7 lg:py-3">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">
+                Giá trị cốt lõi
+              </p>
+              <h2 className="mt-3 font-heading text-[28px] font-semibold leading-[38px] tracking-[-0.02em] text-content-heading sm:text-[34px] sm:leading-[44px]">
+                Nguyên tắc dẫn đường cho mọi hoạt động
+              </h2>
+              <div className="mt-7 space-y-3">
+                {coreValues.map((item) => (
+                  <article
+                    key={item.number}
+                    className="grid gap-3 rounded-2xl border border-border-ui bg-white p-5 shadow-card sm:grid-cols-[52px_1fr] sm:items-start"
+                  >
+                    <span className="font-heading text-[14px] font-bold text-brand">{item.number}</span>
+                    <div>
+                      <h3 className="font-heading text-[17px] font-semibold text-content-heading">
+                        {item.title}
+                      </h3>
+                      <p className="mt-1 font-sans text-[14px] leading-6 text-content-body">
+                        {item.description}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ── Section 6: CTA ── */}
-        <section className="bg-brand-gradient py-12 lg:py-16">
+        <section className="border-y border-border-ui bg-white py-10" aria-labelledby="partners-heading">
+          <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-sm">
+                <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">
+                  Đối tác tiêu biểu
+                </p>
+                <h2 id="partners-heading" className="mt-2 font-heading text-[22px] font-semibold leading-8 text-content-heading">
+                  Đồng hành cùng doanh nghiệp trong ngành
+                </h2>
+              </div>
+              <ul className="flex max-w-3xl flex-wrap gap-2.5" aria-label="Danh sách đối tác">
+                {partners.map((partner) => (
+                  <li
+                    key={partner}
+                    className="inline-flex items-center gap-2 rounded-full border border-border-tag bg-surface-tag px-4 py-2.5 font-sans text-[13px] font-semibold text-brand-dark"
+                  >
+                    <span className="text-brand"><CheckIcon /></span>
+                    {partner}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="company-info-heading"
+          className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20"
+        >
+          <div className="overflow-hidden rounded-[24px] border border-border-ui bg-surface-card">
+            <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
+              <div className="bg-brand-gradient p-7 text-white sm:p-9 lg:p-10">
+                <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
+                  Thông tin doanh nghiệp
+                </p>
+                <h2 id="company-info-heading" className="mt-3 font-heading text-[26px] font-semibold leading-9 text-white sm:text-[30px]">
+                  {companyInfo.brandName}
+                </h2>
+                <p className="mt-4 font-sans text-[14px] leading-6 text-white/75">
+                  Kết nối với chúng tôi để trao đổi về thiết bị, phần mềm và giải pháp
+                  tự động hóa phù hợp với nhu cầu thực tế.
+                </p>
+                <a
+                  href={`tel:${companyInfo.phone.replace(/\D/g, "")}`}
+                  className="mt-7 inline-flex items-center gap-2 rounded-btn bg-white px-5 py-3 font-sans text-[14px] font-semibold text-brand-dark transition-colors hover:bg-surface-card"
+                >
+                  {companyInfo.phone}
+                  <ArrowIcon />
+                </a>
+              </div>
+
+              <dl className="grid gap-px bg-border-ui sm:grid-cols-2">
+                <InfoItem label="Tên pháp lý" value={companyInfo.legalName} />
+                <InfoItem label="Mã số thuế" value={companyInfo.taxCode} />
+                <InfoItem label="Trụ sở" value={companyInfo.address} />
+                <InfoItem label="Xưởng sản xuất" value={companyInfo.workshopAddress} />
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-brand-dark py-12 lg:py-16">
           <div className="mx-auto flex max-w-content flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-16">
-            <div>
+            <div className="max-w-2xl">
               <h2 className="font-heading text-[26px] font-semibold leading-9 text-white sm:text-[30px]">
-                Cần trao đổi về sản phẩm?
+                Cùng xây dựng giải pháp phù hợp cho doanh nghiệp của bạn
               </h2>
-              <p className="mt-2 font-sans text-[14px] leading-6 text-white/75">
-                Liên hệ qua Zalo để gửi nhu cầu và nhận thông tin phù hợp.
+              <p className="mt-2 font-sans text-[14px] leading-6 text-white/70">
+                Trao đổi trực tiếp với Ánh Sáng Toàn Cầu về nhu cầu thiết bị, quản lý
+                hoặc tự động hóa.
               </p>
             </div>
             <Link
               href="/lien-he"
-              className="inline-flex shrink-0 items-center justify-center rounded-btn bg-white px-6 py-3 font-sans text-[14px] font-semibold text-brand transition-colors hover:bg-surface-card"
+              className="inline-flex shrink-0 items-center gap-2 rounded-btn bg-white px-6 py-3.5 font-sans text-[14px] font-semibold text-brand-dark transition-colors hover:bg-surface-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
             >
-              Liên hệ qua Zalo
+              Liên hệ tư vấn
+              <ArrowIcon />
             </Link>
           </div>
         </section>
@@ -319,31 +387,14 @@ export default function GioiThieuPage() {
   );
 }
 
-function InfoRow({
-  label,
-  value,
-  href,
-}: {
-  label: string;
-  value: string;
-  href?: string;
-}) {
+function InfoItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid gap-1 py-4 sm:grid-cols-[140px_1fr] sm:gap-4">
-      <dt className="font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
+    <div className="bg-white p-6 sm:p-7">
+      <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-content-muted">
         {label}
       </dt>
-      <dd className="font-sans text-[14px] leading-6 text-content-heading">
-        {href ? (
-          <a
-            href={href}
-            className="font-medium text-brand-dark hover:underline"
-          >
-            {value}
-          </a>
-        ) : (
-          value
-        )}
+      <dd className="mt-2 font-sans text-[14px] font-medium leading-6 text-content-heading">
+        {value}
       </dd>
     </div>
   );

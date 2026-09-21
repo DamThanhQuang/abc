@@ -73,6 +73,7 @@ export default async function LienHePage({ searchParams }: Props) {
                     width={180}
                     height={180}
                     className="h-[180px] w-[180px] object-contain"
+                    unoptimized
                     priority
                   />
                 </div>
