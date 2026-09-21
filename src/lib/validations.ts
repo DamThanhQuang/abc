@@ -2,31 +2,54 @@ import { z } from "zod";
 
 export const idSchema = z.string().cuid();
 
+const slugSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(100)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug chỉ được chứa chữ thường, số và dấu gạch ngang");
+
+function isAllowedImageSource(value: string): boolean {
+  if (value.startsWith("/") && !value.startsWith("//")) return true;
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+const imageSourceSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(2048)
+  .refine(isAllowedImageSource, "Ảnh phải là đường dẫn nội bộ hoặc URL HTTPS hợp lệ");
+
 // ─── Product ──────────────────────────────────────────────────────────────────
 export const productSchema = z.object({
-  slug:         z.string().min(1).max(100),
+  slug:         slugSchema,
   name:         z.string().min(1).max(200),
   categoryId:   z.string().min(1),
-  model:        z.string().optional(),
-  spec:         z.string().optional(),
-  description:  z.string().optional(),
-  image:        z.string().min(1),
-  images:       z.array(z.string().trim().min(1)).max(10).default([]),
-  imageAlt:     z.string().optional(),
-  features:     z.array(z.string()).default([]),
+  model:        z.string().max(200).optional(),
+  spec:         z.string().max(2000).optional(),
+  description:  z.string().max(10_000).optional(),
+  image:        imageSourceSchema,
+  images:       z.array(imageSourceSchema).max(10).default([]),
+  imageAlt:     z.string().max(300).optional(),
+  features:     z.array(z.string().min(1).max(500)).max(30).default([]),
   published:    z.boolean().default(true),
   technicalSpecs: z.array(z.object({
-    label: z.string(),
-    value: z.string(),
+    label: z.string().min(1).max(200),
+    value: z.string().min(1).max(1000),
     order: z.number().int().default(0),
   })).default([]),
 });
 
 export const categorySchema = z.object({
-  slug:        z.string().min(1).max(100),
+  slug:        slugSchema,
   name:        z.string().min(1).max(200),
-  description: z.string().optional(),
-  image:       z.string().optional(),
+  description: z.string().max(2000).optional(),
+  image:       z.union([imageSourceSchema, z.literal("")]).optional(),
   order:       z.number().int().default(0),
 });
 
@@ -38,13 +61,13 @@ export type ProductInput = z.input<typeof productSchema>;
 
 // ─── News article ─────────────────────────────────────────────────────────────
 export const newsSchema = z.object({
-  slug:        z.string().min(1).max(100),
+  slug:        slugSchema,
   title:       z.string().min(1).max(300),
   excerpt:     z.string().min(1).max(500),
-  content:     z.string().optional(),
-  image:       z.string().min(1),
-  imageAlt:    z.string().optional(),
-  category:    z.string().min(1),
+  content:     z.string().max(200_000).optional(),
+  image:       imageSourceSchema,
+  imageAlt:    z.string().max(300).optional(),
+  category:    z.string().min(1).max(100),
   readingTime: z.number().int().positive().optional(),
   published:   z.boolean().default(true),
   publishedAt: z.coerce.date().optional(),
@@ -58,7 +81,7 @@ export const contactSchema = z.object({
   company: z.string().max(200).optional(),
   email:   z.string().email("Email không hợp lệ"),
   phone:   z.string().max(20).optional(),
-  subject: z.string().min(1, "Vui lòng chọn chủ đề"),
+  subject: z.string().min(1, "Vui lòng chọn chủ đề").max(200),
   message: z.string().min(10, "Nội dung tối thiểu 10 ký tự").max(2000),
 });
 

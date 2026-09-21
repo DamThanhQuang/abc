@@ -8,6 +8,8 @@ export default defineConfig({
     seed: "npx tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Migrations need a session/direct connection. The application itself
+    // continues to use DATABASE_URL (Supavisor transaction pooler on Vercel).
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });

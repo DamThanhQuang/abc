@@ -7,8 +7,9 @@ import { PageHero } from "@/components/shared/PageHero";
 import { companyInfo } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Liên Hệ | Ánh Sáng Toàn Cầu",
+  title: "Liên hệ",
   description: "Liên hệ Ánh Sáng Toàn Cầu qua Zalo để trao đổi nhu cầu về thiết bị và giải pháp trạm xăng dầu.",
+  alternates: { canonical: "/lien-he" },
 };
 
 type Props = {

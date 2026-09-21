@@ -46,7 +46,7 @@ export default function DangNhapPage() {
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="admin@fuelprecision.vn"
+                placeholder="admin@astc.com.vn"
                 className={inputClass}
               />
             </div>
@@ -86,7 +86,7 @@ export default function DangNhapPage() {
         </div>
 
         <p className="mt-6 text-center font-sans text-[12px] text-content-muted">
-          &copy; {new Date().getFullYear()} FuelPrecision Industrial
+          &copy; {new Date().getFullYear()} Ánh Sáng Toàn Cầu
         </p>
       </div>
     </div>

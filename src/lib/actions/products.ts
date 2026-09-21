@@ -31,6 +31,9 @@ export async function createProduct(data: ProductInput): Promise<ActionResult> {
     });
 
     revalidatePath("/san-pham");
+    revalidatePath("/san-pham/[slug]", "page");
+    revalidatePath("/");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/san-pham");
     revalidatePath("/admin/danh-muc"); // shows a product count per category
     revalidatePath("/admin"); // dashboard totals
@@ -74,7 +77,9 @@ export async function updateProduct(id: string, data: Partial<ProductInput>): Pr
     });
 
     revalidatePath("/san-pham");
-    revalidatePath(`/san-pham/${(await db.product.findUnique({ where: { id }, select: { slug: true } }))?.slug}`);
+    revalidatePath("/san-pham/[slug]", "page");
+    revalidatePath("/");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/san-pham");
     revalidatePath("/admin/danh-muc"); // shows a product count per category
     revalidatePath("/admin"); // dashboard totals
@@ -94,6 +99,9 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
   try {
     await db.product.delete({ where: { id } });
     revalidatePath("/san-pham");
+    revalidatePath("/san-pham/[slug]", "page");
+    revalidatePath("/");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/san-pham");
     revalidatePath("/admin/danh-muc"); // shows a product count per category
     revalidatePath("/admin"); // dashboard totals

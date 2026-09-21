@@ -1,3 +1,5 @@
+import "server-only";
+
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -6,9 +8,9 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefi
 function createPrismaClient() {
   const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL,
-    // Supabase free tier allows ~60 direct connections. Each Vercel lambda
-    // instance gets its own pool, so keep max low to avoid exhaustion.
-    max: 5,
+    // Each Vercel function instance owns a pool. Supavisor handles global
+    // pooling, while a single local connection avoids multiplying connections.
+    max: 1,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 10_000,
   });

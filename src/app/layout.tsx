@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Ánh Sáng Toàn Cầu",
   },
   description: "Đo bồn tự động, thiết bị trạm xăng dầu và phần mềm quản lý.",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "vi_VN",
@@ -29,11 +30,18 @@ export const metadata: Metadata = {
     title: "Ánh Sáng Toàn Cầu — Thiết bị và giải pháp trạm xăng dầu",
     description: "Đo bồn tự động, thiết bị trạm xăng dầu và phần mềm quản lý.",
     url: siteConfig.url,
+    images: [
+      {
+        url: "/images/hero-fuel-station-clean.png",
+        alt: "Thiết bị và giải pháp trạm xăng dầu Ánh Sáng Toàn Cầu",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: companyInfo.brandName,
     description: "Thiết bị và giải pháp cho trạm xăng dầu.",
+    images: ["/images/hero-fuel-station-clean.png"],
   },
   robots: {
     index: true,

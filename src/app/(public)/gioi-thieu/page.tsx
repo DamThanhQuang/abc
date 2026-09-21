@@ -5,9 +5,10 @@ import { PageHero } from "@/components/shared/PageHero";
 import { companyInfo } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Giới thiệu | Ánh Sáng Toàn Cầu",
+  title: "Giới thiệu",
   description:
     "Giới thiệu Ánh Sáng Toàn Cầu — doanh nghiệp sản xuất thiết bị, hệ thống tự động hóa và giải pháp quản lý cho ngành xăng dầu.",
+  alternates: { canonical: "/gioi-thieu" },
 };
 
 const businessAreas = [

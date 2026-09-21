@@ -11,10 +11,22 @@ export const companyInfo = {
   invoiceEmail: "hoadonastc@gmail.com",
 } as const;
 
+const configuredSiteUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
+
+if (process.env.NODE_ENV === "production" && !configuredSiteUrl) {
+  throw new Error("NEXT_PUBLIC_APP_URL is required in production.");
+}
+
+const siteUrl = (configuredSiteUrl || "http://localhost:3000").replace(/\/$/, "");
+
+if (process.env.VERCEL_ENV === "production" && !siteUrl.startsWith("https://")) {
+  throw new Error("NEXT_PUBLIC_APP_URL must use HTTPS in Vercel production.");
+}
+
 export const siteConfig = {
   name: companyInfo.brandName,
   description: "Thiết bị và giải pháp cho trạm xăng dầu",
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+  url: siteUrl,
 } as const;
 
 export type NavItem = {

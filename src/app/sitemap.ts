@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 import { siteConfig } from "@/config/site";
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 

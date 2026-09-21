@@ -4,11 +4,23 @@ const r2PublicHost = process.env.R2_PUBLIC_URL
   ? new URL(process.env.R2_PUBLIC_URL).hostname
   : undefined;
 
+const secondaryDomains = [
+  "cotbom.com.vn",
+  "cotbom.vn",
+  "mayxangdau.vn",
+  "mayxangdau.com",
+] as const;
+
 const nextConfig: NextConfig = {
+  async redirects() {
+    return secondaryDomains.map((hostname) => ({
+      source: "/:path*",
+      has: [{ type: "host" as const, value: hostname }],
+      destination: "https://astc.com.vn/:path*",
+      permanent: true,
+    }));
+  },
   images: {
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: r2PublicHost
       ? [{ protocol: "https" as const, hostname: r2PublicHost }]
       : [],
@@ -32,6 +44,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: blob: https:",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://www.google-analytics.com",
+              "object-src 'none'",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

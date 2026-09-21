@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────
-   Design Tokens — FuelPrecision Industrial
+   Design Tokens — Ánh Sáng Toàn Cầu
    Maps Figma design system to CSS variables
 ───────────────────────────────────────────── */
 @theme inline {
@@ -39,7 +39,7 @@
   /* ── Layout ── */
   --container-content: 80rem;
 
-  /* ── shadcn semantic tokens — mapped to FuelPrecision palette ── */
+  /* ── shadcn semantic tokens — mapped to the ASTC palette ── */
   --color-background: var(--color-surface-page);
   --color-foreground: var(--color-content-body);
   --color-primary:    var(--color-brand);

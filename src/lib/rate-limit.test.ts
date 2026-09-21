@@ -2,20 +2,20 @@ import { describe, expect, it } from "vitest";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 describe("checkRateLimit", () => {
-  it("allows requests within the limit", () => {
+  it("allows requests within the limit", async () => {
     const key = `test-allow-${Date.now()}`;
     for (let i = 0; i < 5; i++) {
-      const result = checkRateLimit(key, 5, 60_000);
+      const result = await checkRateLimit(key, 5, 60_000);
       expect(result.allowed).toBe(true);
     }
   });
 
-  it("blocks requests exceeding the limit", () => {
+  it("blocks requests exceeding the limit", async () => {
     const key = `test-block-${Date.now()}`;
     for (let i = 0; i < 3; i++) {
-      checkRateLimit(key, 3, 60_000);
+      await checkRateLimit(key, 3, 60_000);
     }
-    const result = checkRateLimit(key, 3, 60_000);
+    const result = await checkRateLimit(key, 3, 60_000);
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.retryAfterMs).toBeGreaterThan(0);
@@ -23,14 +23,14 @@ describe("checkRateLimit", () => {
     }
   });
 
-  it("uses separate windows for different keys", () => {
+  it("uses separate windows for different keys", async () => {
     const keyA = `test-sep-a-${Date.now()}`;
     const keyB = `test-sep-b-${Date.now()}`;
     for (let i = 0; i < 3; i++) {
-      checkRateLimit(keyA, 3, 60_000);
+      await checkRateLimit(keyA, 3, 60_000);
     }
-    const resultA = checkRateLimit(keyA, 3, 60_000);
-    const resultB = checkRateLimit(keyB, 3, 60_000);
+    const resultA = await checkRateLimit(keyA, 3, 60_000);
+    const resultB = await checkRateLimit(keyB, 3, 60_000);
     expect(resultA.allowed).toBe(false);
     expect(resultB.allowed).toBe(true);
   });

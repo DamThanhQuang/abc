@@ -1,13 +1,15 @@
-# FuelPrecision
+# Ánh Sáng Toàn Cầu
 
 Website giới thiệu sản phẩm và quản lý nội dung cho công ty thiết bị đo lường nhiên liệu. Xây dựng bằng Next.js 16, Prisma, PostgreSQL, và NextAuth v5.
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
-- **Database ORM**: Prisma 7 + PostgreSQL
+- **Database ORM**: Prisma 7 + Supabase PostgreSQL
 - **Auth**: NextAuth v5 (Auth.js)
 - **Email**: Resend
+- **Object storage**: Cloudflare R2
+- **Distributed rate limit**: Upstash Redis
 - **UI**: Tailwind CSS v4 + shadcn/ui + Base UI
 - **Language**: TypeScript
 
@@ -20,7 +22,7 @@ Website giới thiệu sản phẩm và quản lý nội dung cho công ty thi�
 
 ## Yêu cầu
 
-- Node.js >= 20
+- Node.js 24
 - PostgreSQL (hoặc Supabase / Neon)
 - npm / yarn / pnpm
 
@@ -50,10 +52,9 @@ cp .env.example .env
 Chỉnh sửa `.env`:
 
 ```env
-# PostgreSQL connection string
-# Supabase: Settings → Database → Connection string → URI (Transaction pooler)
-# Neon:     Project → Connection Details → Connection string
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/fuelprecision?schema=public"
+# Supabase transaction pooler (runtime) and direct/session URL (migrations)
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:6543/postgres?pgbouncer=true&sslmode=require"
+DIRECT_URL="postgresql://USER:PASSWORD@HOST:5432/postgres?sslmode=require"
 
 # Auth.js secret — tạo bằng: openssl rand -base64 32
 AUTH_SECRET="your-random-secret-here"
@@ -61,7 +62,18 @@ AUTH_URL="http://localhost:3000"
 
 # Resend API key (https://resend.com → API Keys)
 RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxx"
-ADMIN_EMAIL="admin@fuelprecision.vn"
+ADMIN_EMAIL="admin@astc.com.vn"
+
+# Distributed rate limit (required in production)
+UPSTASH_REDIS_REST_URL="https://...upstash.io"
+UPSTASH_REDIS_REST_TOKEN="..."
+
+# Cloudflare R2
+R2_ACCOUNT_ID="..."
+R2_ACCESS_KEY_ID="..."
+R2_SECRET_ACCESS_KEY="..."
+R2_BUCKET_NAME="..."
+R2_PUBLIC_URL="https://images.astc.com.vn"
 
 # App URL
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
@@ -127,8 +139,9 @@ prisma/
 
 1. Push code lên GitHub
 2. Import project tại [vercel.com/new](https://vercel.com/new)
-3. Thêm các biến môi trường trong Vercel Dashboard
-4. Deploy
+3. Chọn Node.js 24 và thêm các biến trong `.env.example` vào Vercel Dashboard
+4. Đặt `NEXT_PUBLIC_APP_URL=https://astc.com.vn`
+5. Chạy `npm run db:deploy` một lần với `DIRECT_URL`, sau đó deploy
 
 ### Tự host
 

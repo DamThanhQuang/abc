@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
-import { execSync } from "child_process";
+
+function sourceFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return sourceFiles(path);
+    return /\.tsx?$/.test(entry.name) ? [path] : [];
+  });
+}
 
 describe("Secret Exposure Prevention", () => {
   it(".env is listed in .gitignore", () => {
@@ -51,9 +58,7 @@ describe("Secret Exposure Prevention", () => {
       /ghp_[a-zA-Z0-9]{36}/,
     ];
 
-    const files = execSync(`find "${srcDir}" -name "*.ts" -o -name "*.tsx" | head -100`, {
-      encoding: "utf-8",
-    }).trim().split("\n").filter(Boolean);
+    const files = sourceFiles(srcDir);
 
     for (const file of files) {
       if (file.includes(".test.")) continue;

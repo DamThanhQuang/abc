@@ -7,6 +7,7 @@ import { getNewsArticlesByPage } from "@/lib/api/news";
 export const metadata: Metadata = {
   title: "Tin tức",
   description: "Tin tức về sản phẩm và giải pháp trạm xăng dầu từ Ánh Sáng Toàn Cầu.",
+  alternates: { canonical: "/tin-tuc" },
 };
 
 type SearchParams = Promise<{ page?: string }>;
