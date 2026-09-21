@@ -5,6 +5,7 @@ import { getCategories } from "@/lib/api/categories";
 import { createCategory, deleteCategory } from "@/lib/actions/categories";
 import { requireAdmin } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
+import { SubmitButton } from "@/components/admin/shared/SubmitButton";
 
 export const metadata: Metadata = { title: "Quản lý danh mục | Admin" };
 
@@ -81,12 +82,12 @@ export default async function AdminDanhMucPage() {
                             "use server";
                             await deleteCategory(cat.id);
                           }}>
-                            <button
-                              type="submit"
+                            <SubmitButton
+                              pendingText="Đang xóa..."
                               className="rounded-[6px] border border-red-200 px-3 py-1.5 font-sans text-[12px] text-red-600 hover:bg-red-50 transition-colors"
                             >
                               Xóa
-                            </button>
+                            </SubmitButton>
                           </form>
                         </td>
                       </tr>
@@ -123,9 +124,9 @@ export default async function AdminDanhMucPage() {
                   <label className="font-sans text-[12px] font-semibold text-content-heading">Thứ tự hiển thị</label>
                   <input type="number" name="order" className={inputClass} defaultValue="0" min="0" />
                 </div>
-                <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
+                <SubmitButton pendingText="Đang tạo..." className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
                   Tạo danh mục
-                </button>
+                </SubmitButton>
               </form>
             </div>
           </div>

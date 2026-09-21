@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/types/category";
@@ -36,6 +36,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   const selectedSlug = searchParams.get("category") ?? "";
   const [searchValue, setSearchValue] = useState(searchParams.get("search") ?? "");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -50,7 +51,9 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   }
 
   function navigate(qs: string) {
-    router.push(`${pathname}${qs ? `?${qs}` : ""}`);
+    startTransition(() => {
+      router.push(`${pathname}${qs ? `?${qs}` : ""}`);
+    });
   }
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -120,10 +123,17 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
 
         {/* Category radios */}
         <div className="rounded-card border border-border-ui bg-white p-[25px] shadow-card">
-          <h3 className="mb-[22px] font-heading font-semibold text-[18px] leading-7 text-content-heading">
+          <h3 className="mb-[22px] flex items-center gap-2 font-heading font-semibold text-[18px] leading-7 text-content-heading">
             Danh mục
+            {isPending && (
+              <span
+                role="status"
+                aria-label="Đang tải sản phẩm"
+                className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-border-ui border-t-brand"
+              />
+            )}
           </h3>
-          <ul className="flex flex-col gap-3">
+          <ul className={cn("flex flex-col gap-3 transition-opacity", isPending && "opacity-60")}>
             <li className="flex items-center gap-3">
               <input
                 type="radio" id="cat-all" name="category" value=""

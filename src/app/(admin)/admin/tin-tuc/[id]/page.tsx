@@ -6,6 +6,7 @@ import { updateArticle } from "@/lib/actions/news";
 import { requireAdmin } from "@/lib/auth-guard";
 import { ImageUpload } from "@/components/admin/shared/ImageUpload";
 import { RichTextEditor } from "@/components/admin/shared/RichTextEditor";
+import { SubmitButton } from "@/components/admin/shared/SubmitButton";
 import { db } from "@/lib/db";
 
 type Props = { params: Promise<{ id: string }> };
@@ -121,9 +122,9 @@ export default async function AdminEditArticlePage({ params }: Props) {
               </div>
 
               <div className="flex flex-col gap-2">
-                <button type="submit" className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
+                <SubmitButton pendingText="Đang lưu..." className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
                   Lưu thay đổi
-                </button>
+                </SubmitButton>
                 <Link href="/admin/tin-tuc" className="w-full rounded-btn border border-border-ui py-2.5 text-center font-sans text-[13px] text-content-body hover:bg-surface-card transition-colors">
                   Hủy
                 </Link>
