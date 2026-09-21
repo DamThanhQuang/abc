@@ -147,20 +147,25 @@ const SOLUTIONS: readonly Solution[] = [
 
 const PRODUCT_GALLERY_IMAGES: readonly ProductCarouselImage[] = [
   {
-    src: "/images/home/astc-fuel-station.png",
-    alt: "Hệ thống thiết bị ASTC tại trạm xăng dầu",
-  },
-  {
     src: "/images/home/astc-box-data-controller.png",
     alt: "Tủ ASTC BOX Data Controller hiển thị dữ liệu trạm xăng dầu",
+    title: "ASTC BOX Data Controller",
+    description:
+      "Tủ thu nhận và hiển thị dữ liệu từ các cột bơm, hỗ trợ theo dõi trạng thái kết nối và giao dịch tại trạm.",
   },
   {
     src: "/images/home/astc-box-data-controller-front.png",
     alt: "Mặt trước tủ ASTC BOX Data Controller",
+    title: "Giao diện theo dõi tại trạm",
+    description:
+      "Màn hình tích hợp trên tủ giúp nhân sự vận hành quan sát dữ liệu và trạng thái của từng vòi bơm tại chỗ.",
   },
   {
     src: "/images/home/astc-smart-tank.png",
     alt: "Tủ ASTC Smart Tank hiển thị thông tin bồn chứa",
+    title: "ASTC Smart Tank",
+    description:
+      "Tủ giám sát bể chứa tập trung thông tin mức nhiên liệu, nhiệt độ, thể tích và các cảnh báo vận hành.",
   },
 ];
 
