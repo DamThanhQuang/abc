@@ -1,18 +1,17 @@
 export default function ProductDetailLoading() {
   return (
     <>
-      {/* Hero skeleton */}
-      <div className="bg-surface-hero py-8 lg:py-12">
-        <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16">
-          <div className="h-4 w-48 rounded bg-white/20 animate-pulse mb-4" />
-          <div className="h-8 w-72 rounded bg-white/20 animate-pulse" />
+      {/* Breadcrumb skeleton */}
+      <div className="border-b border-border-ui/60 bg-white">
+        <div className="mx-auto max-w-content px-4 py-4 sm:px-6 lg:px-16">
+          <div className="h-4 w-64 max-w-full animate-pulse rounded bg-surface-card" />
         </div>
       </div>
 
-      <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-8 lg:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div className="mx-auto max-w-content px-4 py-8 sm:px-6 lg:px-16 lg:py-12">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
           {/* Gallery skeleton */}
-          <div className="lg:col-span-7">
+          <div className="order-2 lg:order-1 lg:col-span-7">
             <div className="aspect-[4/3] rounded-card bg-surface-card animate-pulse" />
             <div className="mt-3 flex gap-2">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -22,7 +21,7 @@ export default function ProductDetailLoading() {
           </div>
 
           {/* Info skeleton */}
-          <div className="lg:col-span-5">
+          <div className="order-1 lg:order-2 lg:col-span-5">
             <div className="rounded-card bg-white p-5 lg:p-7 shadow-card border border-border-ui/40 flex flex-col gap-5">
               <div className="flex gap-3">
                 <div className="h-5 w-20 rounded-pill bg-surface-card animate-pulse" />

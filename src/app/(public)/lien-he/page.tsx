@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   description: "Liên hệ Ánh Sáng Toàn Cầu qua Zalo để trao đổi nhu cầu về thiết bị và giải pháp trạm xăng dầu.",
 };
 
+type Props = {
+  searchParams: Promise<{ "san-pham"?: string | string[] }>;
+};
+
 function ZaloIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -34,7 +38,12 @@ function ClockIcon() {
   );
 }
 
-export default function LienHePage() {
+export default async function LienHePage({ searchParams }: Props) {
+  const params = await searchParams;
+  const productParam = Array.isArray(params["san-pham"])
+    ? params["san-pham"][0]
+    : params["san-pham"];
+  const productName = productParam?.trim().slice(0, 200) ?? "";
   const rawZaloId = process.env.NEXT_PUBLIC_ZALO_ID?.trim() ?? "";
   const zaloId = rawZaloId.replace(/\D/g, "");
   const displayPhone = process.env.NEXT_PUBLIC_PHONE_DISPLAY?.trim() || rawZaloId;
@@ -91,6 +100,17 @@ export default function LienHePage() {
                 Bạn có thể quét mã QR, mở liên kết hoặc sao chép số để tìm trên Zalo.
               </p>
 
+              {productName ? (
+                <div className="mt-5 rounded-xl border border-border-tag bg-surface-tag px-4 py-3">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                    Sản phẩm đang quan tâm
+                  </p>
+                  <p className="mt-1 font-heading text-[15px] font-semibold leading-6 text-content-heading">
+                    {productName}
+                  </p>
+                </div>
+              ) : null}
+
               {hasZaloContact ? (
                 <>
                   <div className="mt-6 rounded-xl border border-border-ui bg-surface-card p-4">
@@ -112,7 +132,7 @@ export default function LienHePage() {
                     className="mt-5 inline-flex items-center justify-center gap-2 rounded-btn bg-[#0068ff] px-6 py-3.5 font-sans text-[14px] font-semibold text-white shadow-btn transition-colors hover:bg-[#0057d9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068ff]/40"
                   >
                     <ZaloIcon />
-                    Nhắn Zalo
+                    {productName ? "Nhắn Zalo về sản phẩm" : "Nhắn Zalo"}
                   </a>
                 </>
               ) : (

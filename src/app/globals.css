@@ -147,3 +147,59 @@
     background: linear-gradient(to right, rgba(0,29,54,0.80) 0%, rgba(0,29,54,0.45) 55%, rgba(0,29,54,0) 100%);
   }
 }
+
+/* ─── Floating contact actions ─── */
+@keyframes contact-halo {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  8% {
+    opacity: 0.3;
+  }
+  32%,
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+@keyframes contact-phone-ring {
+  0%,
+  72%,
+  88%,
+  100% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-11deg);
+  }
+  78% {
+    transform: rotate(9deg);
+  }
+  81% {
+    transform: rotate(-7deg);
+  }
+  84% {
+    transform: rotate(5deg);
+  }
+}
+
+.contact-halo {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-halo {
+    animation: contact-halo 4s ease-out infinite;
+  }
+
+  .contact-halo-delayed {
+    animation-delay: 2s;
+  }
+
+  .contact-phone-icon {
+    animation: contact-phone-ring 7s ease-in-out infinite;
+    transform-origin: center;
+  }
+}
