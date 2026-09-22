@@ -2,12 +2,13 @@ import "server-only";
 
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { databaseConnectionConfig } from "@/lib/database-config.mjs";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
 
 function createPrismaClient() {
   const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL,
+    ...databaseConnectionConfig(process.env.DATABASE_URL),
     // Each Vercel function instance owns a pool. Supavisor handles global
     // pooling, while a single local connection avoids multiplying connections.
     max: 1,

@@ -2,8 +2,9 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
+import { databaseConnectionConfig } from "../src/lib/database-config.mjs";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(databaseConnectionConfig(process.env.DATABASE_URL));
 const db = new PrismaClient({ adapter });
 
 async function seedAdmin(): Promise<void> {

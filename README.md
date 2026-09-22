@@ -2,6 +2,8 @@
 
 Website giới thiệu sản phẩm và quản lý nội dung cho công ty thiết bị đo lường nhiên liệu. Xây dựng bằng Next.js 16, Prisma, PostgreSQL, và NextAuth v5.
 
+Hướng dẫn triển khai đã rà soát theo cấu hình thực tế: [DEPLOYMENT_PRODUCTION.md](./DEPLOYMENT_PRODUCTION.md). Đọc tài liệu này trước khi đưa lên Vercel; các lệnh `db:push` bên dưới chỉ dành cho thử nghiệm local.
+
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)

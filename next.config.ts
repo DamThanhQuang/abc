@@ -5,17 +5,22 @@ const r2PublicHost = process.env.R2_PUBLIC_URL
   : undefined;
 
 const secondaryDomains = [
+  "www.astc.com.vn",
   "cotbom.com.vn",
+  "www.cotbom.com.vn",
   "cotbom.vn",
+  "www.cotbom.vn",
   "mayxangdau.vn",
+  "www.mayxangdau.vn",
   "mayxangdau.com",
+  "www.mayxangdau.com",
 ] as const;
 
 const nextConfig: NextConfig = {
   async redirects() {
     return secondaryDomains.map((hostname) => ({
       source: "/:path*",
-      has: [{ type: "host" as const, value: hostname }],
+      has: [{ type: "host" as const, value: hostname.replaceAll(".", "\\.") }],
       destination: "https://astc.com.vn/:path*",
       permanent: true,
     }));

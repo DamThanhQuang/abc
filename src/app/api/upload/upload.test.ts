@@ -108,12 +108,22 @@ describe("POST /api/upload", () => {
     authMock.mockResolvedValue({ user: ADMIN });
     findAdminMock.mockResolvedValue(ADMIN);
 
-    // 5 MB + 1 byte
-    const big = new Uint8Array(5 * 1024 * 1024 + 1);
+    // Just above the shared client/server limit, below Vercel's payload limit.
+    const big = new Uint8Array(3 * 1024 * 1024 + 1);
     // Give it a PNG header so it passes content check
     big.set(PNG_BYTES.slice(0, 8));
     const res = await POST(makeRequest(makeFile("huge.png", big, "image/png")));
 
+    expect(res.status).toBe(400);
+    expect(uploadedObjects).toHaveLength(0);
+  });
+
+  it("rejects a text field instead of a file without a server error", async () => {
+    authMock.mockResolvedValue({ user: ADMIN });
+    findAdminMock.mockResolvedValue(ADMIN);
+    const form = new FormData();
+    form.append("file", "not a file");
+    const res = await POST(new Request("http://localhost:3000/api/upload", { method: "POST", body: form }));
     expect(res.status).toBe(400);
     expect(uploadedObjects).toHaveLength(0);
   });
