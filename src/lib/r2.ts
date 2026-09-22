@@ -1,3 +1,5 @@
+import "server-only";
+
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -60,7 +62,6 @@ export async function getPresignedUrl(key: string, expiresIn = 3600): Promise<st
 }
 
 export function getPublicUrl(key: string): string {
-  const publicUrl = process.env.R2_PUBLIC_URL;
-  if (publicUrl) return `${publicUrl.replace(/\/$/, "")}/${key}`;
-  return `/api/images/${key}`;
+  const publicUrl = requiredEnv("R2_PUBLIC_URL");
+  return `${publicUrl.replace(/\/$/, "")}/${key}`;
 }

@@ -65,6 +65,26 @@ describe("Input Validation Security", () => {
       });
       expect(result.success).toBe(false);
     });
+
+    it("rejects unsafe image URLs", () => {
+      const result = productSchema.safeParse({
+        slug: "test",
+        name: "Test",
+        categoryId: "test",
+        image: "javascript:alert(1)",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects slugs outside the canonical format", () => {
+      const result = productSchema.safeParse({
+        slug: "Bad Slug",
+        name: "Test",
+        categoryId: "test",
+        image: "/test.webp",
+      });
+      expect(result.success).toBe(false);
+    });
   });
 
   describe("newsSchema", () => {

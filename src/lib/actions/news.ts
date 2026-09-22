@@ -27,6 +27,8 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
   try {
     const article = await db.newsArticle.create({ data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
+    revalidatePath("/tin-tuc/[slug]", "page");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/tin-tuc");
     revalidatePath("/admin"); // dashboard totals
     return { success: true, id: article.id };
@@ -48,6 +50,8 @@ export async function updateArticle(id: string, data: Partial<NewsInput>): Promi
   try {
     await db.newsArticle.update({ where: { id }, data: withCleanContent(parsed.data) });
     revalidatePath("/tin-tuc");
+    revalidatePath("/tin-tuc/[slug]", "page");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/tin-tuc");
     revalidatePath("/admin"); // dashboard totals
     return { success: true };
@@ -66,6 +70,8 @@ export async function deleteArticle(id: string): Promise<ActionResult> {
   try {
     await db.newsArticle.delete({ where: { id } });
     revalidatePath("/tin-tuc");
+    revalidatePath("/tin-tuc/[slug]", "page");
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/tin-tuc");
     revalidatePath("/admin"); // dashboard totals
     return { success: true };

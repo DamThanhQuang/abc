@@ -3,7 +3,7 @@ import crypto from "crypto";
 import sharp from "sharp";
 import { requireAdmin } from "@/lib/auth-guard";
 import { IMAGE_UPLOAD } from "@/lib/image-upload-config";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { uploadToR2, getPublicUrl } from "@/lib/r2";
 
 export const runtime = "nodejs";
@@ -87,18 +87,30 @@ function detectImageFormat(header: Uint8Array): ImageFormat | null {
 }
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const rl = checkRateLimit(`upload:${ip}`, UPLOAD_MAX, UPLOAD_WINDOW_MS);
-  if (!rl.allowed) {
-    return NextResponse.json(
-      { error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." },
-      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } },
-    );
-  }
-
   const guard = await requireAdmin();
   if (!guard.ok) {
     return NextResponse.json({ error: guard.error }, { status: 401 });
+  }
+
+  const ip = getClientIp(request.headers);
+  try {
+    const rl = await checkRateLimit(
+      `upload:${guard.admin.id}:${ip}`,
+      UPLOAD_MAX,
+      UPLOAD_WINDOW_MS,
+    );
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } },
+      );
+    }
+  } catch (error) {
+    console.error("upload rate limit:", error);
+    return NextResponse.json(
+      { error: "Không thể xác minh giới hạn tải lên. Vui lòng thử lại sau." },
+      { status: 503 },
+    );
   }
 
   try {

@@ -18,11 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: product.name,
     description: product.description ?? `${product.name} — sản phẩm của Ánh Sáng Toàn Cầu`,
+    alternates: { canonical: `/san-pham/${product.slug}` },
     openGraph: {
       title: product.name,
       description: product.description ?? `${product.name} — sản phẩm của Ánh Sáng Toàn Cầu`,
       images: productImages.map((url) => ({ url })),
       type: "website",
+      url: `/san-pham/${product.slug}`,
     },
   };
 }

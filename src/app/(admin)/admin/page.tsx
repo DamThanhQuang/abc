@@ -5,7 +5,7 @@ import { listProductsForAdmin } from "@/lib/api/products";
 import { listArticlesForAdmin } from "@/lib/api/news";
 import { getContactStats, getContacts } from "@/lib/api/contacts";
 
-export const metadata: Metadata = { title: "Tổng quan | Admin FuelPrecision" };
+export const metadata: Metadata = { title: "Tổng quan | Admin Ánh Sáng Toàn Cầu" };
 
 function StatCard({
   label,
@@ -170,7 +170,7 @@ export default async function AdminDashboard() {
             <div className="rounded-card bg-brand-gradient p-5">
               <p className="font-sans text-[12px] text-white/70 mb-1">Truy cap trang chu</p>
               <Link href="/" target="_blank" className="font-heading font-semibold text-[14px] text-white hover:underline">
-                fuelprecision.vn &rarr;
+                astc.com.vn &rarr;
               </Link>
             </div>
           </div>

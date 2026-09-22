@@ -16,12 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: { canonical: `/tin-tuc/${article.slug}` },
     openGraph: {
       title: article.title,
       description: article.excerpt,
       images: article.image ? [{ url: article.image }] : undefined,
       type: "article",
       publishedTime: article.publishedAt ?? undefined,
+      url: `/tin-tuc/${article.slug}`,
     },
   };
 }
