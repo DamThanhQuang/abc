@@ -8,7 +8,8 @@ import { uploadToR2, getPublicUrl } from "@/lib/r2";
 
 export const runtime = "nodejs";
 
-const MAX_SIZE = 4.5 * 1024 * 1024;
+// Leave room for multipart framing below Vercel's 4.5 MB request limit.
+const MAX_SIZE = IMAGE_UPLOAD.maxReceivedBytes;
 const UPLOAD_MAX = 20;
 const UPLOAD_WINDOW_MS = 60_000;
 
@@ -117,14 +118,14 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json({ error: "Không có file" }, { status: 400 });
     }
 
     if (file.size > MAX_SIZE) {
-      console.warn("Upload rejected: request image exceeds 4.5 MB", { size: file.size });
+      console.warn("Upload rejected: request image exceeds 3 MB", { size: file.size });
       return NextResponse.json(
-        { error: "Ảnh gửi lên vượt quá 4,5 MB. Vui lòng để trình duyệt nén ảnh trước." },
+        { error: "Ảnh gửi lên vượt quá 3 MB. Vui lòng để trình duyệt nén ảnh trước." },
         { status: 400 },
       );
     }
