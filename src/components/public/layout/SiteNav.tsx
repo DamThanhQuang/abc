@@ -21,7 +21,7 @@ export function SiteNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "text-[16px] leading-6 transition-colors",
+              "text-[18px] leading-7 transition-colors",
               // Active: brand-dark color + 2px bottom border underline
               isActive
                 ? "text-brand-dark border-b-2 border-brand-dark pb-1.5 font-normal"
