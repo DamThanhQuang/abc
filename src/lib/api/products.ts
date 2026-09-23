@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import type { Product } from "@/types/product";
 
-export const PRODUCTS_PER_PAGE = 3;
+export const PRODUCTS_PER_PAGE = 6;
 
 export type SortOption = "newest" | "oldest" | "name-az" | "name-za";
 

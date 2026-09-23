@@ -4,8 +4,18 @@ import { MobileNav } from "./MobileNav";
 import { LogoMark } from "@/components/shared/LogoMark";
 import { companyInfo } from "@/config/site";
 
-// companyInfo.phone có dấu chấm phân cách để dễ đọc; tel: cần số thuần.
-const phoneHref = `tel:${companyInfo.phone.replace(/\D/g, "")}`;
+// Số trong config có dấu chấm phân cách để dễ đọc; tel: cần số thuần.
+function telHref(phone: string) {
+  return `tel:${phone.replace(/\D/g, "")}`;
+}
+
+function HeaderPhone({ phone }: { phone: string }) {
+  return (
+    <a href={telHref(phone)} className="transition-colors hover:underline">
+      {phone}
+    </a>
+  );
+}
 
 function PhoneIcon() {
   return (
@@ -42,13 +52,14 @@ export function SiteHeader() {
             <p className="whitespace-nowrap font-sans text-[12px] font-medium leading-4 text-content-heading">
               {companyInfo.legalName}
             </p>
-            <a
-              href={phoneHref}
-              className="mt-1 inline-flex w-fit items-center gap-1.5 font-sans text-[14px] font-semibold leading-5 text-brand-dark transition-colors hover:underline"
-            >
+            <p className="mt-1 flex items-center gap-2 whitespace-nowrap font-sans text-[14px] font-semibold leading-5 text-brand-dark">
               <PhoneIcon />
-              {companyInfo.phone}
-            </a>
+              <HeaderPhone phone={companyInfo.phone} />
+              <span aria-hidden="true" className="font-normal text-border-ui">
+                |
+              </span>
+              <HeaderPhone phone={companyInfo.phoneSecondary} />
+            </p>
           </div>
         </div>
 

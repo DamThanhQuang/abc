@@ -6,10 +6,10 @@ import { createCategory, deleteCategory } from "@/lib/actions/categories";
 import { requireAdmin } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
 import { SubmitButton } from "@/components/admin/shared/SubmitButton";
+import { CategoryFormFields } from "@/components/admin/categories/CategoryFormFields";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Quản lý danh mục | Admin" };
-
-const inputClass = "h-10 w-full rounded-btn border border-border-ui bg-white px-3 font-sans text-[13px] text-content-body focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-colors";
 
 export default async function AdminDanhMucPage() {
   const categories = await getCategories();
@@ -40,6 +40,7 @@ export default async function AdminDanhMucPage() {
       slug,
       name,
       description: (formData.get("description") as string) || undefined,
+      image: (formData.get("image") as string) || undefined,
       order: Number(formData.get("order")) || 0,
     });
     if (result.success) redirect("/admin/danh-muc");
@@ -63,7 +64,7 @@ export default async function AdminDanhMucPage() {
                 <table className="w-full min-w-[500px]">
                   <thead>
                     <tr className="border-b border-border-ui bg-surface-card/50">
-                      {["Thứ tự", "Tên danh mục", "Slug", "Sản phẩm", "Thao tác"].map((h) => (
+                      {["Thứ tự", "Ảnh", "Tên danh mục", "Slug", "Sản phẩm", "Thao tác"].map((h) => (
                         <th key={h} className="px-5 py-3.5 text-left font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-content-muted">
                           {h}
                         </th>
@@ -74,10 +75,25 @@ export default async function AdminDanhMucPage() {
                     {categories.map((cat, i) => (
                       <tr key={cat.id} className={`border-b border-border-ui last:border-0 ${i % 2 === 1 ? "bg-surface-card/30" : ""}`}>
                         <td className="px-5 py-4 font-sans text-[13px] text-content-body w-16">{cat.order}</td>
+                        <td className="px-5 py-4">
+                          <div className="h-10 w-16 overflow-hidden rounded-[6px] bg-surface-hero">
+                            {cat.image ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={cat.image} alt="" className="h-full w-full object-cover" />
+                            ) : null}
+                          </div>
+                        </td>
                         <td className="px-5 py-4 font-sans text-[13px] font-medium text-content-heading">{cat.name}</td>
                         <td className="px-5 py-4 font-sans text-[12px] text-content-muted font-mono">{cat.slug}</td>
                         <td className="px-5 py-4 font-sans text-[13px] text-content-body">{countMap.get(cat.id) ?? 0}</td>
                         <td className="px-5 py-4">
+                          <div className="flex items-center gap-2">
+                          <Link
+                            href={`/admin/danh-muc/${cat.id}`}
+                            className="rounded-[6px] border border-border-ui px-3 py-1.5 font-sans text-[12px] text-content-body hover:bg-surface-card transition-colors"
+                          >
+                            Sửa
+                          </Link>
                           <form action={async () => {
                             "use server";
                             await deleteCategory(cat.id);
@@ -89,12 +105,13 @@ export default async function AdminDanhMucPage() {
                               Xóa
                             </SubmitButton>
                           </form>
+                          </div>
                         </td>
                       </tr>
                     ))}
                     {categories.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="px-5 py-8 text-center font-sans text-[13px] text-content-muted">
+                        <td colSpan={6} className="px-5 py-8 text-center font-sans text-[13px] text-content-muted">
                           Chưa có danh mục nào.
                         </td>
                       </tr>
@@ -112,18 +129,7 @@ export default async function AdminDanhMucPage() {
                 Thêm danh mục mới
               </h2>
               <form action={handleCreate} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Tên danh mục *</label>
-                  <input type="text" name="name" required className={inputClass} placeholder="VD: May bom" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Mô tả</label>
-                  <input type="text" name="description" className={inputClass} placeholder="Mô tả ngắn gọn" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-[12px] font-semibold text-content-heading">Thứ tự hiển thị</label>
-                  <input type="number" name="order" className={inputClass} defaultValue="0" min="0" />
-                </div>
+                <CategoryFormFields />
                 <SubmitButton pendingText="Đang tạo..." className="w-full rounded-btn bg-brand py-2.5 font-sans text-[13px] font-medium text-white shadow-btn hover:bg-brand/90 transition-colors">
                   Tạo danh mục
                 </SubmitButton>
