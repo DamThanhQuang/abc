@@ -19,6 +19,8 @@ function NavIcon({ type }: { type: AdminNavItem["icon"] }) {
       return <svg {...props}><path d="M10 2L2 6v8l8 4 8-4V6L10 2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="M2 6l8 4 8-4M10 10v8" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>;
     case "news":
       return <svg {...props}><path d="M4 4h12M4 8h12M4 12h7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.6"/></svg>;
+    case "project":
+      return <svg {...props}><path d="M2 16V6.5a1 1 0 0 1 1-1h4l1.5 2H17a1 1 0 0 1 1 1V16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/><path d="M6 12.5l2.5-2.5 2 2L14 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>;
     case "request":
       return <svg {...props}><path d="M3 4h14M3 8h14M3 12h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><circle cx="16" cy="15" r="3" stroke="currentColor" strokeWidth="1.6"/><path d="M16 14v1.5l1 1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
     case "logout":

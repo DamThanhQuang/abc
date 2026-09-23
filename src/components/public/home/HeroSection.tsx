@@ -1,10 +1,29 @@
-import Image from "next/image";
 import Link from "next/link";
+import { HeroCarousel, type HeroSlide } from "./HeroCarousel";
 
 const features = [
   { icon: "◎", title: "Thiết bị", subtitle: "chính xác" },
   { icon: "⚙", title: "Tích hợp", subtitle: "tự động" },
   { icon: "☁", title: "Quản lý", subtitle: "tập trung" },
+];
+
+const heroSlides: readonly HeroSlide[] = [
+  {
+    src: "/images/hero-fuel-station-clean.png",
+    alt: "Trạm xăng dầu được trang bị thiết bị của Ánh Sáng Toàn Cầu",
+  },
+  {
+    src: "/images/home/astc-fuel-station.png",
+    alt: "Cột bơm và thiết bị đo tại trạm xăng dầu",
+  },
+  {
+    src: "/images/home/astc-smart-tank.png",
+    alt: "Hệ thống đo bồn tự động",
+  },
+  {
+    src: "/images/home/astc-installation-technician.png",
+    alt: "Kỹ thuật viên lắp đặt thiết bị tại trạm",
+  },
 ];
 
 export function HeroSection() {
@@ -13,22 +32,15 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
       className="relative min-h-[680px] overflow-hidden bg-[#06264a]"
     >
-      <Image
-        src="/images/hero-fuel-station-clean.png"
-        alt=""
-        fill
-        preload
-        sizes="100vw"
-        className="object-cover object-[68%_center] lg:object-center"
-      />
+      <HeroCarousel slides={heroSlides} />
 
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,38,74,0.98)_0%,rgba(6,38,74,0.94)_34%,rgba(6,38,74,0.62)_56%,rgba(6,38,74,0.08)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,38,74,0.98)_0%,rgba(6,38,74,0.94)_34%,rgba(6,38,74,0.62)_56%,rgba(6,38,74,0.08)_100%)]"
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,24,48,0.45)_0%,transparent_45%)]" />
-      <div aria-hidden="true" className="absolute -left-40 top-20 h-[500px] w-[500px] rounded-full bg-green-400/15 blur-[140px]" />
-      <div aria-hidden="true" className="absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-blue-400/15 blur-[160px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(3,24,48,0.45)_0%,transparent_45%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-40 top-20 h-[500px] w-[500px] rounded-full bg-green-400/15 blur-[140px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-blue-400/15 blur-[160px]" />
 
       <div className="relative mx-auto grid min-h-[680px] max-w-7xl grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2 lg:px-8">
         <div className="z-10 py-14 sm:py-16">

@@ -18,6 +18,7 @@ export async function createCategory(data: CategoryInput): Promise<ActionResult>
     const category = await db.category.create({ data: parsed.data });
     revalidatePath("/admin/danh-muc");
     revalidatePath("/san-pham");
+    revalidatePath("/"); // trang chủ render danh sách danh mục
     return { success: true, id: category.id };
   } catch (err) {
     console.error("createCategory:", err);
@@ -38,6 +39,7 @@ export async function updateCategory(id: string, data: Partial<CategoryInput>): 
     await db.category.update({ where: { id }, data: parsed.data });
     revalidatePath("/admin/danh-muc");
     revalidatePath("/san-pham");
+    revalidatePath("/"); // trang chủ render danh sách danh mục
     return { success: true };
   } catch (err) {
     console.error("updateCategory:", err);
@@ -58,6 +60,8 @@ export async function deleteCategory(id: string): Promise<ActionResult> {
     }
     await db.category.delete({ where: { id } });
     revalidatePath("/admin/danh-muc");
+    revalidatePath("/san-pham");
+    revalidatePath("/"); // trang chủ render danh sách danh mục
     return { success: true };
   } catch (err) {
     console.error("deleteCategory:", err);
