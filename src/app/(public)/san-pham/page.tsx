@@ -32,6 +32,12 @@ export default async function SanPhamPage({ searchParams }: { searchParams: Sear
   });
   const categories = await getCategories();
 
+  // Khi đang lọc theo danh mục, hero nói về chính danh mục đó thay vì tiêu đề
+  // chung — người dùng đến đây từ thẻ danh mục ở trang chủ.
+  const activeCategory = category
+    ? categories.find((item) => item.slug === category)
+    : undefined;
+
   function getPageHref(p: number) {
     const params = new URLSearchParams();
     if (category) params.set("category", category);
@@ -45,9 +51,21 @@ export default async function SanPhamPage({ searchParams }: { searchParams: Sear
   return (
     <>
       <PageHero
-        title="Danh Mục Sản Phẩm"
-        subtitle="Thiết bị hệ thống nhiên liệu công nghiệp chính xác, bền vững"
-        breadcrumbs={[{ label: "Trang chủ", href: "/" }, { label: "Sản phẩm" }]}
+        title={activeCategory?.name ?? "Danh Mục Sản Phẩm"}
+        subtitle={
+          activeCategory
+            ? activeCategory.description || undefined
+            : "Thiết bị hệ thống nhiên liệu công nghiệp chính xác, bền vững"
+        }
+        breadcrumbs={
+          activeCategory
+            ? [
+                { label: "Trang chủ", href: "/" },
+                { label: "Sản phẩm", href: "/san-pham" },
+                { label: activeCategory.name },
+              ]
+            : [{ label: "Trang chủ", href: "/" }, { label: "Sản phẩm" }]
+        }
       />
 
       <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-16 py-8 lg:py-12">

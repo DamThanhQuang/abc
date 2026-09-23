@@ -8,6 +8,8 @@ import { getCategories } from "@/lib/api/categories";
 import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
 import { parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 import { SubmitButton } from "@/components/admin/shared/SubmitButton";
+import { TechnicalSpecsInput } from "@/components/admin/shared/TechnicalSpecsInput";
+import { parseTechnicalSpecs } from "@/lib/product-specs";
 
 export const metadata: Metadata = { title: "Thêm sản phẩm | Admin" };
 
@@ -50,7 +52,7 @@ export default async function AdminCreateProductPage() {
         .split("\n")
         .map((f) => f.trim())
         .filter(Boolean),
-      technicalSpecs: [],
+      technicalSpecs: parseTechnicalSpecs(formData.get("technicalSpecs")),
     });
     if (result.success) redirect("/admin/san-pham");
   }
@@ -114,6 +116,13 @@ export default async function AdminCreateProductPage() {
                   <label className={labelClass}>Mỗi dòng một tính năng</label>
                   <textarea rows={6} name="features" className={textareaClass} placeholder={"Tính năng 1\nTính năng 2\nTính năng 3"} />
                 </div>
+              </div>
+
+              <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
+                <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
+                  Thông số kỹ thuật
+                </h2>
+                <TechnicalSpecsInput name="technicalSpecs" />
               </div>
             </div>
 
