@@ -95,3 +95,22 @@ enum ContactStatus {
   IN_PROGRESS
   RESOLVED
 }
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+// Dự án tiêu biểu: nội dung giới thiệu năng lực triển khai, độc lập với Product.
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  location    String?
+  client      String?
+  year        Int?
+  summary     String?
+  description String?
+  image       String
+  imageAlt    String?
+  scope       String[] @default([])
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
