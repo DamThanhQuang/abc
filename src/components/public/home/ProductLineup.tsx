@@ -39,46 +39,50 @@ function CategoryCard({ category }: { category: CategoryWithProductCount }) {
     <li>
       <Link
         href={`/san-pham?category=${encodeURIComponent(category.slug)}`}
-        className="group flex h-full flex-col rounded-card border border-border-ui/60 bg-white p-5 transition-colors hover:border-brand/50 hover:bg-surface-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        className="group flex h-full flex-col overflow-hidden rounded-card border border-border-ui/60 bg-white transition-colors hover:border-brand/50 hover:bg-surface-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
+        {/* Vùng ảnh giữ nguyên chiều cao kể cả khi danh mục chưa có ảnh, để
+            lưới không bị so le giữa thẻ có ảnh và thẻ chưa có. */}
         <span
           aria-hidden="true"
-          className="mb-4 flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-surface-card text-brand transition-colors group-hover:bg-white"
+          className="relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden bg-surface-card text-brand"
         >
           {category.image ? (
             <Image
               src={category.image}
               alt=""
-              width={44}
-              height={44}
-              className="h-11 w-11 object-cover"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
             />
           ) : (
             <CategoryIcon />
           )}
         </span>
 
-        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1.5">
-          <h3 className="font-heading text-[17px] font-semibold leading-6 text-content-heading">
-            {category.name}
-          </h3>
-          {category.productCount > 0 ? (
-            <span className="rounded-pill border border-border-tag bg-surface-tag px-2 py-0.5 font-sans text-[11px] leading-4 tabular-nums text-brand-dark">
-              {category.productCount}
-            </span>
+        <div className="flex flex-1 flex-col p-5">
+          <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1.5">
+            <h3 className="font-heading text-[17px] font-semibold leading-6 text-content-heading">
+              {category.name}
+            </h3>
+            {category.productCount > 0 ? (
+              <span className="rounded-pill border border-border-tag bg-surface-tag px-2 py-0.5 font-sans text-[11px] leading-4 tabular-nums text-brand-dark">
+                {category.productCount}
+              </span>
+            ) : null}
+          </div>
+
+          {category.description ? (
+            <p className="mt-2 font-sans text-[13px] leading-5 text-content-body line-clamp-2">
+              {category.description}
+            </p>
           ) : null}
+
+          <span className="mt-4 inline-flex items-center gap-1 pt-1 font-sans text-[13px] leading-5 tracking-[0.05em] text-brand-dark group-hover:underline">
+            Xem sản phẩm
+            <ArrowIcon />
+          </span>
         </div>
-
-        {category.description ? (
-          <p className="mt-2 font-sans text-[13px] leading-5 text-content-body line-clamp-2">
-            {category.description}
-          </p>
-        ) : null}
-
-        <span className="mt-4 inline-flex items-center gap-1 pt-1 font-sans text-[13px] leading-5 tracking-[0.05em] text-brand-dark group-hover:underline">
-          Xem sản phẩm
-          <ArrowIcon />
-        </span>
       </Link>
     </li>
   );

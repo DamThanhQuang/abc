@@ -8,6 +8,7 @@ export const companyInfo = {
   locality: "Hà Nội",
   country: "VN",
   phone: "0858.786.786",
+  phoneSecondary: "0985.886.715",
   invoiceEmail: "hoadonastc@gmail.com",
 } as const;
 
