@@ -59,6 +59,24 @@ export type CategoryInput = z.infer<typeof categorySchema>;
 // still be omitted by older internal callers. Parsed data always has defaults.
 export type ProductInput = z.input<typeof productSchema>;
 
+// ─── Project ──────────────────────────────────────────────────────────────────
+export const projectSchema = z.object({
+  slug:        slugSchema,
+  name:        z.string().min(1).max(200),
+  location:    z.string().max(200).optional(),
+  client:      z.string().max(200).optional(),
+  year:        z.number().int().min(1900).max(2200).optional(),
+  summary:     z.string().max(500).optional(),
+  description: z.string().max(10_000).optional(),
+  image:       imageSourceSchema,
+  imageAlt:    z.string().max(300).optional(),
+  scope:       z.array(z.string().min(1).max(200)).max(20).default([]),
+  published:   z.boolean().default(true),
+});
+
+// Dùng input type để các field có default (scope, published) vẫn được phép bỏ trống.
+export type ProjectInput = z.input<typeof projectSchema>;
+
 // ─── News article ─────────────────────────────────────────────────────────────
 export const newsSchema = z.object({
   slug:        slugSchema,

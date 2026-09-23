@@ -54,11 +54,17 @@ const productInclude = {
   technicalSpecs: { orderBy: { order: "asc" as const } },
 } as const;
 
-export async function getProducts(query: ProductQuery = {}): Promise<Product[]> {
+// `limit` tồn tại để nơi gọi chỉ cần vài sản phẩm (ví dụ khối nổi bật ở trang
+// chủ) không phải kéo toàn bộ bảng về rồi cắt bớt trong bộ nhớ.
+export async function getProducts(
+  query: ProductQuery = {},
+  options: { limit?: number } = {},
+): Promise<Product[]> {
   const products = await db.product.findMany({
     where: buildWhere(query),
     orderBy: buildOrderBy(query.sort),
     include: productInclude,
+    ...(options.limit === undefined ? {} : { take: options.limit }),
   });
   return products as unknown as Product[];
 }
