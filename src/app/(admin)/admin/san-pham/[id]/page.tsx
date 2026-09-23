@@ -9,6 +9,8 @@ import { MultiImageUpload } from "@/components/admin/shared/MultiImageUpload";
 import { db } from "@/lib/db";
 import { normalizeProductImages, parseProductImages, PRODUCT_IMAGE_PLACEHOLDER } from "@/lib/product-images";
 import { SubmitButton } from "@/components/admin/shared/SubmitButton";
+import { TechnicalSpecsInput } from "@/components/admin/shared/TechnicalSpecsInput";
+import { parseTechnicalSpecs } from "@/lib/product-specs";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -53,7 +55,7 @@ export default async function AdminEditProductPage({ params }: Props) {
         .split("\n")
         .map((f) => f.trim())
         .filter(Boolean),
-      technicalSpecs: JSON.parse((formData.get("technicalSpecs") as string) || "[]"),
+      technicalSpecs: parseTechnicalSpecs(formData.get("technicalSpecs")),
     });
     if (result.success) redirect("/admin/san-pham");
   }
@@ -82,12 +84,6 @@ export default async function AdminEditProductPage({ params }: Props) {
         <form action={handleSave}>
           <input type="hidden" name="slug" value={product.slug} />
           {/* Images are handled by MultiImageUpload in the sidebar. */}
-          <input
-            type="hidden"
-            name="technicalSpecs"
-            value={JSON.stringify(product.technicalSpecs.map((s) => ({ label: s.label, value: s.value, order: s.order })))}
-          />
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Main form */}
             <div className="lg:col-span-8 flex flex-col gap-5">
@@ -130,6 +126,16 @@ export default async function AdminEditProductPage({ params }: Props) {
                     className={textareaClass}
                   />
                 </div>
+              </div>
+
+              <div className="rounded-card bg-white border border-border-ui shadow-card p-6">
+                <h2 className="mb-5 font-heading font-semibold text-[15px] text-content-heading border-b border-border-ui pb-4">
+                  Thông số kỹ thuật
+                </h2>
+                <TechnicalSpecsInput
+                  name="technicalSpecs"
+                  defaultValues={product.technicalSpecs}
+                />
               </div>
             </div>
 
