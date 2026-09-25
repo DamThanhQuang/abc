@@ -203,3 +203,26 @@
     transform-origin: center;
   }
 }
+
+/* ─── Hero carousel progress ───
+   Thanh tiến trình cũng là đồng hồ chuyển ảnh: HeroCarousel sang ảnh kế tiếp
+   khi animation này kết thúc. Khi người dùng giảm chuyển động, thanh đứng yên
+   và ảnh không tự chuyển. */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-progress-fill {
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-progress-fill {
+    animation: hero-progress linear forwards;
+  }
+}
