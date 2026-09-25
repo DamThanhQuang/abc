@@ -2,22 +2,18 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-
-export type HeroSlide = {
-  readonly src: string;
-  readonly alt: string;
-  /** Focal point của ảnh, mặc định lệch phải để không bị chữ che mất chủ thể. */
-  readonly objectPositionClassName?: string;
-};
+import { heroFocusClassName, type HeroSlideView } from "@/lib/hero-slides";
 
 type HeroCarouselProps = {
-  readonly slides: readonly HeroSlide[];
+  readonly slides: readonly HeroSlideView[];
   /** Thời gian dừng ở mỗi ảnh (ms). */
   readonly intervalMs?: number;
 };
 
 const DEFAULT_INTERVAL_MS = 2000;
-const DEFAULT_OBJECT_POSITION = "object-[68%_center] lg:object-center";
+// Banner phủ toàn màn hình nên cần chất lượng cao hơn mức 75 mặc định; phải nằm
+// trong images.qualities của next.config.ts.
+const HERO_IMAGE_QUALITY = 90;
 
 function PreviousIcon() {
   return (
@@ -105,7 +101,7 @@ export function HeroCarousel({
 
           return (
             <div
-              key={slide.src}
+              key={index}
               aria-hidden={!isSelected}
               className={`absolute inset-0 transition-opacity duration-700 ease-out motion-reduce:transition-none ${
                 isSelected ? "opacity-100" : "opacity-0"
@@ -116,12 +112,14 @@ export function HeroCarousel({
                 alt={slide.alt}
                 fill
                 sizes="100vw"
+                quality={HERO_IMAGE_QUALITY}
+                {...(slide.blurDataUrl
+                  ? { placeholder: "blur" as const, blurDataURL: slide.blurDataUrl }
+                  : {})}
                 {...(index === 0
                   ? { preload: true }
                   : { fetchPriority: "low" as const })}
-                className={`object-cover ${
-                  slide.objectPositionClassName ?? DEFAULT_OBJECT_POSITION
-                }`}
+                className={`object-cover ${heroFocusClassName(slide.focus)}`}
               />
             </div>
           );
@@ -146,12 +144,12 @@ export function HeroCarousel({
           </button>
 
           <div className="flex items-center gap-1.5 px-1">
-            {slides.map((slide, index) => {
+            {slides.map((_, index) => {
               const isSelected = index === selectedIndex;
 
               return (
                 <button
-                  key={slide.src}
+                  key={index}
                   type="button"
                   onClick={() => goToSlide(index)}
                   aria-label={`Xem ảnh ${index + 1} / ${slideCount}`}

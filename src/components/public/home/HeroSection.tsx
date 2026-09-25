@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { HeroCarousel, type HeroSlide } from "./HeroCarousel";
+import { getHeroSlides } from "@/lib/api/hero-slides";
+import { HeroCarousel } from "./HeroCarousel";
 
 const features = [
   { icon: "◎", title: "Thiết bị", subtitle: "chính xác" },
@@ -7,26 +8,9 @@ const features = [
   { icon: "☁", title: "Quản lý", subtitle: "tập trung" },
 ];
 
-const heroSlides: readonly HeroSlide[] = [
-  {
-    src: "/images/hero-fuel-station-clean.png",
-    alt: "Trạm xăng dầu được trang bị thiết bị của Ánh Sáng Toàn Cầu",
-  },
-  {
-    src: "/images/home/astc-fuel-station.png",
-    alt: "Cột bơm và thiết bị đo tại trạm xăng dầu",
-  },
-  {
-    src: "/images/home/astc-smart-tank.png",
-    alt: "Hệ thống đo bồn tự động",
-  },
-  {
-    src: "/images/home/astc-installation-technician.png",
-    alt: "Kỹ thuật viên lắp đặt thiết bị tại trạm",
-  },
-];
+export async function HeroSection() {
+  const heroSlides = await getHeroSlides();
 
-export function HeroSection() {
   return (
     <section
       aria-labelledby="hero-heading"

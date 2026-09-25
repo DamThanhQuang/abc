@@ -26,6 +26,8 @@ const nextConfig: NextConfig = {
     }));
   },
   images: {
+    // 75 cho ảnh thường; 90 riêng cho banner toàn màn hình (HeroCarousel).
+    qualities: [75, 90],
     remotePatterns: r2PublicHost
       ? [{ protocol: "https" as const, hostname: r2PublicHost }]
       : [],
