@@ -45,16 +45,27 @@ function CategoryCard({ category }: { category: CategoryWithProductCount }) {
             lưới không bị so le giữa thẻ có ảnh và thẻ chưa có. */}
         <span
           aria-hidden="true"
-          className="relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden bg-surface-card text-brand"
+          className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-surface-card text-brand"
         >
           {category.image ? (
-            <Image
-              src={category.image}
-              alt=""
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
-            />
+            <>
+              {/* Lớp nền: chính ảnh đó phủ kín khung và làm mờ, để ảnh khác tỉ
+                  lệ khung không để lại khoảng trống hai bên. */}
+              <Image
+                src={category.image}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="scale-110 object-cover blur-xl"
+              />
+              <Image
+                src={category.image}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-contain"
+              />
+            </>
           ) : (
             <CategoryIcon />
           )}
@@ -73,7 +84,7 @@ function CategoryCard({ category }: { category: CategoryWithProductCount }) {
           </div>
 
           {category.description ? (
-            <p className="mt-2 font-sans text-[13px] leading-5 text-content-body line-clamp-2">
+            <p className="mt-2 font-sans text-[13px] leading-5 text-content-body">
               {category.description}
             </p>
           ) : null}
