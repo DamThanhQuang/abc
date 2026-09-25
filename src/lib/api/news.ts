@@ -11,6 +11,15 @@ export async function getNewsArticles(): Promise<NewsArticle[]> {
   return articles as unknown as NewsArticle[];
 }
 
+export async function getLatestNewsArticles(limit: number): Promise<NewsArticle[]> {
+  const articles = await db.newsArticle.findMany({
+    where: { published: true },
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
+  return articles as unknown as NewsArticle[];
+}
+
 export async function getNewsArticlesByPage(
   page: number,
 ): Promise<{ articles: NewsArticle[]; total: number; totalPages: number }> {

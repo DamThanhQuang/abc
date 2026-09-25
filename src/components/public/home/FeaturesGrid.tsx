@@ -56,12 +56,12 @@ export function FeaturesGrid() {
       <div className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
         <div className="mb-8 grid gap-5 lg:mb-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
-            <p className="font-sans text-[13px] uppercase leading-5 tracking-[0.14em] text-green-300">
+            <p className="font-sans text-[16px] font-semibold uppercase leading-6 tracking-[0.1em] sm:text-[18px] text-green-300">
               Dự án &amp; năng lực triển khai
             </p>
             <h2
               id="deployment-heading"
-              className="mt-3 max-w-3xl font-heading text-[26px] font-semibold leading-[34px] tracking-[-0.02em] text-white sm:text-[30px] sm:leading-[38px] lg:text-[36px] lg:leading-[44px]"
+              className="mt-3 max-w-3xl font-heading text-[24px] font-semibold leading-[32px] tracking-[-0.01em] text-white sm:text-[28px] sm:leading-[36px] lg:text-[32px] lg:leading-[40px]"
             >
               Đồng hành từ khảo sát đến vận hành
             </h2>

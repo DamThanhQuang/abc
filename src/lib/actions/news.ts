@@ -26,6 +26,7 @@ export async function createArticle(data: NewsInput): Promise<ActionResult> {
 
   try {
     const article = await db.newsArticle.create({ data: withCleanContent(parsed.data) });
+    revalidatePath("/"); // khối "Tin tức mới" trên trang chủ
     revalidatePath("/tin-tuc");
     revalidatePath("/tin-tuc/[slug]", "page");
     revalidatePath("/sitemap.xml");
@@ -49,6 +50,7 @@ export async function updateArticle(id: string, data: Partial<NewsInput>): Promi
 
   try {
     await db.newsArticle.update({ where: { id }, data: withCleanContent(parsed.data) });
+    revalidatePath("/"); // khối "Tin tức mới" trên trang chủ
     revalidatePath("/tin-tuc");
     revalidatePath("/tin-tuc/[slug]", "page");
     revalidatePath("/sitemap.xml");
@@ -69,6 +71,7 @@ export async function deleteArticle(id: string): Promise<ActionResult> {
 
   try {
     await db.newsArticle.delete({ where: { id } });
+    revalidatePath("/"); // khối "Tin tức mới" trên trang chủ
     revalidatePath("/tin-tuc");
     revalidatePath("/tin-tuc/[slug]", "page");
     revalidatePath("/sitemap.xml");

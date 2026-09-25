@@ -167,8 +167,9 @@ export default async function LienHePage({ searchParams }: Props) {
           </section>
 
           <section
+            id="dang-ky-tu-van"
             aria-labelledby="contact-form-heading"
-            className="flex flex-col rounded-[24px] border border-border-ui bg-white p-6 shadow-card sm:p-8 lg:p-10"
+            className="scroll-mt-24 flex flex-col rounded-[24px] border border-border-ui bg-white p-6 shadow-card sm:p-8 lg:p-10"
           >
             <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand-dark">
               <FormIcon />
