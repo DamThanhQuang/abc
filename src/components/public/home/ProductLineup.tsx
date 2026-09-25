@@ -108,11 +108,12 @@ export async function ProductLineup() {
     <section
       id="thiet-bi"
       aria-labelledby="lineup-heading"
-      className="bg-white"
+      // Đích của nút "Khám phá giải pháp" ở banner; chừa chỗ cho header dính.
+      className="scroll-mt-20 bg-white"
     >
-      <div className="mx-auto max-w-content px-4 py-12 sm:px-6 lg:px-16 lg:py-20">
+      <div className="mx-auto max-w-content px-4 pb-8 pt-12 sm:px-6 lg:px-16 lg:pb-12 lg:pt-20">
         <header className="max-w-2xl">
-          <p className="font-sans text-[13px] uppercase leading-5 tracking-[0.12em] text-brand">
+          <p className="font-sans text-[16px] font-semibold uppercase leading-6 tracking-[0.1em] sm:text-[18px] text-brand">
             Giới thiệu
           </p>
           <h2

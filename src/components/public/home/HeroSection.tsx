@@ -2,10 +2,57 @@ import Link from "next/link";
 import { getHeroSlides } from "@/lib/api/hero-slides";
 import { HeroCarousel } from "./HeroCarousel";
 
+const iconProps = {
+  width: 22,
+  height: 22,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+// Đồng hồ đo: thiết bị đo đếm chính xác.
+function GaugeIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M4.5 17a8 8 0 1 1 15 0" />
+      <path d="m12 13 3.5-4" />
+      <circle cx="12" cy="13.5" r="1.3" />
+      <path d="M7 10.5 6 9.8M17 10.5l1-.7M12 7V6" />
+    </svg>
+  );
+}
+
+// Các nút nối với nhau: thiết bị tích hợp, tự động trao đổi dữ liệu.
+function IntegrationIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="3.5" width="6" height="6" rx="1.5" />
+      <rect x="15" y="3.5" width="6" height="6" rx="1.5" />
+      <rect x="9" y="14.5" width="6" height="6" rx="1.5" />
+      <path d="M6 9.5v2.5h12V9.5M12 12v2.5" />
+    </svg>
+  );
+}
+
+// Bảng điều khiển: quản lý tập trung nhiều trạm.
+function DashboardIcon() {
+  return (
+    <svg {...iconProps}>
+      <rect x="3" y="4" width="18" height="13" rx="2" />
+      <path d="M8 20.5h8M12 17v3.5" />
+      <path d="m7 13 3-3 2.5 2L17 8" />
+    </svg>
+  );
+}
+
 const features = [
-  { icon: "◎", title: "Thiết bị", subtitle: "chính xác" },
-  { icon: "⚙", title: "Tích hợp", subtitle: "tự động" },
-  { icon: "☁", title: "Quản lý", subtitle: "tập trung" },
+  { icon: <GaugeIcon />, title: "Thiết bị", subtitle: "chính xác" },
+  { icon: <IntegrationIcon />, title: "Tích hợp", subtitle: "tự động" },
+  { icon: <DashboardIcon />, title: "Quản lý", subtitle: "tập trung" },
 ];
 
 export async function HeroSection() {
@@ -43,13 +90,21 @@ export async function HeroSection() {
             <span aria-hidden="true">•</span> Phần mềm quản lý
           </p>
 
-          <Link
-            href="#solutions"
-            className="mt-8 inline-flex items-center gap-3 rounded-full bg-[linear-gradient(90deg,#4ade80,#22d3ee)] px-8 py-4 text-base font-bold text-white shadow-lg shadow-green-500/20 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06264a]"
-          >
-            KHÁM PHÁ GIẢI PHÁP
-            <span aria-hidden="true" className="text-xl">→</span>
-          </Link>
+          <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+            <Link
+              href="#thiet-bi"
+              className="inline-flex items-center gap-3 rounded-full bg-[linear-gradient(90deg,#4ade80,#22d3ee)] px-8 py-4 text-base font-bold text-white shadow-lg shadow-green-500/20 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06264a]"
+            >
+              KHÁM PHÁ GIẢI PHÁP
+              <span aria-hidden="true" className="text-xl">→</span>
+            </Link>
+            <Link
+              href="/lien-he#dang-ky-tu-van"
+              className="inline-flex items-center rounded-full border border-white/40 px-7 py-[15px] text-base font-semibold text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06264a]"
+            >
+              Nhận tư vấn
+            </Link>
+          </div>
 
           <div className="mt-14 grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-3">
             {features.map((feature) => (
@@ -91,7 +146,7 @@ function Feature({
   title,
   subtitle,
 }: {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   subtitle: string;
 }) {
@@ -99,7 +154,7 @@ function Feature({
     <div className="flex items-center gap-3">
       <div
         aria-hidden="true"
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-green-400 text-2xl text-green-400"
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-green-400/70 bg-green-400/10 text-green-400"
       >
         {icon}
       </div>

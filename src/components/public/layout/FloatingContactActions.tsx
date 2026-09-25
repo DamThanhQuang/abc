@@ -1,3 +1,7 @@
+import { companyInfo } from "@/config/site";
+import { floatingButtonClass, floatingTooltipClass } from "./floating-contact-styles";
+import { FloatingPhoneMenu } from "./FloatingPhoneMenu";
+
 function ZaloIcon() {
   return (
     <svg
@@ -25,22 +29,6 @@ function ZaloIcon() {
   );
 }
 
-function PhoneIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="contact-phone-icon h-6 w-6"
-    >
-      <path
-        d="M7.1 3.5 9.4 7a1.5 1.5 0 0 1-.2 1.9L7.8 10.3a14.2 14.2 0 0 0 5.9 5.9l1.4-1.4a1.5 1.5 0 0 1 1.9-.2l3.5 2.3a1.5 1.5 0 0 1 .6 1.8l-.7 2a2 2 0 0 1-1.9 1.3C9.4 22 2 14.6 2 5.5a2 2 0 0 1 1.3-1.9l2-.7a1.5 1.5 0 0 1 1.8.6Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 type ContactButtonProps = {
   href: string;
   label: string;
@@ -62,14 +50,15 @@ function ContactButton({
   haloClassName,
   delayedHalo = false,
 }: ContactButtonProps) {
+  // Không dùng thuộc tính title: nó hiện thêm tooltip mặc định của trình duyệt,
+  // trùng với tooltip tự vẽ bên dưới.
   return (
     <a
       href={href}
       aria-label={label}
-      title={tooltip}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      className={`group relative isolate flex size-13 items-center justify-center rounded-full text-white shadow-[0_8px_24px_rgba(0,53,95,0.28)] ring-4 transition-colors duration-200 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:size-14 ${className}`}
+      className={`${floatingButtonClass} ${className}`}
     >
       <span
         aria-hidden="true"
@@ -80,49 +69,36 @@ function ContactButton({
       <span className="relative z-10 flex items-center justify-center">
         {children}
       </span>
-      <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-md bg-content-heading px-3 py-2 font-sans text-[12px] font-medium leading-4 text-white opacity-0 shadow-lg motion-safe:translate-x-2 motion-safe:transition-[opacity,transform] group-hover:opacity-100 motion-safe:group-hover:translate-x-0 group-focus-visible:opacity-100 motion-safe:group-focus-visible:translate-x-0 sm:block">
-        {tooltip}
-      </span>
+      <span className={floatingTooltipClass}>{tooltip}</span>
     </a>
   );
 }
 
 export function FloatingContactActions() {
   const rawZaloId = process.env.NEXT_PUBLIC_ZALO_ID?.trim() ?? "";
-  const contactNumber = rawZaloId.replace(/\D/g, "");
-  const displayPhone =
-    process.env.NEXT_PUBLIC_PHONE_DISPLAY?.trim() || rawZaloId;
-
-  if (!contactNumber) {
-    return null;
-  }
+  const zaloNumber = rawZaloId.replace(/\D/g, "");
+  // Cùng hai số như header và dải liên hệ cuối trang chủ.
+  const phones = [companyInfo.phone, companyInfo.phoneSecondary].filter(Boolean);
 
   return (
     <aside
       aria-label="Liên hệ nhanh"
       className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-4 z-40 flex flex-col gap-3 sm:bottom-6 sm:right-6"
     >
-      <ContactButton
-        href={`https://zalo.me/${contactNumber}`}
-        label="Nhắn tin qua Zalo"
-        tooltip="Nhắn Zalo"
-        external
-        className="bg-[#0068ff] ring-[#0068ff]/15 hover:bg-[#005be0]"
-        haloClassName="bg-[#1681ff]"
-      >
-        <ZaloIcon />
-      </ContactButton>
+      {zaloNumber ? (
+        <ContactButton
+          href={`https://zalo.me/${zaloNumber}`}
+          label="Nhắn tin qua Zalo"
+          tooltip="Nhắn Zalo"
+          external
+          className="bg-[#0068ff] ring-[#0068ff]/15 hover:bg-[#005be0]"
+          haloClassName="bg-[#1681ff]"
+        >
+          <ZaloIcon />
+        </ContactButton>
+      ) : null}
 
-      <ContactButton
-        href={`tel:${contactNumber}`}
-        label={`Gọi ${displayPhone}`}
-        tooltip={`Gọi ${displayPhone}`}
-        className="bg-brand ring-brand/15 hover:bg-brand-dark"
-        haloClassName="bg-brand"
-        delayedHalo
-      >
-        <PhoneIcon />
-      </ContactButton>
+      <FloatingPhoneMenu phones={phones} />
     </aside>
   );
 }

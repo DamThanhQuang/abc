@@ -1,8 +1,12 @@
+import type { ContactStatus } from "@prisma/client";
 import { db } from "@/lib/db";
 import type { ContactRequest } from "@/types/contact";
 
-export async function getContacts(): Promise<ContactRequest[]> {
+export async function getContacts(
+  options: { status?: ContactStatus } = {},
+): Promise<ContactRequest[]> {
   const contacts = await db.contactRequest.findMany({
+    where: options.status ? { status: options.status } : undefined,
     orderBy: { createdAt: "desc" },
   });
   return contacts.map((c) => ({
