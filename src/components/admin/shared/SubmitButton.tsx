@@ -7,16 +7,25 @@ type SubmitButtonProps = {
   children: React.ReactNode;
   pendingText?: string;
   className?: string;
+  disabled?: boolean;
+  "aria-label"?: string;
 };
 
-export function SubmitButton({ children, pendingText, className }: SubmitButtonProps) {
+export function SubmitButton({
+  children,
+  pendingText,
+  className,
+  disabled = false,
+  "aria-label": ariaLabel,
+}: SubmitButtonProps) {
   const { pending } = useFormStatus();
 
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={pending || disabled}
       aria-busy={pending}
+      aria-label={ariaLabel}
       className={cn(className, "disabled:opacity-60 disabled:cursor-not-allowed")}
     >
       {pending ? (

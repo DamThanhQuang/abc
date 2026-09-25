@@ -127,4 +127,87 @@ describe("POST /api/upload", () => {
     expect(res.status).toBe(400);
     expect(uploadedObjects).toHaveLength(0);
   });
+
+  // ── Banner ──────────────────────────────────────────────────────────────
+  describe("purpose=banner", () => {
+    async function makePng(width: number, height: number) {
+      const sharp = (await import("sharp")).default;
+      const buffer = await sharp({
+        create: { width, height, channels: 3, background: { r: 6, g: 38, b: 74 } },
+      }).png().toBuffer();
+      return new Uint8Array(buffer);
+    }
+
+    function makeBannerRequest(file: File): Request {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("purpose", "banner");
+      return new Request("http://localhost:3000/api/upload", { method: "POST", body: form });
+    }
+
+    beforeEach(() => {
+      authMock.mockResolvedValue({ user: ADMIN });
+      findAdminMock.mockResolvedValue(ADMIN);
+    });
+
+    it("rejects an image smaller than the banner frame", async () => {
+      const res = await POST(makeBannerRequest(makeFile("small.png", await makePng(1280, 720), "image/png")));
+
+      expect(res.status).toBe(400);
+      expect((await res.json()).error).toMatch(/quá nhỏ/);
+      expect(uploadedObjects).toHaveLength(0);
+    });
+
+    it("keeps full resolution up to 2560px and returns a blur placeholder", async () => {
+      const res = await POST(makeBannerRequest(makeFile("wide.png", await makePng(3200, 1800), "image/png")));
+
+      expect(res.status).toBe(200);
+      const body = await res.json();
+      expect(body.width).toBe(2560);
+      expect(body.height).toBe(1440);
+      expect(body.blurDataUrl).toMatch(/^data:image\/webp;base64,/);
+      expect(uploadedObjects).toHaveLength(1);
+    });
+
+    it("does not upscale an image that already meets the minimum", async () => {
+      const res = await POST(makeBannerRequest(makeFile("exact.png", await makePng(1920, 1080), "image/png")));
+      const body = await res.json();
+
+      expect(body.width).toBe(1920);
+      expect(body.height).toBe(1080);
+    });
+
+    it("rejects a portrait image", async () => {
+      const res = await POST(makeBannerRequest(makeFile("tall.png", await makePng(2400, 3200), "image/png")));
+
+      expect(res.status).toBe(400);
+      expect((await res.json()).error).toMatch(/ảnh dọc/);
+      expect(uploadedObjects).toHaveLength(0);
+    });
+
+    it("rejects an image wider than 3:1", async () => {
+      const res = await POST(makeBannerRequest(makeFile("strip.png", await makePng(6000, 1500), "image/png")));
+
+      expect(res.status).toBe(400);
+      expect((await res.json()).error).toMatch(/quá dài/);
+    });
+
+    it("never shrinks a wide image below the minimum height", async () => {
+      // Thu theo chiều ngang 2560px sẽ còn 2560×1024, thấp hơn khung banner.
+      const res = await POST(makeBannerRequest(makeFile("wide.png", await makePng(5000, 2000), "image/png")));
+      const body = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(body.height).toBe(1080);
+      expect(body.width).toBe(2700);
+    });
+
+    it("keeps the default pipeline for regular uploads", async () => {
+      const res = await POST(makeRequest(makeFile("wide.png", await makePng(3200, 1800), "image/png")));
+      const body = await res.json();
+
+      expect(body.width).toBe(1600);
+      expect(body.blurDataUrl).toBeUndefined();
+    });
+  });
 });

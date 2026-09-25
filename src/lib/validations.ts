@@ -77,6 +77,26 @@ export const projectSchema = z.object({
 // Dùng input type để các field có default (scope, published) vẫn được phép bỏ trống.
 export type ProjectInput = z.input<typeof projectSchema>;
 
+// ─── Hero slide ───────────────────────────────────────────────────────────────
+export const HERO_SLIDE_FOCUSES = ["right", "center", "left"] as const;
+export type HeroSlideFocus = (typeof HERO_SLIDE_FOCUSES)[number];
+
+export const heroSlideSchema = z.object({
+  image:       imageSourceSchema,
+  imageAlt:    z.string().trim().min(1, "Vui lòng nhập mô tả ảnh").max(300),
+  // Chỉ nhận ảnh WebP nhỏ do /api/upload tạo ra, không nhận data URL tuỳ ý.
+  blurDataUrl: z
+    .string()
+    .max(4000)
+    .regex(/^data:image\/webp;base64,[A-Za-z0-9+/]+=*$/, "Ảnh mờ tạm không hợp lệ")
+    .nullable()
+    .optional(),
+  focus:       z.enum(HERO_SLIDE_FOCUSES).default("right"),
+  published:   z.boolean().default(true),
+});
+
+export type HeroSlideInput = z.input<typeof heroSlideSchema>;
+
 // ─── News article ─────────────────────────────────────────────────────────────
 export const newsSchema = z.object({
   slug:        slugSchema,

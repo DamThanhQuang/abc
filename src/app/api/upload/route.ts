@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import sharp from "sharp";
 import { requireAdmin } from "@/lib/auth-guard";
-import { IMAGE_UPLOAD } from "@/lib/image-upload-config";
+import {
+  BANNER_UPLOAD,
+  IMAGE_UPLOAD,
+  bannerDimensionError,
+  bannerStoredWidth,
+} from "@/lib/image-upload-config";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { uploadToR2, getPublicUrl } from "@/lib/r2";
 
@@ -46,6 +51,35 @@ async function optimizeForStorage(buffer: Buffer) {
   }
 
   throw new Error("Ảnh sau khi tối ưu vẫn vượt quá 1,5 MB.");
+}
+
+// Banner: kiểm tra lại kích thước tối thiểu ở server (client có thể bị bỏ qua
+// khi gọi thẳng API), lưu một mức chất lượng cao duy nhất và tạo sẵn ảnh mờ tạm.
+async function optimizeBannerForStorage(buffer: Buffer) {
+  const input = () =>
+    sharp(buffer, { failOn: "error", limitInputPixels: BANNER_UPLOAD.maxInputPixels });
+
+  const metadata = await input().metadata();
+  const { width, height } = metadata.autoOrient;
+  const dimensionError = bannerDimensionError(width, height);
+  if (dimensionError) throw new Error(dimensionError);
+
+  const result = await input()
+    .autoOrient()
+    .resize({ width: bannerStoredWidth(width, height) })
+    .webp({ quality: BANNER_UPLOAD.webpQuality, smartSubsample: true, effort: 5 })
+    .toBuffer({ resolveWithObject: true });
+
+  if (result.data.length > BANNER_UPLOAD.maxStoredBytes) {
+    throw new Error("Ảnh quá nhiều chi tiết nên không lưu được ở chất lượng cao. Hãy chọn ảnh khác.");
+  }
+
+  const blur = await sharp(result.data)
+    .resize({ width: BANNER_UPLOAD.blurWidth })
+    .webp({ quality: 50 })
+    .toBuffer();
+
+  return { ...result, blurDataUrl: `data:image/webp;base64,${blur.toString("base64")}` };
 }
 
 function detectImageFormat(header: Uint8Array): ImageFormat | null {
@@ -122,10 +156,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Không có file" }, { status: 400 });
     }
 
-    if (file.size > MAX_SIZE) {
-      console.warn("Upload rejected: request image exceeds 3 MB", { size: file.size });
+    const isBanner = formData.get("purpose") === "banner";
+    const maxSize = isBanner ? BANNER_UPLOAD.maxReceivedBytes : MAX_SIZE;
+
+    if (file.size > maxSize) {
+      console.warn("Upload rejected: request image exceeds size limit", { size: file.size, isBanner });
       return NextResponse.json(
-        { error: "Ảnh gửi lên vượt quá 3 MB. Vui lòng để trình duyệt nén ảnh trước." },
+        { error: `Ảnh gửi lên vượt quá ${isBanner ? "4" : "3"} MB. Vui lòng để trình duyệt nén ảnh trước.` },
         { status: 400 },
       );
     }
@@ -144,9 +181,11 @@ export async function POST(request: Request) {
       );
     }
 
-    let optimized: Awaited<ReturnType<typeof optimizeForStorage>>;
+    let optimized: Awaited<ReturnType<typeof optimizeForStorage>> & { blurDataUrl?: string };
     try {
-      optimized = await optimizeForStorage(buffer);
+      optimized = isBanner
+        ? await optimizeBannerForStorage(buffer)
+        : await optimizeForStorage(buffer);
     } catch (optimizationError) {
       const message = optimizationError instanceof Error
         ? optimizationError.message
@@ -171,6 +210,7 @@ export async function POST(request: Request) {
       width: optimized.info.width,
       height: optimized.info.height,
       format: "webp",
+      ...(optimized.blurDataUrl ? { blurDataUrl: optimized.blurDataUrl } : {}),
     });
   } catch (err) {
     console.error("Upload error:", err);

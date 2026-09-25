@@ -114,3 +114,21 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// ─── Hero slides ──────────────────────────────────────────────────────────────
+// Ảnh banner đầu trang chủ, do admin quản lý. Chữ trên banner vẫn cố định trong code.
+model HeroSlide {
+  id          String   @id @default(cuid())
+  image       String
+  imageAlt    String
+  // Ảnh siêu nhỏ dạng data URL, hiện mờ trong lúc ảnh thật đang tải.
+  blurDataUrl String?
+  // Vùng giữ lại khi ảnh bị cắt để phủ khung: "right" | "center" | "left".
+  focus       String   @default("right")
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}

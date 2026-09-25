@@ -1,4 +1,10 @@
-import { IMAGE_UPLOAD } from "@/lib/image-upload-config";
+import {
+  BANNER_UPLOAD,
+  IMAGE_UPLOAD,
+  bannerDimensionError,
+  bannerStoredWidth,
+  formatFileSize,
+} from "@/lib/image-upload-config";
 
 type OptimizedImage = {
   file: File;
@@ -51,6 +57,7 @@ export async function optimizeImageForUpload(file: File): Promise<OptimizedImage
 
     const context = canvas.getContext("2d");
     if (!context) throw new Error("Trình duyệt không hỗ trợ xử lý ảnh.");
+    context.imageSmoothingQuality = "high";
     context.drawImage(bitmap, 0, 0, width, height);
 
     let blob = await canvasToWebp(canvas, IMAGE_UPLOAD.webpQuality / 100);
@@ -74,6 +81,73 @@ export async function optimizeImageForUpload(file: File): Promise<OptimizedImage
     }
 
     const baseName = file.name.replace(/\.[^.]+$/, "") || "product-image";
+    const optimizedFile = new File([blob], `${baseName}.webp`, {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+
+    return {
+      file: optimizedFile,
+      originalSize: file.size,
+      optimizedSize: optimizedFile.size,
+    };
+  } finally {
+    bitmap.close();
+  }
+}
+
+/**
+ * Chuẩn bị ảnh banner trước khi upload: chặn ảnh nhỏ hơn khung banner (sẽ bị
+ * phóng to và mờ), ảnh dọc hoặc quá dài; thu nhỏ theo bannerStoredWidth và nén
+ * WebP chất lượng cao.
+ */
+export async function optimizeBannerForUpload(file: File): Promise<OptimizedImage> {
+  if (file.size > BANNER_UPLOAD.maxSourceBytes) {
+    throw new Error(`Ảnh gốc vượt quá ${formatFileSize(BANNER_UPLOAD.maxSourceBytes)}.`);
+  }
+
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    throw new Error("Trình duyệt không đọc được ảnh này. Hãy dùng JPEG, PNG hoặc WebP.");
+  }
+
+  try {
+    const dimensionError = bannerDimensionError(bitmap.width, bitmap.height);
+    if (dimensionError) throw new Error(dimensionError);
+    if (bitmap.width * bitmap.height > BANNER_UPLOAD.maxInputPixels) {
+      throw new Error("Ảnh có độ phân giải quá lớn, tối đa khoảng 50 megapixel.");
+    }
+
+    const width = bannerStoredWidth(bitmap.width, bitmap.height);
+    const height = Math.round(bitmap.height * (width / bitmap.width));
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Trình duyệt không hỗ trợ xử lý ảnh.");
+    context.imageSmoothingQuality = "high";
+    context.drawImage(bitmap, 0, 0, width, height);
+
+    let blob = await canvasToWebp(canvas, BANNER_UPLOAD.clientWebpQuality / 100);
+    // Chỉ lùi về đúng chất lượng server sẽ lưu, không thấp hơn.
+    if (blob.size > BANNER_UPLOAD.maxReceivedBytes) {
+      blob = await canvasToWebp(canvas, BANNER_UPLOAD.webpQuality / 100);
+    }
+
+    canvas.width = 0;
+    canvas.height = 0;
+
+    if (blob.size > BANNER_UPLOAD.maxReceivedBytes) {
+      throw new Error(
+        "Ảnh quá nhiều chi tiết nên không nén được xuống dưới "
+          + `${formatFileSize(BANNER_UPLOAD.maxReceivedBytes)} mà vẫn giữ độ nét. Hãy chọn ảnh khác.`,
+      );
+    }
+
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "banner";
     const optimizedFile = new File([blob], `${baseName}.webp`, {
       type: "image/webp",
       lastModified: Date.now(),

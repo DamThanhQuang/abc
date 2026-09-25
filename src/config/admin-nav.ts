@@ -1,7 +1,7 @@
 export type AdminNavItem = {
   label: string;
   href: string;
-  icon: "dashboard" | "product" | "category" | "news" | "project" | "request" | "logout";
+  icon: "dashboard" | "product" | "category" | "news" | "project" | "banner" | "request" | "logout";
 };
 
 export const adminMainNav: AdminNavItem[] = [
@@ -10,6 +10,7 @@ export const adminMainNav: AdminNavItem[] = [
   { label: "Sản phẩm",    href: "/admin/san-pham",   icon: "product"   },
   { label: "Tin tức",     href: "/admin/tin-tuc",    icon: "news"      },
   { label: "Dự án",       href: "/admin/du-an",      icon: "project"   },
+  { label: "Banner",      href: "/admin/banner",     icon: "banner"    },
   { label: "Yêu cầu",     href: "/admin/yeu-cau",    icon: "request"   },
 ];
 
