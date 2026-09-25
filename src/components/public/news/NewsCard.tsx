@@ -6,11 +6,13 @@ type NewsCardProps = {
   article: NewsArticle;
 };
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("vi-VN", {
+// Server chạy giờ UTC (Vercel), nên phải chỉ định múi giờ Việt Nam.
+function formatDate(value: string | Date): string {
+  return new Date(value).toLocaleDateString("vi-VN", {
     day: "2-digit",
     month: "long",
     year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
   });
 }
 
@@ -41,7 +43,9 @@ export function NewsCard({ article }: NewsCardProps) {
             {article.category}
           </span>
           <time
-            dateTime={article.publishedAt}
+            // publishedAt thực tế là Date từ Prisma; chuỗi ISO giống nhau ở server
+            // và trình duyệt, tránh lỗi hydration do khác múi giờ.
+            dateTime={new Date(article.publishedAt).toISOString()}
             className="font-sans text-[12px] leading-4 text-content-muted whitespace-nowrap"
           >
             {formatDate(article.publishedAt)}
