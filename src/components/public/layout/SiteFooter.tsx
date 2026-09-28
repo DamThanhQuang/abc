@@ -53,22 +53,27 @@ export function SiteFooter() {
               <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
                 Hotline
               </p>
-              <ul className="flex flex-col gap-1.5">
-                {contactPhones.map((phone) => (
-                  <li key={phone}>
+              {/* Hai số nằm ngang, chung một icon và ngăn bằng vạch dọc — cùng
+                  cách trình bày với header và dải liên hệ cuối trang chủ. */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <span className="text-brand-dark">
+                  <PhoneIcon />
+                </span>
+                {contactPhones.map((phone, index) => (
+                  <span key={phone} className="flex items-center gap-x-3">
+                    {index > 0 ? (
+                      <span aria-hidden="true" className="h-4 w-px bg-border-ui" />
+                    ) : null}
                     <a
                       href={`tel:${phone.replace(/\D/g, "")}`}
                       aria-label={`Gọi ${phone}`}
-                      className="inline-flex items-center gap-2 rounded-sm font-heading text-[20px] font-semibold leading-7 text-content-heading transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+                      className="rounded-sm font-heading text-[18px] font-semibold leading-7 text-content-heading transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
                     >
-                      <span className="text-brand-dark">
-                        <PhoneIcon />
-                      </span>
                       {phone}
                     </a>
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
             <div className="mb-5 space-y-1 font-sans text-[12px] leading-5 text-content-muted">
               <p className="font-medium text-content-body">{companyInfo.legalName}</p>
