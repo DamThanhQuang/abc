@@ -24,10 +24,16 @@ if (process.env.VERCEL_ENV === "production" && !siteUrl.startsWith("https://")) 
   throw new Error("NEXT_PUBLIC_APP_URL must use HTTPS in Vercel production.");
 }
 
+// Google Search Console ownership token. Optional: when unset the meta tag is
+// omitted, which only means the property stays unverified.
+const googleSiteVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() || undefined;
+
 export const siteConfig = {
   name: companyInfo.brandName,
   description: "Thiết bị và giải pháp cho trạm xăng dầu",
   url: siteUrl,
+  googleSiteVerification,
 } as const;
 
 export type NavItem = {
@@ -68,8 +74,12 @@ export const footerNav: FooterNavColumn[] = [
   },
 ];
 
-export const footerTagline =
-  "Thiết bị và giải pháp phục vụ hoạt động tại trạm xăng dầu.";
+// Nguồn duy nhất cho hai số hotline. Header, footer, dải CTA cuối trang chủ,
+// nút gọi nổi và nút Zalo nổi đều đọc từ đây — hai số này cũng là số Zalo.
+export const contactPhones = [
+  companyInfo.phone,
+  companyInfo.phoneSecondary,
+] as const;
 
 export const footerCopyright =
   `© ${new Date().getFullYear()} ${companyInfo.legalName}.`;
