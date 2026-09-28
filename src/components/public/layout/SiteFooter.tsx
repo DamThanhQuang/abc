@@ -2,8 +2,8 @@ import Link from "next/link";
 import { LogoMark } from "@/components/shared/LogoMark";
 import {
   companyInfo,
+  contactPhones,
   footerNav,
-  footerTagline,
   footerCopyright,
 } from "@/config/site";
 
@@ -16,6 +16,17 @@ function ArrowIcon() {
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M7.1 3.5 9.4 7a1.5 1.5 0 0 1-.2 1.9L7.8 10.3a14.2 14.2 0 0 0 5.9 5.9l1.4-1.4a1.5 1.5 0 0 1 1.9-.2l3.5 2.3a1.5 1.5 0 0 1 .6 1.8l-.7 2a2 2 0 0 1-1.9 1.3C9.4 22 2 14.6 2 5.5a2 2 0 0 1 1.3-1.9l2-.7a1.5 1.5 0 0 1 1.8.6Z"
+        fill="currentColor"
       />
     </svg>
   );
@@ -37,9 +48,33 @@ export function SiteFooter() {
             >
               <LogoMark className="h-20 w-auto" />
             </Link>
-            <p className="font-sans text-[14px] leading-[22px] text-content-body max-w-[310px] mb-5">
-              {footerTagline}
-            </p>
+            {/* Hotline thay cho tagline cũ — hai số, mỗi số là một link gọi riêng. */}
+            <div className="mb-5">
+              <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
+                Hotline
+              </p>
+              {/* Hai số nằm ngang, chung một icon và ngăn bằng vạch dọc — cùng
+                  cách trình bày với header và dải liên hệ cuối trang chủ. */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <span className="text-brand-dark">
+                  <PhoneIcon />
+                </span>
+                {contactPhones.map((phone, index) => (
+                  <span key={phone} className="flex items-center gap-x-3">
+                    {index > 0 ? (
+                      <span aria-hidden="true" className="h-4 w-px bg-border-ui" />
+                    ) : null}
+                    <a
+                      href={`tel:${phone.replace(/\D/g, "")}`}
+                      aria-label={`Gọi ${phone}`}
+                      className="rounded-sm font-heading text-[18px] font-semibold leading-7 text-content-heading transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+                    >
+                      {phone}
+                    </a>
+                  </span>
+                ))}
+              </div>
+            </div>
             <div className="mb-5 space-y-1 font-sans text-[12px] leading-5 text-content-muted">
               <p className="font-medium text-content-body">{companyInfo.legalName}</p>
               <p>Mã số thuế: {companyInfo.taxCode}</p>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ContactForm } from "@/components/public/contact/ContactForm";
 import { CopyPhoneButton } from "@/components/public/contact/CopyPhoneButton";
 import { PageHero } from "@/components/shared/PageHero";
-import { companyInfo } from "@/config/site";
+import { companyInfo, contactPhones } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Liên hệ",
@@ -49,17 +49,39 @@ function FormIcon() {
   );
 }
 
+// Mã QR đặt tên theo chính số Zalo để khỏi nhầm QR nào của ai. Zalo xuất ảnh ra
+// nhiều định dạng khác nhau nên dò lần lượt thay vì cứng một đuôi file; thiếu
+// file thì ô đó hiện trạng thái đang cập nhật chứ không vỡ layout.
+const QR_EXTENSIONS = ["png", "jpg", "jpeg", "webp"] as const;
+
+function findZaloQr(phone: string): string | null {
+  const digits = phone.replace(/\D/g, "");
+
+  for (const extension of QR_EXTENSIONS) {
+    const fileName = `zalo-qr-${digits}.${extension}`;
+    if (existsSync(join(process.cwd(), "public", "images", fileName))) {
+      return `/images/${fileName}`;
+    }
+  }
+
+  return null;
+}
+
 export default async function LienHePage({ searchParams }: Props) {
   const params = await searchParams;
   const productParam = Array.isArray(params["san-pham"])
     ? params["san-pham"][0]
     : params["san-pham"];
   const productName = productParam?.trim().slice(0, 200) ?? "";
-  const rawZaloId = process.env.NEXT_PUBLIC_ZALO_ID?.trim() ?? "";
-  const zaloId = rawZaloId.replace(/\D/g, "");
-  const displayPhone = process.env.NEXT_PUBLIC_PHONE_DISPLAY?.trim() || rawZaloId;
-  const hasZaloContact = Boolean(zaloId && displayPhone);
-  const hasQr = existsSync(join(process.cwd(), "public", "images", "zalo-qr.png"));
+  // Hai số hotline cũng là hai số Zalo — lấy từ config thay vì biến môi trường
+  // để khớp với header, footer và các nút liên hệ nổi.
+  const zaloNumbers = contactPhones;
+  const primaryZalo = zaloNumbers[0];
+  const hasZaloContact = zaloNumbers.length > 0;
+  const zaloQrs = zaloNumbers.map((phone) => ({
+    phone,
+    src: findZaloQr(phone),
+  }));
 
   return (
     <>
@@ -76,26 +98,33 @@ export default async function LienHePage({ searchParams }: Props) {
             className="overflow-hidden rounded-[24px] border border-border-ui bg-white shadow-card"
           >
             <div className="flex h-full flex-col">
-              <div className="flex items-center justify-center bg-surface-card p-8">
-                {hasQr ? (
-                  <div className="rounded-2xl bg-white p-3 shadow-card">
-                    <Image
-                      src="/images/zalo-qr.png"
-                      alt="Mã QR Zalo của Ánh Sáng Toàn Cầu"
-                      width={180}
-                      height={180}
-                      className="h-[180px] w-[180px] object-contain"
-                      unoptimized
-                      priority
-                    />
-                  </div>
-                ) : (
-                  <div className="flex h-[206px] w-[206px] items-center justify-center rounded-2xl border border-dashed border-border-ui bg-white p-6 text-center">
-                    <p className="font-sans text-[13px] leading-5 text-content-muted">
-                      Mã QR Zalo đang được cập nhật
-                    </p>
-                  </div>
-                )}
+              <div className="flex flex-wrap items-start justify-center gap-5 bg-surface-card p-8">
+                {zaloQrs.map(({ phone, src }, index) => (
+                  <figure key={phone} className="flex flex-col items-center gap-2.5">
+                    {src ? (
+                      <div className="rounded-2xl bg-white p-3 shadow-card">
+                        <Image
+                          src={src}
+                          alt={`Mã QR Zalo số ${phone} của ${companyInfo.brandName}`}
+                          width={156}
+                          height={156}
+                          className="h-[156px] w-[156px] object-contain"
+                          unoptimized
+                          priority={index === 0}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-[182px] w-[182px] items-center justify-center rounded-2xl border border-dashed border-border-ui bg-white p-5 text-center">
+                        <p className="font-sans text-[13px] leading-5 text-content-muted">
+                          Mã QR đang được cập nhật
+                        </p>
+                      </div>
+                    )}
+                    <figcaption className="font-heading text-[14px] font-semibold leading-5 text-content-heading">
+                      {phone}
+                    </figcaption>
+                  </figure>
+                ))}
               </div>
 
               <div className="flex flex-1 flex-col p-6 sm:p-8 lg:p-10">
@@ -130,16 +159,29 @@ export default async function LienHePage({ searchParams }: Props) {
                       <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-content-muted">
                         Số điện thoại / Zalo
                       </p>
-                      <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-                        <p className="font-heading text-[20px] font-semibold text-content-heading">
-                          {displayPhone}
-                        </p>
-                        <CopyPhoneButton value={displayPhone} />
-                      </div>
+                      <ul className="mt-2 flex flex-col gap-2">
+                        {zaloNumbers.map((phone) => (
+                          <li
+                            key={phone}
+                            className="flex flex-wrap items-center justify-between gap-3"
+                          >
+                            <a
+                              href={`https://zalo.me/${phone.replace(/\D/g, "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`Nhắn Zalo ${phone}`}
+                              className="rounded-sm font-heading text-[20px] font-semibold text-content-heading transition-colors hover:text-[#0068ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068ff]/40"
+                            >
+                              {phone}
+                            </a>
+                            <CopyPhoneButton value={phone} />
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
                     <a
-                      href={`https://zalo.me/${zaloId}`}
+                      href={`https://zalo.me/${primaryZalo.replace(/\D/g, "")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-5 inline-flex items-center justify-center gap-2 rounded-btn bg-[#0068ff] px-6 py-3.5 font-sans text-[14px] font-semibold text-white shadow-btn transition-colors hover:bg-[#0057d9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068ff]/40"
